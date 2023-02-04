@@ -1,0 +1,28 @@
+{
+    "name": "gardentify",
+    "version": "0.0.1",
+    "private": true,
+    "workspaces": [],
+    "scripts": {
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^17.4.2",
+        "@commitlint/config-conventional": "^17.4.2",
+        "autoprefixer": "^10.4.13",
+        "lint-staged": "^13.1.0",
+        "prettier": "latest"
+    },
+    "lint-staged": {
+        "apps/**/*.{js,ts,jsx,tsx}": [
+            "eslint --fix"
+        ],
+        "packages/ui/**/*.{js,ts,jsx,tsx}": [
+            "eslint --fix"
+        ],
+        "*.json": [
+            "prettier --write"
+        ]
+    },
+    "packageManager": "yarn@1.22.18"
+}
+
