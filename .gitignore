@@ -1,9 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# icons
-
-packages/icons-fetching/generated
-packages/icons-fetching/packed
+.env
 
 # dependencies
 node_modules
