@@ -1,9 +1,9 @@
 import { BaseModel } from '@modules/common/models/base.model';
 import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
 
-enum ContainerType {
-  Plot,
-  Bag,
+export enum ContainerType {
+  Plot = 'Plot',
+  Bag = 'Bag',
 }
 
 registerEnumType(ContainerType, {

@@ -14,11 +14,7 @@ export class GqlConfigService implements GqlOptionsFactory {
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },
-      // cors: {
-      //   origin: __ORIGIN__,
-      //   enabled: true,
-      // },
-
+      installSubscriptionHandlers: true,
       debug: true,
       playground: true,
       context: ({ req }) => ({ req }),

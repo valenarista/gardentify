@@ -12,3 +12,17 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+enum ContainerType {
+  Plot
+  Bag
+}
+
+model Container {
+  uuid       String        @id @default(cuid())
+  dirthDepth Float
+  type       ContainerType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

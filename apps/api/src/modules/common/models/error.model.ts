@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class ErrorResponse {
+export class Error {
   @Field(() => String)
   field: string;
 

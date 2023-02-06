@@ -16,6 +16,7 @@ type Container {
 
 type ContainerResponse {
   container: Container
+  errors: [Error!]
 }
 
 """The type of a conatiner"""
@@ -24,10 +25,33 @@ enum ContainerType {
   Plot
 }
 
+type ContainersResponse {
+  containers: [Container!]
+  errors: [Error!]
+}
+
+input CreateContainerInput {
+  """Dirth depth of the container"""
+  dirtDepth: Float!
+
+  """Type of the container"""
+  type: ContainerType!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type DeleteObjectResponse {
+  deleted: Boolean
+  errors: [Error!]
+}
+
+type Error {
+  field: String!
+  message: String!
+}
 
 input FindContainerInput {
   uuid: String
@@ -37,8 +61,14 @@ input FindUserInput {
   username: String
 }
 
+type Mutation {
+  createContainer(input: CreateContainerInput!): ContainerResponse!
+  deleteContainer(input: FindContainerInput!): DeleteObjectResponse!
+}
+
 type Query {
   findContainer(input: FindContainerInput!): ContainerResponse!
+  findContainers(input: FindContainerInput!): ContainersResponse!
   findUser(input: FindUserInput!): UserResponse!
 }
 

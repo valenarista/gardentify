@@ -3,9 +3,9 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Container } from '../models/container.model';
 
 @ObjectType()
-export class ContainerResponse {
-  @Field(() => Container, { nullable: true })
-  container?: Container;
+export class ContainersResponse {
+  @Field(() => [Container], { nullable: true })
+  containers?: Container[];
 
   @Field(() => [Error], { nullable: true })
   errors?: Error[];
