@@ -2,14 +2,24 @@
   "name": "gardentify",
   "version": "0.0.1",
   "private": true,
-  "workspaces": [],
-  "scripts": {},
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky install"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "autoprefixer": "^10.4.13",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
+    "turbo": "latest",
     "prettier": "latest"
   },
   "lint-staged": {
