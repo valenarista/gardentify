@@ -38,6 +38,14 @@ input CreateContainerInput {
   type: ContainerType!
 }
 
+input CreatePlantInput {
+  container: FindContainerInput!
+  plantedSeedsOn: DateTime
+  seedsSproutedOn: DateTime
+  type: PlantType!
+  variety: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -57,18 +65,78 @@ input FindContainerInput {
   uuid: String
 }
 
+input FindPlantInput {
+  plantedSeedsOn: DateTime
+  seedsSproutedOn: DateTime
+  type: PlantType
+  uuid: String
+  variety: String
+}
+
 input FindUserInput {
   username: String
 }
 
 type Mutation {
   createContainer(input: CreateContainerInput!): ContainerResponse!
+  createPlant(input: CreatePlantInput!): PlantResponse!
   deleteContainer(input: FindContainerInput!): DeleteObjectResponse!
+  deletePlant(input: FindPlantInput!): DeleteObjectResponse!
+}
+
+type Plant {
+  container: Container
+  createdAt: DateTime
+  plantedSeedsOn: DateTime
+  seedsSproutedOn: DateTime
+  type: PlantType
+  updatedAt: DateTime
+  uuid: String
+  variety: String
+}
+
+type PlantResponse {
+  errors: [Error!]
+  plant: Plant
+}
+
+"""Used for declaring the type of plant."""
+enum PlantType {
+  BEAN
+  BEET
+  BROCCOLI
+  CABBAGE
+  CARROT
+  CELERY
+  CORN
+  CUCUMBER
+  EGGPLANT
+  GARLIC
+  GINGER
+  GREEN_BEAN
+  KALE
+  LETTUCE
+  MUSTARD
+  NONE
+  ONION
+  PEA
+  PEPPER
+  POTATO
+  SQUASH
+  TOMATO
+  WATERMELON
+}
+
+type PlantsResponse {
+  errors: [Error!]
+  plants: [Plant!]
 }
 
 type Query {
   findContainer(input: FindContainerInput!): ContainerResponse!
   findContainers(input: FindContainerInput!): ContainersResponse!
+  findPlant(input: FindPlantInput!): PlantResponse!
+  findPlants(input: FindPlantInput!): PlantsResponse!
   findUser(input: FindUserInput!): UserResponse!
 }
 

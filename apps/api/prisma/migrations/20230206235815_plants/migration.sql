@@ -1,0 +1,19 @@
+-- CreateEnum
+CREATE TYPE "PlantType" AS ENUM ('NONE', 'TOMATO', 'POTATO', 'CARROT', 'ONION', 'CUCUMBER', 'PEPPER', 'PEA', 'BROCCOLI', 'CABBAGE', 'CORN', 'BEAN', 'BEET', 'CELERY', 'EGGPLANT', 'GARLIC', 'GINGER', 'GREEN_BEAN', 'KALE', 'LETTUCE', 'MUSTARD', 'SQUASH', 'WATERMELON');
+
+-- CreateTable
+CREATE TABLE "Plant" (
+    "uuid" TEXT NOT NULL,
+    "variety" TEXT NOT NULL,
+    "type" "PlantType" NOT NULL,
+    "plantedSeedsOn" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "seedsSproutedOn" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "containerUuid" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Plant_pkey" PRIMARY KEY ("uuid")
+);
+
+-- AddForeignKey
+ALTER TABLE "Plant" ADD CONSTRAINT "Plant_containerUuid_fkey" FOREIGN KEY ("containerUuid") REFERENCES "Container"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;

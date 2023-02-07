@@ -1,5 +1,6 @@
 import { ContainersModule } from '@modules/container/containers.module';
 import { GqlConfigService } from '@modules/graphql/graphql.config.service';
+import { PlantsModule } from '@modules/plants/plants.module';
 import { UsersModule } from '@modules/users/users.module';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
@@ -28,6 +29,7 @@ import { loggingMiddleware, PrismaModule } from 'nestjs-prisma';
 
     UsersModule,
     ContainersModule,
+    PlantsModule,
   ],
 })
 export class AppModule {}

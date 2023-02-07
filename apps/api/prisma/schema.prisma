@@ -23,6 +23,49 @@ model Container {
   dirthDepth Float
   type       ContainerType
 
+  plants Plant[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum PlantType {
+  NONE
+  TOMATO
+  POTATO
+  CARROT
+  ONION
+  CUCUMBER
+  PEPPER
+  PEA
+  BROCCOLI
+  CABBAGE
+  CORN
+  BEAN
+  BEET
+  CELERY
+  EGGPLANT
+  GARLIC
+  GINGER
+  GREEN_BEAN
+  KALE
+  LETTUCE
+  MUSTARD
+  SQUASH
+  WATERMELON
+}
+
+model Plant {
+  uuid    String    @id @default(cuid())
+  variety String
+  type    PlantType
+
+  plantedSeedsOn  DateTime @default(now())
+  seedsSproutedOn DateTime @default(now())
+
+  container     Container @relation(fields: [containerUuid], references: [uuid])
+  containerUuid String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
