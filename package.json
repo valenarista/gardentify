@@ -12,9 +12,15 @@
       "**/@nestjs/**"
     ]
   },
+  "prisma": {
+    "schema": "packages/database/prisma/schema.prisma"
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "db:migrate:deploy": "turbo run db:migrate:deploy",
+    "db:push": "turbo run db:push",
+    "db:seed": "turbo run db:seed",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky install"
@@ -24,7 +30,7 @@
     "@commitlint/config-conventional": "^17.4.2",
     "autoprefixer": "^10.4.13",
     "husky": "^8.0.3",
-    "lint-staged": "^13.1.0",
+    "lint-staged": "^13.1.1",
     "turbo": "latest",
     "prettier": "latest"
   },

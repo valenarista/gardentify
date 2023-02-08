@@ -43,6 +43,11 @@ input CreateContainerInput {
   type: ContainerType!
 }
 
+input CreateHeightRegistrationInput {
+  height: Float!
+  plantUuid: String!
+}
+
 input CreatePlantInput {
   container: FindContainerInput!
   plantedSeedsOn: DateTime
@@ -96,11 +101,18 @@ type HeightRegistrationResponse {
   heightRegistration: HeightRegistration
 }
 
+type HeightRegistrationsResponse {
+  errors: [Error!]
+  heightRegistrations: [HeightRegistration!]
+}
+
 type Mutation {
   addPlantToContainer(input: AddPlantToContainerInput!): ContainerResponse!
   createContainer(input: CreateContainerInput!): ContainerResponse!
+  createHeightRegistration(input: CreateHeightRegistrationInput!): HeightRegistrationResponse!
   createPlant(data: CreatePlantInput!): PlantResponse!
   deleteContainer(input: FindContainerInput!): DeleteObjectResponse!
+  deleteHeightRegistration(find: FindHeightRegistrationInput!): DeleteObjectResponse!
   deletePlant(find: FindPlantInput!): DeleteObjectResponse!
   removePlantFromContainer(input: RemovePlantFromContainerInput!): DeleteObjectResponse!
   updatePlant(data: UpdatePlantInput!, find: FindPlantInput!): PlantResponse!
@@ -159,6 +171,7 @@ type Query {
   findContainers(input: FindContainerInput!): ContainersResponse!
   findHeightRegistration(find: FindHeightRegistrationInput!): HeightRegistrationResponse!
   findPlant(find: FindPlantInput!): PlantResponse!
+  findPlantHeightRegistrations(find: FindPlantInput!): HeightRegistrationsResponse!
   findPlants(find: FindPlantInput!): PlantsResponse!
   findUser(input: FindUserInput!): UserResponse!
 }

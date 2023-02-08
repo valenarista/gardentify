@@ -1,0 +1,26 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf .turbo node_modules dist",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "format": "prisma format",
+    "generate": "prisma generate",
+    "lint": "TIMING=1 eslint \"src/**/*.ts\"",
+    "prebuild": "npm run generate",
+    "predev": "npm run generate",
+    "studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.10.0"
+  },
+  "devDependencies": {
+    "config": "*",
+    "eslint": "^8.33.0",
+    "prisma": "^4.10.0",
+    "rimraf": "^4.1.2"
+  }
+}

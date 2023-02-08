@@ -4,6 +4,7 @@
   "private": true,
   "files": [
     "base.json",
-    "nestjs.json"
+    "nestjs.json",
+    "node16.json"
   ]
 }
