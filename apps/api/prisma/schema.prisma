@@ -1,6 +1,7 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 generator client {
@@ -20,8 +21,8 @@ enum ContainerType {
 
 model Container {
   uuid       String        @id @default(cuid())
-  dirthDepth Float
   type       ContainerType
+  dirthDepth Float         @default(0)
 
   plants Plant[]
 
@@ -66,6 +67,23 @@ model Plant {
   container     Container @relation(fields: [containerUuid], references: [uuid])
   containerUuid String
 
+  heightRegistrations HeightRegistration[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([containerUuid])
+}
+
+model HeightRegistration {
+  uuid   String @id @default(cuid())
+  height Float  @default(0)
+
+  plant     Plant  @relation(fields: [plantUuid], references: [uuid])
+  plantUuid String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([plantUuid])
 }

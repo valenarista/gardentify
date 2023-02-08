@@ -1,10 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PrismaService } from 'nestjs-prisma';
 
-import {
-  Container,
-  ContainerType as PrismaContainerType,
-} from '@prisma/client';
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
 import { Plant } from './models/plant.model';
 import { PlantResponse } from './responses/plant.response';
@@ -13,19 +9,18 @@ import { parsePlantType } from './lib/plant-utils';
 import { PlantsResponse } from './responses/plants.response';
 import { CreatePlantInput } from './dto/create-plant.input';
 import { parseContainerType } from '@modules/container/lib/container-utils';
+import { UpdatePlantInput } from './dto/update-plant.input';
 
 @Resolver(() => Plant)
 export class PlantsResolver {
   constructor(private prismaService: PrismaService) {}
 
   @Query(() => PlantResponse)
-  async findPlant(
-    @Args('input') input: FindPlantInput,
-  ): Promise<PlantResponse> {
+  async findPlant(@Args('find') find: FindPlantInput): Promise<PlantResponse> {
     try {
       const plant = await this.prismaService.plant.findUnique({
         where: {
-          ...input,
+          uuid: find.uuid,
         },
       });
 
@@ -34,7 +29,7 @@ export class PlantsResolver {
           errors: [
             {
               field: 'input',
-              message: 'Not plant found with the given input!',
+              message: 'No plant found with the given input!',
             },
           ],
         };
@@ -60,11 +55,11 @@ export class PlantsResolver {
 
   @Query(() => PlantsResponse)
   async findPlants(
-    @Args('input') input: FindPlantInput,
+    @Args('find') find: FindPlantInput,
   ): Promise<PlantsResponse> {
     try {
       const plants = await this.prismaService.plant.findMany({
-        where: { ...input },
+        where: { uuid: find.uuid },
       });
 
       if (!plants.length) {
@@ -72,7 +67,7 @@ export class PlantsResolver {
           errors: [
             {
               field: 'input',
-              message: 'Not plants found with the given input!',
+              message: 'No plants found with the given input!',
             },
           ],
         };
@@ -100,16 +95,16 @@ export class PlantsResolver {
 
   @Mutation(() => PlantResponse)
   async createPlant(
-    @Args('input') input: CreatePlantInput,
+    @Args('data') data: CreatePlantInput,
   ): Promise<PlantResponse> {
     try {
       const plant = await this.prismaService.plant.create({
         data: {
-          variety: input.variety,
-          type: parsePlantType(input.type),
-          plantedSeedsOn: input.plantedSeedsOn,
-          seedsSproutedOn: input.seedsSproutedOn,
-          container: { connect: { uuid: input.container.uuid } },
+          variety: data.variety,
+          type: parsePlantType(data.type),
+          plantedSeedsOn: data.plantedSeedsOn,
+          seedsSproutedOn: data.seedsSproutedOn,
+          container: { connect: { uuid: data.container.uuid } },
         },
         include: { container: true },
       });
@@ -149,14 +144,65 @@ export class PlantsResolver {
 
   @Mutation(() => DeleteObjectResponse)
   async deletePlant(
-    @Args('input') input: FindPlantInput,
+    @Args('find') find: FindPlantInput,
   ): Promise<DeleteObjectResponse> {
     try {
       await this.prismaService.plant.delete({
-        where: { ...input },
+        where: { uuid: find.uuid },
       });
       return { deleted: true };
     } catch (err) {
+      return {
+        errors: [
+          {
+            field: 'input',
+            message: 'An error ocurred!',
+          },
+        ],
+      };
+    }
+  }
+
+  @Mutation(() => PlantResponse)
+  async updatePlant(
+    @Args('find') find: FindPlantInput,
+    @Args('data') data: UpdatePlantInput,
+  ): Promise<PlantResponse> {
+    try {
+      const updatedPlant = await this.prismaService.plant.update({
+        where: { uuid: find.uuid },
+        data: {
+          ...data,
+        },
+        include: { container: true },
+      });
+
+      if (!updatedPlant) {
+        return {
+          errors: [
+            {
+              field: 'input',
+              message: 'Could not update plant with the given input!',
+            },
+          ],
+        };
+      }
+
+      const parsedPlant: Plant = {
+        ...updatedPlant,
+        type: parsePlantType(updatedPlant.type),
+        container: {
+          ...updatedPlant.container,
+          type: parseContainerType(updatedPlant.container.type),
+        },
+      };
+
+      return {
+        plant: parsedPlant,
+      };
+    } catch (err) {
+      console.log(err);
+
       return {
         errors: [
           {

@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddPlantToContainerInput {
+  containerUuid: String!
+  plantUuid: String!
+}
+
 type Container {
   createdAt: DateTime
 
@@ -65,23 +70,40 @@ input FindContainerInput {
   uuid: String
 }
 
-input FindPlantInput {
-  plantedSeedsOn: DateTime
-  seedsSproutedOn: DateTime
-  type: PlantType
+input FindHeightRegistrationInput {
+  height: Float
   uuid: String
-  variety: String
+}
+
+input FindPlantInput {
+  uuid: String!
 }
 
 input FindUserInput {
   username: String
 }
 
+type HeightRegistration {
+  createdAt: DateTime
+  height: Float
+  plant: Plant
+  updatedAt: DateTime
+  uuid: String
+}
+
+type HeightRegistrationResponse {
+  errors: [Error!]
+  heightRegistration: HeightRegistration
+}
+
 type Mutation {
+  addPlantToContainer(input: AddPlantToContainerInput!): ContainerResponse!
   createContainer(input: CreateContainerInput!): ContainerResponse!
-  createPlant(input: CreatePlantInput!): PlantResponse!
+  createPlant(data: CreatePlantInput!): PlantResponse!
   deleteContainer(input: FindContainerInput!): DeleteObjectResponse!
-  deletePlant(input: FindPlantInput!): DeleteObjectResponse!
+  deletePlant(find: FindPlantInput!): DeleteObjectResponse!
+  removePlantFromContainer(input: RemovePlantFromContainerInput!): DeleteObjectResponse!
+  updatePlant(data: UpdatePlantInput!, find: FindPlantInput!): PlantResponse!
 }
 
 type Plant {
@@ -133,11 +155,24 @@ type PlantsResponse {
 }
 
 type Query {
-  findContainer(input: FindContainerInput!): ContainerResponse!
+  findContainer(find: FindContainerInput!): ContainerResponse!
   findContainers(input: FindContainerInput!): ContainersResponse!
-  findPlant(input: FindPlantInput!): PlantResponse!
-  findPlants(input: FindPlantInput!): PlantsResponse!
+  findHeightRegistration(find: FindHeightRegistrationInput!): HeightRegistrationResponse!
+  findPlant(find: FindPlantInput!): PlantResponse!
+  findPlants(find: FindPlantInput!): PlantsResponse!
   findUser(input: FindUserInput!): UserResponse!
+}
+
+input RemovePlantFromContainerInput {
+  containerUuid: String!
+  plantUuid: String!
+}
+
+input UpdatePlantInput {
+  plantedSeedsOn: DateTime
+  seedsSproutedOn: DateTime
+  type: PlantType
+  variety: String
 }
 
 type User {
