@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/nestjs.json",
+  "extends": "@gardentify/tsconfig/nestjs.json",
   "compilerOptions": {
     "paths": {
       "@modules/*": ["src/modules/*"]

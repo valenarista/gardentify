@@ -2,6 +2,11 @@
   "name": "gardentify",
   "version": "0.0.1",
   "private": true,
+  "author": {
+    "name": "Faustino Zanetto",
+    "email": "zanettofaustino@gmail.com"
+  },
+  "license": "GPL-3.0",
   "workspaces": {
     "packages": [
       "apps/*",
@@ -28,7 +33,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
-    "eslint-config-custom": "*",
+    "@gardentify/eslint-config-custom": "*",
     "autoprefixer": "^10.4.13",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.1",

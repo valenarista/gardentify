@@ -1,8 +1,13 @@
 {
-  "name": "eslint-config-custom",
+  "name": "@gardentify/eslint-config-custom",
   "version": "0.0.1",
+  "private": true,
+  "author": {
+    "name": "Faustino Zanetto",
+    "email": "zanettofaustino@gmail.com"
+  },
+  "license": "GPL-3.0",
   "main": "index.js",
-  "license": "MIT",
   "dependencies": {
     "eslint": "^8.32.0",
     "@typescript-eslint/eslint-plugin": "^5.48.2",

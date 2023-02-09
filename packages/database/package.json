@@ -1,7 +1,12 @@
 {
-  "name": "database",
-  "version": "1.0.0",
-  "license": "MIT",
+  "name": "@gardentify/database",
+  "version": "0.0.1",
+  "private": true,
+  "author": {
+    "name": "Faustino Zanetto",
+    "email": "zanettofaustino@gmail.com"
+  },
+  "license": "GPL-3.0",
   "scripts": {
     "clean": "rimraf .turbo node_modules dist",
     "db:migrate:deploy": "prisma migrate deploy",

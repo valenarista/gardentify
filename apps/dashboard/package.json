@@ -2,6 +2,11 @@
   "name": "@gardentify/dashboard",
   "version": "0.0.1",
   "private": true,
+  "license": "GPL-3.0",
+  "author": {
+    "name": "Faustino Zanetto",
+    "email": "zanettofaustino@gmail.com"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,16 +19,18 @@
     "framer-motion": "^8.5.0",
     "next": "13.1.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@gardentify/ui": "*"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@gardentify/eslint-config-custom": "*",
     "eslint": "8.32.0",
     "eslint-define-config": "latest",
     "@gardentify/tailwind-config": "*",
-    "tsconfig": "*",
+    "@gardentify/tsconfig": "*",
     "typescript": "^4.9.4"
   }
 }
