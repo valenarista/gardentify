@@ -25,6 +25,7 @@ type Container {
   """Type of the container"""
   type: ContainerType
   updatedAt: DateTime
+  user: User
   uuid: String
 }
 
@@ -231,7 +232,10 @@ input UpdatePlantInputData {
 }
 
 type User {
+  createdAt: DateTime
   email: String
+  updatedAt: DateTime
+  uuid: String
 }
 
 type UserResponse {

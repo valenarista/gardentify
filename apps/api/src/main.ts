@@ -5,10 +5,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 import { AppModule } from './app.module';
 
-import session from 'express-session';
-import passport from 'passport';
-import * as bodyParser from 'body-parser';
-
 const bootstrap = async () => {
   /*==================Initialization================*/
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -33,11 +29,8 @@ const bootstrap = async () => {
     type: VersioningType.URI,
   });
 
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParser.json());
-
   app.enableCors({
-    origin: '*',
+    origin: 'http://localhost:3000',
     credentials: true,
   });
 

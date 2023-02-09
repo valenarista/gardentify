@@ -26,9 +26,9 @@ enum ContainerType {
 }
 
 model Container {
-  uuid       String        @id @default(cuid())
-  type       ContainerType
-  dirthDepth Float         @default(0)
+  uuid      String        @id @default(cuid())
+  type      ContainerType
+  dirtDepth Float         @default(0)
 
   user     User   @relation(fields: [userUuid], references: [uuid])
   userUuid String

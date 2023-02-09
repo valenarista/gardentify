@@ -101,7 +101,7 @@ export class ContainersService {
       const container = await this.prismaService.container.create({
         data: {
           type: parseContainerType(input.type),
-          dirthDepth: input.dirtDepth,
+          dirtDepth: input.dirtDepth,
           user: { connect: { uuid: input.userUuid } },
         },
       });

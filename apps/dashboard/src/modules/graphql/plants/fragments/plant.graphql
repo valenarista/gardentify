@@ -1,0 +1,12 @@
+fragment Plant on Plant {
+  uuid
+  type
+  variety
+  plantedSeedsOn
+  seedsSproutedOn
+  container {
+    ...Container
+  }
+  createdAt
+  updatedAt
+}

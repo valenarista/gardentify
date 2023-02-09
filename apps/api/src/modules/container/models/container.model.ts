@@ -1,4 +1,5 @@
 import { BaseModel } from '@modules/common/models/base.model';
+import { User } from '@modules/users/models/user.model';
 import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
 
 export enum ContainerType {
@@ -24,4 +25,7 @@ export class Container extends BaseModel {
     description: 'Dirth depth of the container',
   })
   dirtDepth?: number;
+
+  @Field(() => User, { nullable: true })
+  user?: User;
 }

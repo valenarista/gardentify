@@ -1,0 +1,10 @@
+fragment Container on Container {
+  uuid
+  type
+  dirtDepth
+  user {
+    ...User
+  }
+  createdAt
+  updatedAt
+}

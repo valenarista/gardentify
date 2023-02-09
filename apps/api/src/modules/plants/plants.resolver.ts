@@ -13,7 +13,7 @@ import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
 import { PlantsService } from './plants.service';
 
 @Resolver(() => Plant)
-@UseGuards(GqlAuthGuard)
+// @UseGuards(GqlAuthGuard)
 export class PlantsResolver {
   constructor(private plantsService: PlantsService) {}
 

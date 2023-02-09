@@ -16,7 +16,7 @@ export class GqlConfigService implements GqlOptionsFactory {
         numberScalarMode: 'integer',
       },
       cors: {
-        origin: '*',
+        origin: 'http://localhost:3000',
         credentials: true,
       },
       installSubscriptionHandlers: true,
