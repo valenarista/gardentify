@@ -1,5 +1,5 @@
 const HomePage: React.FC = () => {
-  return <h1>Dashbord </h1>;
+  return <h1 className="text-4xl font-bold">Dashbord </h1>;
 };
 
 export default HomePage;

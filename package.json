@@ -28,21 +28,18 @@
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
+    "eslint-config-custom": "*",
     "autoprefixer": "^10.4.13",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.1",
     "prettier": "latest",
+    "tailwindcss": "^3.2.4",
+    "postcss": "^8.4.21",
     "turbo": "^1.7.4"
   },
   "lint-staged": {
     "apps/**/*.{js,ts,jsx,tsx}": [
       "eslint --fix"
-    ],
-    "packages/ui/**/*.{js,ts,jsx,tsx}": [
-      "eslint --fix"
-    ],
-    "*.json": [
-      "prettier --write"
     ]
   },
   "packageManager": "yarn@1.22.18"
