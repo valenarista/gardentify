@@ -31,8 +31,8 @@
     "autoprefixer": "^10.4.13",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.1",
-    "turbo": "latest",
-    "prettier": "latest"
+    "prettier": "latest",
+    "turbo": "^1.7.4"
   },
   "lint-staged": {
     "apps/**/*.{js,ts,jsx,tsx}": [

@@ -1,8 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { PlantType } from '../models/plant.model';
+import { FindPlantInput } from './find-plant.input';
 
 @InputType()
-export class UpdatePlantInput {
+class UpdatePlantInputData {
   @Field(() => String, { nullable: true })
   variety?: string;
 
@@ -14,4 +15,13 @@ export class UpdatePlantInput {
 
   @Field(() => Date, { nullable: true })
   seedsSproutedOn?: Date;
+}
+
+@InputType()
+export class UpdatePlantInput {
+  @Field(() => FindPlantInput)
+  find: FindPlantInput;
+
+  @Field(() => UpdatePlantInputData)
+  data: UpdatePlantInputData;
 }
