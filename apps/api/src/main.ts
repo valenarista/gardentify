@@ -1,8 +1,13 @@
+import 'class-validator';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 import { AppModule } from './app.module';
+
+import session from 'express-session';
+import passport from 'passport';
+import * as bodyParser from 'body-parser';
 
 const bootstrap = async () => {
   /*==================Initialization================*/
@@ -28,7 +33,13 @@ const bootstrap = async () => {
     type: VersioningType.URI,
   });
 
-  app.enableCors();
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
+
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+  });
 
   /*========= START =========*/
   await app.listen(process.env.PORT || 4000);

@@ -10,8 +10,11 @@ import { PlantsResponse } from './responses/plants.response';
 import { CreatePlantInput } from './dto/create-plant.input';
 import { parseContainerType } from '@modules/container/lib/container-utils';
 import { UpdatePlantInput } from './dto/update-plant.input';
+import { UseGuards } from '@nestjs/common';
 
+import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
 @Resolver(() => Plant)
+@UseGuards(GqlAuthGuard)
 export class PlantsResolver {
   constructor(private prismaService: PrismaService) {}
 

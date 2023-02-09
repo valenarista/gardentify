@@ -104,11 +104,9 @@ export class ContainersResolver {
     try {
       const container = await this.prismaService.container.create({
         data: {
-          type:
-            input.type === 'Bag'
-              ? PrismaContainerType.Bag
-              : PrismaContainerType.Plot,
+          type: parseContainerType(input.type),
           dirthDepth: input.dirtDepth,
+          user: { connect: { uuid: input.userUuid } },
         },
       });
 

@@ -9,7 +9,13 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  uuid String @id @default(cuid())
+
+  email    String @unique
+  password String
+
+  containers Container[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -24,10 +30,15 @@ model Container {
   type       ContainerType
   dirthDepth Float         @default(0)
 
+  user     User   @relation(fields: [userUuid], references: [uuid])
+  userUuid String
+
   plants Plant[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userUuid])
 }
 
 enum PlantType {

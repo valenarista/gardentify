@@ -7,7 +7,7 @@ import { UserResponse } from './responses/user.response';
 export class UsersService {
   async findUser(input: FindUserInput): Promise<UserResponse> {
     return {
-      user: { username: 'retro' },
+      user: {},
     };
   }
 }
