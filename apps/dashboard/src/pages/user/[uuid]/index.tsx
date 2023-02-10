@@ -1,7 +1,8 @@
 import client from '@modules/apollo/apollo-client';
 import { FindUserDocument, FindUserQuery, FindUserQueryVariables, User } from '@modules/graphql/@generated/graphql';
 import Layout from '@modules/layout/components/layout';
-import UserProfile from '@modules/user/components/profile/user-profile';
+import UserProfile from '@modules/user/profile/components/user-profile';
+import UserProfileProvider from '@modules/user/profile/context/user-profile-context';
 import { GetServerSideProps } from 'next';
 
 type UserPageProps = {
@@ -10,13 +11,16 @@ type UserPageProps = {
 
 const UserPage: React.FC<UserPageProps> = (props) => {
   const { user } = props;
+
   return (
     <Layout
       headProps={{
         title: `User Page | Gardentify`,
       }}
     >
-      <UserProfile />
+      <UserProfileProvider>
+        <UserProfile user={user} />
+      </UserProfileProvider>
     </Layout>
   );
 };

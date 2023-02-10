@@ -22,7 +22,9 @@ const Layout: React.FC<LayoutProps> = (props) => {
       <Navbar />
 
       {/* CONTENT */}
-      <div className="flex flex-1 flex-col bg-neutral-50 dark:bg-neutral-900">{children}</div>
+      <div className="flex flex-1 flex-col items-center bg-neutral-50 py-4 dark:bg-neutral-900 md:py-6 lg:py-10">
+        {children}
+      </div>
     </div>
   );
 };

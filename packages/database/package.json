@@ -20,12 +20,12 @@
     "studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^4.10.0"
+    "@prisma/client": "^4.10.1"
   },
   "devDependencies": {
     "config": "*",
     "eslint": "^8.33.0",
-    "prisma": "^4.10.0",
+    "prisma": "^4.10.1",
     "rimraf": "^4.1.2"
   }
 }

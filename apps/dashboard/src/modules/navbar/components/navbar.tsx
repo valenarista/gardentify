@@ -3,7 +3,7 @@ import React from 'react';
 
 const Navbar: React.FC = () => {
   return (
-    <header className="bg-primary-300 dark:bg-primary-800 fixed top-0 z-10 w-full shadow-lg">
+    <header className="bg-primary-300 dark:bg-primary-800 w-full shadow-lg">
       <div className="container mx-auto flex h-[80px] w-full items-center justify-center px-4 md:max-w-7xl">
         {/* Logo */}
         <h1 className="text-2xl font-bold dark:text-white">Gardentify</h1>

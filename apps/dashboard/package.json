@@ -17,27 +17,27 @@
   "dependencies": {
     "@apollo/client": "^3.7.7",
     "@gardentify/ui": "*",
-    "@next/font": "^13.1.4",
+    "@next/font": "^13.1.6",
     "clsx": "^1.2.1",
-    "framer-motion": "^8.5.0",
+    "framer-motion": "^9.0.2",
     "graphql": "^16.6.0",
-    "next": "13.1.4",
+    "next": "13.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^2.15.0",
-    "@graphql-codegen/typescript": "^2.8.3",
-    "@graphql-codegen/typescript-operations": "^2.5.8",
+    "@graphql-codegen/cli": "^3.0.0",
+    "@graphql-codegen/typescript": "^3.0.0",
+    "@graphql-codegen/typescript-operations": "^3.0.0",
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@gardentify/eslint-config-custom": "*",
     "@gardentify/tailwind-config": "*",
     "@gardentify/tsconfig": "*",
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.13.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
-    "eslint": "8.32.0",
+    "eslint": "8.33.0",
     "eslint-define-config": "latest",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.5"
   }
 }
