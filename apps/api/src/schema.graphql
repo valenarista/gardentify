@@ -98,7 +98,7 @@ input FindPlantInput {
 }
 
 input FindUserInput {
-  username: String
+  uuid: String!
 }
 
 type HeightRegistration {
@@ -239,5 +239,6 @@ type User {
 }
 
 type UserResponse {
+  errors: [Error!]
   user: User
 }
