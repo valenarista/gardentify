@@ -4,7 +4,10 @@ import { IsEmail } from 'class-validator';
 
 @ObjectType()
 export class User extends BaseModel {
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
+  username: string;
+
+  @Field(() => String)
   @IsEmail()
-  email?: string;
+  email: string;
 }

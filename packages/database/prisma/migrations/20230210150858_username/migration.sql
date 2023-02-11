@@ -7,6 +7,7 @@ CREATE TYPE "PlantType" AS ENUM ('NONE', 'TOMATO', 'POTATO', 'CARROT', 'ONION', 
 -- CreateTable
 CREATE TABLE "User" (
     "uuid" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -19,7 +20,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Container" (
     "uuid" TEXT NOT NULL,
     "type" "ContainerType" NOT NULL,
-    "dirthDepth" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "dirtDepth" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "userUuid" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -51,6 +52,9 @@ CREATE TABLE "HeightRegistration" (
 
     CONSTRAINT "HeightRegistration_pkey" PRIMARY KEY ("uuid")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");

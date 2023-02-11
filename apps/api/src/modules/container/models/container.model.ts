@@ -15,16 +15,14 @@ registerEnumType(ContainerType, {
 @ObjectType({ isAbstract: true })
 export class Container extends BaseModel {
   @Field(() => ContainerType, {
-    nullable: true,
     description: 'Type of the container',
   })
-  type?: ContainerType;
+  type: ContainerType;
 
   @Field(() => Float, {
-    nullable: true,
     description: 'Dirth depth of the container',
   })
-  dirtDepth?: number;
+  dirtDepth: number;
 
   @Field(() => User, { nullable: true })
   user?: User;

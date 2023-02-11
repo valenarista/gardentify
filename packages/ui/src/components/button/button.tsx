@@ -6,7 +6,7 @@ export type HTMLButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes
 
 export type ButtonVariants = 'outline' | 'solid' | 'ghost';
 export type ButtonSizes = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl';
-export type ButtonColorSchemes = 'primary' | 'secondary';
+export type ButtonColorSchemes = 'primary' | 'secondary' | 'danger';
 
 export type AvailableColorSchemes = {
   [key in ButtonColorSchemes]: { [key in ButtonVariants]: string };

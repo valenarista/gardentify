@@ -1,0 +1,5 @@
+query findContainer($input: FindContainerInput!) {
+  findContainer(input: $input) {
+    ...ContainerResponse
+  }
+}

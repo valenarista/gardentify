@@ -1,0 +1,8 @@
+fragment ContainersResponse on ContainersResponse {
+  containers {
+    ...Container
+  }
+  errors {
+    ...Error
+  }
+}

@@ -1,5 +1,6 @@
 fragment User on User {
   uuid
+  username
   email
   createdAt
   updatedAt

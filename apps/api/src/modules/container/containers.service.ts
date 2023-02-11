@@ -9,7 +9,9 @@ import { DeleteObjectResponse } from '@modules/common/responses/delete-object.re
 import { AddPlantToContainerInput } from './dto/add-plant-to-container.input';
 import { parseContainerType } from './lib/container-utils';
 import { RemovePlantFromContainerInput } from './dto/remove-plant-from-container.input';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { FindUserContainersInput } from './dto/find-user-containers.input';
+import { GraphQLError } from 'graphql/error';
 
 @Injectable()
 export class ContainersService {
@@ -164,6 +166,7 @@ export class ContainersService {
         data: {
           plants: { connect: { uuid: input.plantUuid } },
         },
+        include: { user: true },
       });
       if (!updatedContainer) {
         return {
@@ -214,8 +217,6 @@ export class ContainersService {
 
       return { deleted: true };
     } catch (err) {
-      console.log(err);
-
       return {
         errors: [
           {
@@ -225,5 +226,30 @@ export class ContainersService {
         ],
       };
     }
+  }
+
+  async findUserContainers(
+    input: FindUserContainersInput,
+  ): Promise<ContainersResponse> {
+    const containers = await this.prismaService.container.findMany({
+      where: {
+        userUuid: input.userUuid,
+      },
+    });
+
+    if (!containers.length) {
+      throw new NotFoundException(
+        'No containers were found for the given user !',
+      );
+    }
+
+    const parsedContainers: Container[] = containers.map((container) => {
+      return {
+        ...container,
+        type: parseContainerType(container.type),
+      };
+    });
+
+    return { containers: parsedContainers };
   }
 }

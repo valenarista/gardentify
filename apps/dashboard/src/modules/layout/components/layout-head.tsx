@@ -20,7 +20,7 @@ const LayoutHead: React.FC<LayoutHeadProps> = (props) => {
     <Head>
       <title>{title}</title>
       {/* Manifest */}
-      <link rel="manifest" href="/manifest.json" />
+      {/* <link rel="manifest" href="/manifest.json" /> */}
       {/* Base */}
       <meta charSet="UTF-8" />
       <meta name="robots" content="index" />

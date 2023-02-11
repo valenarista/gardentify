@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "config": "*",
-    "eslint": "^8.33.0",
+    "eslint": "^8.34.0",
     "prisma": "^4.10.1",
     "rimraf": "^4.1.2"
   }

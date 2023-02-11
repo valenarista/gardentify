@@ -17,16 +17,16 @@ type Auth {
 }
 
 type Container {
-  createdAt: DateTime
+  createdAt: DateTime!
 
   """Dirth depth of the container"""
-  dirtDepth: Float
+  dirtDepth: Float!
 
   """Type of the container"""
-  type: ContainerType
-  updatedAt: DateTime
+  type: ContainerType!
+  updatedAt: DateTime!
   user: User
-  uuid: String
+  uuid: String!
 }
 
 type ContainerResponse {
@@ -85,7 +85,7 @@ type Error {
 }
 
 input FindContainerInput {
-  uuid: String
+  uuid: String!
 }
 
 input FindHeightRegistrationInput {
@@ -97,16 +97,20 @@ input FindPlantInput {
   uuid: String!
 }
 
+input FindUserContainersInput {
+  userUuid: String!
+}
+
 input FindUserInput {
   uuid: String!
 }
 
 type HeightRegistration {
-  createdAt: DateTime
+  createdAt: DateTime!
   height: Float
   plant: Plant
-  updatedAt: DateTime
-  uuid: String
+  updatedAt: DateTime!
+  uuid: String!
 }
 
 type HeightRegistrationResponse {
@@ -141,12 +145,12 @@ type Mutation {
 
 type Plant {
   container: Container
-  createdAt: DateTime
+  createdAt: DateTime!
   plantedSeedsOn: DateTime
   seedsSproutedOn: DateTime
   type: PlantType
-  updatedAt: DateTime
-  uuid: String
+  updatedAt: DateTime!
+  uuid: String!
   variety: String
 }
 
@@ -195,6 +199,7 @@ type Query {
   findPlantHeightRegistrations(find: FindPlantInput!): HeightRegistrationsResponse!
   findPlants(input: FindPlantInput!): PlantsResponse!
   findUser(input: FindUserInput!): UserResponse!
+  findUserContainers(input: FindUserContainersInput!): ContainersResponse!
 }
 
 input RefreshTokenInput {
@@ -209,6 +214,7 @@ input RemovePlantFromContainerInput {
 input SignupInput {
   email: String!
   password: String!
+  username: String!
 }
 
 type Token {
@@ -232,10 +238,11 @@ input UpdatePlantInputData {
 }
 
 type User {
-  createdAt: DateTime
-  email: String
-  updatedAt: DateTime
-  uuid: String
+  createdAt: DateTime!
+  email: String!
+  updatedAt: DateTime!
+  username: String!
+  uuid: String!
 }
 
 type UserResponse {

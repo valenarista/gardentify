@@ -24,6 +24,12 @@ export const BUTTON_COLOR_SCHEMES: AvailableColorSchemes = {
       'bg-primary-300 hover:bg-primary-400 focus-visible:ring-primary-300 dark:bg-primary-700 dark:hover:bg-primary-900',
     ghost: 'hover:bg-primary-400 focus-visible:ring-primary-300 dark:hover:bg-primary-900',
   },
+  danger: {
+    outline:
+      'border-4 border-red-300 dark:border-red-600 hover:bg-red-400 hover:border-red-400 focus-visible:ring-red-300 dark:hover:bg-red-600 dark:focus-visible:ring-red-500',
+    solid: 'bg-red-300 hover:bg-red-400 focus-visible:ring-red-300 dark:bg-red-700 dark:hover:bg-red-900',
+    ghost: 'hover:bg-red-400 focus-visible:ring-red-300 dark:hover:bg-red-900',
+  },
 };
 
 export const BUTTON_BASE_STYLES: string =

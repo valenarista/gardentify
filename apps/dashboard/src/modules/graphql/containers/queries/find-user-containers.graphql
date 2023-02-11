@@ -1,0 +1,5 @@
+query findUserContainers($input: FindUserContainersInput!) {
+  findUserContainers(input: $input) {
+    ...ContainersResponse
+  }
+}

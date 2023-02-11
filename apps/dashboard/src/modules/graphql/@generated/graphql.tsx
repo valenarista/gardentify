@@ -32,14 +32,14 @@ export type Auth = {
 
 export type Container = {
   __typename?: 'Container';
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt: Scalars['DateTime'];
   /** Dirth depth of the container */
-  dirtDepth?: Maybe<Scalars['Float']>;
+  dirtDepth: Scalars['Float'];
   /** Type of the container */
-  type?: Maybe<ContainerType>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  type: ContainerType;
+  updatedAt: Scalars['DateTime'];
   user?: Maybe<User>;
-  uuid?: Maybe<Scalars['String']>;
+  uuid: Scalars['String'];
 };
 
 export type ContainerResponse = {
@@ -95,7 +95,7 @@ export type Error = {
 };
 
 export type FindContainerInput = {
-  uuid?: InputMaybe<Scalars['String']>;
+  uuid: Scalars['String'];
 };
 
 export type FindHeightRegistrationInput = {
@@ -107,17 +107,21 @@ export type FindPlantInput = {
   uuid: Scalars['String'];
 };
 
+export type FindUserContainersInput = {
+  userUuid: Scalars['String'];
+};
+
 export type FindUserInput = {
   uuid: Scalars['String'];
 };
 
 export type HeightRegistration = {
   __typename?: 'HeightRegistration';
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt: Scalars['DateTime'];
   height?: Maybe<Scalars['Float']>;
   plant?: Maybe<Plant>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  uuid?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  uuid: Scalars['String'];
 };
 
 export type HeightRegistrationResponse = {
@@ -204,12 +208,12 @@ export type MutationUpdatePlantArgs = {
 export type Plant = {
   __typename?: 'Plant';
   container?: Maybe<Container>;
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt: Scalars['DateTime'];
   plantedSeedsOn?: Maybe<Scalars['DateTime']>;
   seedsSproutedOn?: Maybe<Scalars['DateTime']>;
   type?: Maybe<PlantType>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  uuid?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  uuid: Scalars['String'];
   variety?: Maybe<Scalars['String']>;
 };
 
@@ -261,6 +265,7 @@ export type Query = {
   findPlantHeightRegistrations: HeightRegistrationsResponse;
   findPlants: PlantsResponse;
   findUser: UserResponse;
+  findUserContainers: ContainersResponse;
 };
 
 export type QueryFindContainerArgs = {
@@ -291,6 +296,10 @@ export type QueryFindUserArgs = {
   input: FindUserInput;
 };
 
+export type QueryFindUserContainersArgs = {
+  input: FindUserContainersInput;
+};
+
 export type RefreshTokenInput = {
   token: Scalars['String'];
 };
@@ -303,6 +312,7 @@ export type RemovePlantFromContainerInput = {
 export type SignupInput = {
   email: Scalars['String'];
   password: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type Token = {
@@ -327,10 +337,11 @@ export type UpdatePlantInputData = {
 
 export type User = {
   __typename?: 'User';
-  createdAt?: Maybe<Scalars['DateTime']>;
-  email?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  uuid?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  username: Scalars['String'];
+  uuid: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -343,42 +354,135 @@ export type ErrorFragment = { __typename?: 'Error'; field: string; message: stri
 
 export type ContainerFragment = {
   __typename?: 'Container';
-  uuid?: string | null;
-  type?: ContainerType | null;
-  dirtDepth?: number | null;
-  createdAt?: any | null;
-  updatedAt?: any | null;
-  user?: {
-    __typename?: 'User';
-    uuid?: string | null;
-    email?: string | null;
-    createdAt?: any | null;
-    updatedAt?: any | null;
+  uuid: string;
+  type: ContainerType;
+  dirtDepth: number;
+  createdAt: any;
+  updatedAt: any;
+  user?: { __typename?: 'User'; uuid: string; username: string; email: string; createdAt: any; updatedAt: any } | null;
+};
+
+export type ContainerResponseFragment = {
+  __typename?: 'ContainerResponse';
+  container?: {
+    __typename?: 'Container';
+    uuid: string;
+    type: ContainerType;
+    dirtDepth: number;
+    createdAt: any;
+    updatedAt: any;
+    user?: {
+      __typename?: 'User';
+      uuid: string;
+      username: string;
+      email: string;
+      createdAt: any;
+      updatedAt: any;
+    } | null;
   } | null;
+  errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+};
+
+export type ContainersResponseFragment = {
+  __typename?: 'ContainersResponse';
+  containers?: Array<{
+    __typename?: 'Container';
+    uuid: string;
+    type: ContainerType;
+    dirtDepth: number;
+    createdAt: any;
+    updatedAt: any;
+    user?: {
+      __typename?: 'User';
+      uuid: string;
+      username: string;
+      email: string;
+      createdAt: any;
+      updatedAt: any;
+    } | null;
+  }> | null;
+  errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+};
+
+export type FindContainerQueryVariables = Exact<{
+  input: FindContainerInput;
+}>;
+
+export type FindContainerQuery = {
+  __typename?: 'Query';
+  findContainer: {
+    __typename?: 'ContainerResponse';
+    container?: {
+      __typename?: 'Container';
+      uuid: string;
+      type: ContainerType;
+      dirtDepth: number;
+      createdAt: any;
+      updatedAt: any;
+      user?: {
+        __typename?: 'User';
+        uuid: string;
+        username: string;
+        email: string;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+    } | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type FindUserContainersQueryVariables = Exact<{
+  input: FindUserContainersInput;
+}>;
+
+export type FindUserContainersQuery = {
+  __typename?: 'Query';
+  findUserContainers: {
+    __typename?: 'ContainersResponse';
+    containers?: Array<{
+      __typename?: 'Container';
+      uuid: string;
+      type: ContainerType;
+      dirtDepth: number;
+      createdAt: any;
+      updatedAt: any;
+      user?: {
+        __typename?: 'User';
+        uuid: string;
+        username: string;
+        email: string;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+    }> | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
 };
 
 export type PlantFragment = {
   __typename?: 'Plant';
-  uuid?: string | null;
+  uuid: string;
   type?: PlantType | null;
   variety?: string | null;
   plantedSeedsOn?: any | null;
   seedsSproutedOn?: any | null;
-  createdAt?: any | null;
-  updatedAt?: any | null;
+  createdAt: any;
+  updatedAt: any;
   container?: {
     __typename?: 'Container';
-    uuid?: string | null;
-    type?: ContainerType | null;
-    dirtDepth?: number | null;
-    createdAt?: any | null;
-    updatedAt?: any | null;
+    uuid: string;
+    type: ContainerType;
+    dirtDepth: number;
+    createdAt: any;
+    updatedAt: any;
     user?: {
       __typename?: 'User';
-      uuid?: string | null;
-      email?: string | null;
-      createdAt?: any | null;
-      updatedAt?: any | null;
+      uuid: string;
+      username: string;
+      email: string;
+      createdAt: any;
+      updatedAt: any;
     } | null;
   } | null;
 };
@@ -387,26 +491,27 @@ export type PlantResponseFragment = {
   __typename?: 'PlantResponse';
   plant?: {
     __typename?: 'Plant';
-    uuid?: string | null;
+    uuid: string;
     type?: PlantType | null;
     variety?: string | null;
     plantedSeedsOn?: any | null;
     seedsSproutedOn?: any | null;
-    createdAt?: any | null;
-    updatedAt?: any | null;
+    createdAt: any;
+    updatedAt: any;
     container?: {
       __typename?: 'Container';
-      uuid?: string | null;
-      type?: ContainerType | null;
-      dirtDepth?: number | null;
-      createdAt?: any | null;
-      updatedAt?: any | null;
+      uuid: string;
+      type: ContainerType;
+      dirtDepth: number;
+      createdAt: any;
+      updatedAt: any;
       user?: {
         __typename?: 'User';
-        uuid?: string | null;
-        email?: string | null;
-        createdAt?: any | null;
-        updatedAt?: any | null;
+        uuid: string;
+        username: string;
+        email: string;
+        createdAt: any;
+        updatedAt: any;
       } | null;
     } | null;
   } | null;
@@ -423,26 +528,27 @@ export type FindPlantQuery = {
     __typename?: 'PlantResponse';
     plant?: {
       __typename?: 'Plant';
-      uuid?: string | null;
+      uuid: string;
       type?: PlantType | null;
       variety?: string | null;
       plantedSeedsOn?: any | null;
       seedsSproutedOn?: any | null;
-      createdAt?: any | null;
-      updatedAt?: any | null;
+      createdAt: any;
+      updatedAt: any;
       container?: {
         __typename?: 'Container';
-        uuid?: string | null;
-        type?: ContainerType | null;
-        dirtDepth?: number | null;
-        createdAt?: any | null;
-        updatedAt?: any | null;
+        uuid: string;
+        type: ContainerType;
+        dirtDepth: number;
+        createdAt: any;
+        updatedAt: any;
         user?: {
           __typename?: 'User';
-          uuid?: string | null;
-          email?: string | null;
-          createdAt?: any | null;
-          updatedAt?: any | null;
+          uuid: string;
+          username: string;
+          email: string;
+          createdAt: any;
+          updatedAt: any;
         } | null;
       } | null;
     } | null;
@@ -452,22 +558,17 @@ export type FindPlantQuery = {
 
 export type UserResponseFragment = {
   __typename?: 'UserResponse';
-  user?: {
-    __typename?: 'User';
-    uuid?: string | null;
-    email?: string | null;
-    createdAt?: any | null;
-    updatedAt?: any | null;
-  } | null;
+  user?: { __typename?: 'User'; uuid: string; username: string; email: string; createdAt: any; updatedAt: any } | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
 };
 
 export type UserFragment = {
   __typename?: 'User';
-  uuid?: string | null;
-  email?: string | null;
-  createdAt?: any | null;
-  updatedAt?: any | null;
+  uuid: string;
+  username: string;
+  email: string;
+  createdAt: any;
+  updatedAt: any;
 };
 
 export type FindUserQueryVariables = Exact<{
@@ -480,10 +581,11 @@ export type FindUserQuery = {
     __typename?: 'UserResponse';
     user?: {
       __typename?: 'User';
-      uuid?: string | null;
-      email?: string | null;
-      createdAt?: any | null;
-      updatedAt?: any | null;
+      uuid: string;
+      username: string;
+      email: string;
+      createdAt: any;
+      updatedAt: any;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
   };
@@ -492,6 +594,7 @@ export type FindUserQuery = {
 export const UserFragmentDoc = gql`
   fragment User on User {
     uuid
+    username
     email
     createdAt
     updatedAt
@@ -510,6 +613,36 @@ export const ContainerFragmentDoc = gql`
   }
   ${UserFragmentDoc}
 `;
+export const ErrorFragmentDoc = gql`
+  fragment Error on Error {
+    field
+    message
+  }
+`;
+export const ContainerResponseFragmentDoc = gql`
+  fragment ContainerResponse on ContainerResponse {
+    container {
+      ...Container
+    }
+    errors {
+      ...Error
+    }
+  }
+  ${ContainerFragmentDoc}
+  ${ErrorFragmentDoc}
+`;
+export const ContainersResponseFragmentDoc = gql`
+  fragment ContainersResponse on ContainersResponse {
+    containers {
+      ...Container
+    }
+    errors {
+      ...Error
+    }
+  }
+  ${ContainerFragmentDoc}
+  ${ErrorFragmentDoc}
+`;
 export const PlantFragmentDoc = gql`
   fragment Plant on Plant {
     uuid
@@ -524,12 +657,6 @@ export const PlantFragmentDoc = gql`
     updatedAt
   }
   ${ContainerFragmentDoc}
-`;
-export const ErrorFragmentDoc = gql`
-  fragment Error on Error {
-    field
-    message
-  }
 `;
 export const PlantResponseFragmentDoc = gql`
   fragment PlantResponse on PlantResponse {
@@ -555,6 +682,95 @@ export const UserResponseFragmentDoc = gql`
   ${UserFragmentDoc}
   ${ErrorFragmentDoc}
 `;
+export const FindContainerDocument = gql`
+  query findContainer($input: FindContainerInput!) {
+    findContainer(input: $input) {
+      ...ContainerResponse
+    }
+  }
+  ${ContainerResponseFragmentDoc}
+`;
+
+/**
+ * __useFindContainerQuery__
+ *
+ * To run a query within a React component, call `useFindContainerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindContainerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindContainerQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFindContainerQuery(
+  baseOptions: Apollo.QueryHookOptions<FindContainerQuery, FindContainerQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindContainerQuery, FindContainerQueryVariables>(FindContainerDocument, options);
+}
+export function useFindContainerLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FindContainerQuery, FindContainerQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindContainerQuery, FindContainerQueryVariables>(FindContainerDocument, options);
+}
+export type FindContainerQueryHookResult = ReturnType<typeof useFindContainerQuery>;
+export type FindContainerLazyQueryHookResult = ReturnType<typeof useFindContainerLazyQuery>;
+export type FindContainerQueryResult = Apollo.QueryResult<FindContainerQuery, FindContainerQueryVariables>;
+export const FindUserContainersDocument = gql`
+  query findUserContainers($input: FindUserContainersInput!) {
+    findUserContainers(input: $input) {
+      ...ContainersResponse
+    }
+  }
+  ${ContainersResponseFragmentDoc}
+`;
+
+/**
+ * __useFindUserContainersQuery__
+ *
+ * To run a query within a React component, call `useFindUserContainersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindUserContainersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindUserContainersQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFindUserContainersQuery(
+  baseOptions: Apollo.QueryHookOptions<FindUserContainersQuery, FindUserContainersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindUserContainersQuery, FindUserContainersQueryVariables>(
+    FindUserContainersDocument,
+    options
+  );
+}
+export function useFindUserContainersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FindUserContainersQuery, FindUserContainersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindUserContainersQuery, FindUserContainersQueryVariables>(
+    FindUserContainersDocument,
+    options
+  );
+}
+export type FindUserContainersQueryHookResult = ReturnType<typeof useFindUserContainersQuery>;
+export type FindUserContainersLazyQueryHookResult = ReturnType<typeof useFindUserContainersLazyQuery>;
+export type FindUserContainersQueryResult = Apollo.QueryResult<
+  FindUserContainersQuery,
+  FindUserContainersQueryVariables
+>;
 export const FindPlantDocument = gql`
   query findPlant($input: FindPlantInput!) {
     findPlant(input: $input) {

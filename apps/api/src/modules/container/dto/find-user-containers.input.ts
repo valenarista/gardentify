@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class FindContainerInput {
+export class FindUserContainersInput {
   @Field(() => String)
-  uuid: string;
+  userUuid: string;
 }

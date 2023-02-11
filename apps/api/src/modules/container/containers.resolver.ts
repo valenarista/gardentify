@@ -8,6 +8,7 @@ import { DeleteObjectResponse } from '@modules/common/responses/delete-object.re
 import { AddPlantToContainerInput } from './dto/add-plant-to-container.input';
 import { RemovePlantFromContainerInput } from './dto/remove-plant-from-container.input';
 import { ContainersService } from './containers.service';
+import { FindUserContainersInput } from './dto/find-user-containers.input';
 
 @Resolver(() => Container)
 export class ContainersResolver {
@@ -53,5 +54,12 @@ export class ContainersResolver {
     @Args('input') input: RemovePlantFromContainerInput,
   ): Promise<DeleteObjectResponse> {
     return await this.containersService.removePlantFromContainer(input);
+  }
+
+  @Query(() => ContainersResponse)
+  async findUserContainers(
+    @Args('input') input: FindUserContainersInput,
+  ): Promise<ContainersResponse> {
+    return await this.containersService.findUserContainers(input);
   }
 }

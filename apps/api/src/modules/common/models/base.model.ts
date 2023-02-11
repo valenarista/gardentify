@@ -2,12 +2,12 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType({ isAbstract: true })
 export class BaseModel {
-  @Field(() => String, { nullable: true })
-  uuid?: string;
+  @Field(() => String)
+  uuid: string;
 
-  @Field(() => Date, { nullable: true })
-  createdAt?: Date;
+  @Field(() => Date)
+  createdAt: Date;
 
-  @Field(() => Date, { nullable: true })
-  updatedAt?: Date;
+  @Field(() => Date)
+  updatedAt: Date;
 }

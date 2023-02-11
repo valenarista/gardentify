@@ -24,7 +24,7 @@ type UserProfileProviderProps = {
 
 const UserProfileProvider: React.FC<UserProfileProviderProps> = (props) => {
   const { children } = props;
-  const [user, setUser] = useState<User>({});
+  const [user, setUser] = useState<User>({} as User);
 
   const updateUser = (updatedUser: User) => {
     setUser(updatedUser);
