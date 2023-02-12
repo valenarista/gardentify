@@ -1,7 +1,8 @@
 fragment User on User {
   uuid
   username
-  email
+  oauthId
+  avatar
   createdAt
   updatedAt
 }

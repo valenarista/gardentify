@@ -2,6 +2,7 @@ import '@styles/global.css';
 
 import { ApolloProvider } from '@apollo/client';
 import client from '@modules/apollo/apollo-client';
+import AuthProvider from '@modules/auth/context/auth-context';
 import ThemeProvider from '@modules/theme/context/theme-context';
 import { Inter } from '@next/font/google';
 import type { AppProps } from 'next/app';
@@ -18,7 +19,9 @@ const GardentifyApp: React.FC<AppProps> = ({ Component, ...rest }) => {
     <ApolloProvider client={client}>
       <ThemeProvider>
         <main className={`${InterFont.variable} relative scroll-smooth font-sans antialiased`}>
-          <Component {...rest.pageProps} />
+          <AuthProvider>
+            <Component {...rest.pageProps} />
+          </AuthProvider>
 
           <style jsx global>{`
             :root {

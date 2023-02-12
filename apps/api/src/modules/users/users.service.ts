@@ -1,3 +1,4 @@
+import { GardentifyContext } from '@modules/graphql/graphql';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 
@@ -7,6 +8,26 @@ import { UserResponse } from './responses/user.response';
 @Injectable()
 export class UsersService {
   constructor(private prismaService: PrismaService) {}
+
+  async me(context: GardentifyContext): Promise<UserResponse> {
+    if (!context.req) {
+      return {
+        errors: [
+          {
+            field: 'user',
+            message: 'An error ocurred',
+          },
+        ],
+      };
+    }
+    const user = await this.prismaService.user.findUnique({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      where: { uuid: context.req.session.passport.user.uuid },
+    });
+
+    return { user };
+  }
 
   async findUser(input: FindUserInput): Promise<UserResponse> {
     try {

@@ -14,13 +14,13 @@ const UserContainerDetails: React.FC = (props) => {
           <h1 className="mb-1 text-3xl font-bold">Container</h1>
           {/* Type */}
           <h2 className="font-medium">Type: {container.type}</h2>
+          {/* Dirt depth */}
           <h3 className="font-medium">Dirt Depth: {container.dirtDepth} cms</h3>
           {/* Joined at */}
           <p className="text-sm font-medium opacity-90">
             Created at {new Date(container.createdAt as Date).toDateString()}
           </p>
         </div>
-        <div className="flex flex-col space-y-2"></div>
       </div>
     </div>
   );

@@ -7,9 +7,7 @@ import { FindPlantInput } from './dto/find-plant.input';
 import { PlantsResponse } from './responses/plants.response';
 import { CreatePlantInput } from './dto/create-plant.input';
 import { UpdatePlantInput } from './dto/update-plant.input';
-import { UseGuards } from '@nestjs/common';
 
-import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
 import { PlantsService } from './plants.service';
 
 @Resolver(() => Plant)

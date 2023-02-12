@@ -11,7 +11,6 @@ import { parseContainerType } from './lib/container-utils';
 import { RemovePlantFromContainerInput } from './dto/remove-plant-from-container.input';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { FindUserContainersInput } from './dto/find-user-containers.input';
-import { GraphQLError } from 'graphql/error';
 
 @Injectable()
 export class ContainersService {
@@ -25,6 +24,7 @@ export class ContainersService {
         where: {
           uuid: input.uuid,
         },
+        include: { user: true },
       });
 
       if (!container) {

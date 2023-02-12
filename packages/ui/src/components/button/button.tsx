@@ -1,6 +1,13 @@
 import clsx from 'clsx';
 import React from 'react';
-import { BUTTON_BASE_STYLES, BUTTON_SIZES, BUTTON_COLOR_SCHEMES } from './button-styles';
+import {
+  BUTTON_BASE_STYLES,
+  BUTTON_SIZES,
+  BUTTON_COLOR_SCHEMES,
+  ICON_END_CLASSES,
+  ICON_SIZE_CLASSES,
+  ICON_START_CLASSES,
+} from './button-styles';
 
 export type HTMLButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
 
@@ -25,8 +32,12 @@ export type ButtonStyle = {
   colorScheme?: ButtonColorSchemes;
 };
 
+type ButtonIconPosition = 'start' | 'end';
+
 export type ButtonProps = ButtonStyle & {
   disabled?: boolean;
+  icon?: React.ReactElement;
+  iconPosition?: ButtonIconPosition;
 };
 
 type ButtonContentProps = ButtonProps & {
@@ -40,18 +51,24 @@ const getButtonStyles = (style: ButtonStyle, ...rest: string[]): string => {
 };
 
 const ButtonContent: React.FC<ButtonContentProps> = (props) => {
-  const { loading, children } = props;
+  const { loading, icon, iconPosition = 'start', size = 'base', children } = props;
 
   return (
     <React.Fragment>
       {loading && <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">Loading</span>}
+      {icon && iconPosition === 'start' && (
+        <span className={clsx({ invisible: loading }, ICON_SIZE_CLASSES[size], ICON_START_CLASSES[size])}>{icon}</span>
+      )}
       <span className={clsx({ invisible: loading })}>{children}</span>
+      {icon && iconPosition === 'end' && (
+        <span className={clsx({ invisible: loading }, ICON_SIZE_CLASSES[size], ICON_END_CLASSES[size])}>{icon}</span>
+      )}
     </React.Fragment>
   );
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps & HTMLButtonProps>((props, ref) => {
-  const { children, className = '', disabled, size, variant, colorScheme, ...rest } = props;
+  const { children, className = '', disabled, size, variant, colorScheme, icon, iconPosition, ...rest } = props;
 
   return (
     <button

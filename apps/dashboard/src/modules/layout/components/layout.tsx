@@ -1,4 +1,4 @@
-import Navbar from '@modules/navbar/components/navbar';
+import Sidebar from '@modules/sidebar/components/sidebar';
 import type { ReactNode } from 'react';
 import React from 'react';
 
@@ -14,17 +14,15 @@ const Layout: React.FC<LayoutProps> = (props) => {
   const { children, headProps } = props;
 
   return (
-    <div className="flex min-h-screen flex-col overflow-hidden">
+    <div className="flex min-h-screen flex-row overflow-hidden bg-neutral-50 dark:bg-neutral-900">
       {/* HEAD */}
       <LayoutHead {...headProps} />
 
       {/* NAVBAR */}
-      <Navbar />
-
+      {/* <Navbar /> */}
+      <Sidebar />
       {/* CONTENT */}
-      <div className="flex flex-1 flex-col items-center bg-neutral-50 py-4 dark:bg-neutral-900 md:py-6 lg:py-10">
-        {children}
-      </div>
+      <div className="flex flex-1 flex-col items-center py-4 md:py-6 lg:py-10">{children}</div>
     </div>
   );
 };

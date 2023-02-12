@@ -28,7 +28,7 @@ module.exports = defineConfig({
         'class-methods-use-this': 'off',
         'no-empty-pattern': 'off',
         'consistent-return': 'off',
-
+        '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-assignment': 'off',
         '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: { attributes: false } }],
         'tailwindcss/no-custom-classname': 'off',

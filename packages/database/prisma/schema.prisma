@@ -9,13 +9,15 @@ generator client {
 }
 
 model User {
-  uuid String @id @default(cuid())
-
+  uuid     String @id @default(cuid())
+  oauthId  String @unique
   username String @unique
-  email    String @unique
-  password String
+  avatar   String
 
   containers Container[]
+
+  accessToken  String
+  refreshToken String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

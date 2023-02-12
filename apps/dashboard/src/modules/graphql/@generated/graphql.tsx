@@ -21,15 +21,6 @@ export type AddPlantToContainerInput = {
   plantUuid: Scalars['String'];
 };
 
-export type Auth = {
-  __typename?: 'Auth';
-  /** JWT access token */
-  accessToken: Scalars['String'];
-  /** JWT refresh token */
-  refreshToken: Scalars['String'];
-  user: User;
-};
-
 export type Container = {
   __typename?: 'Container';
   createdAt: Scalars['DateTime'];
@@ -136,11 +127,6 @@ export type HeightRegistrationsResponse = {
   heightRegistrations?: Maybe<Array<HeightRegistration>>;
 };
 
-export type LoginInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   addPlantToContainer: ContainerResponse;
@@ -150,10 +136,7 @@ export type Mutation = {
   deleteContainer: DeleteObjectResponse;
   deleteHeightRegistration: DeleteObjectResponse;
   deletePlant: DeleteObjectResponse;
-  login: Auth;
-  refreshToken: Token;
   removePlantFromContainer: DeleteObjectResponse;
-  signup: Auth;
   updatePlant: PlantResponse;
 };
 
@@ -185,20 +168,8 @@ export type MutationDeletePlantArgs = {
   input: FindPlantInput;
 };
 
-export type MutationLoginArgs = {
-  data: LoginInput;
-};
-
-export type MutationRefreshTokenArgs = {
-  input: RefreshTokenInput;
-};
-
 export type MutationRemovePlantFromContainerArgs = {
   input: RemovePlantFromContainerInput;
-};
-
-export type MutationSignupArgs = {
-  data: SignupInput;
 };
 
 export type MutationUpdatePlantArgs = {
@@ -266,6 +237,7 @@ export type Query = {
   findPlants: PlantsResponse;
   findUser: UserResponse;
   findUserContainers: ContainersResponse;
+  me: UserResponse;
 };
 
 export type QueryFindContainerArgs = {
@@ -300,27 +272,9 @@ export type QueryFindUserContainersArgs = {
   input: FindUserContainersInput;
 };
 
-export type RefreshTokenInput = {
-  token: Scalars['String'];
-};
-
 export type RemovePlantFromContainerInput = {
   containerUuid: Scalars['String'];
   plantUuid: Scalars['String'];
-};
-
-export type SignupInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-  username: Scalars['String'];
-};
-
-export type Token = {
-  __typename?: 'Token';
-  /** JWT access token */
-  accessToken: Scalars['String'];
-  /** JWT refresh token */
-  refreshToken: Scalars['String'];
 };
 
 export type UpdatePlantInput = {
@@ -337,8 +291,9 @@ export type UpdatePlantInputData = {
 
 export type User = {
   __typename?: 'User';
+  avatar: Scalars['String'];
   createdAt: Scalars['DateTime'];
-  email: Scalars['String'];
+  oauthId: Scalars['String'];
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
   uuid: Scalars['String'];
@@ -359,7 +314,15 @@ export type ContainerFragment = {
   dirtDepth: number;
   createdAt: any;
   updatedAt: any;
-  user?: { __typename?: 'User'; uuid: string; username: string; email: string; createdAt: any; updatedAt: any } | null;
+  user?: {
+    __typename?: 'User';
+    uuid: string;
+    username: string;
+    oauthId: string;
+    avatar: string;
+    createdAt: any;
+    updatedAt: any;
+  } | null;
 };
 
 export type ContainerResponseFragment = {
@@ -375,7 +338,8 @@ export type ContainerResponseFragment = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      email: string;
+      oauthId: string;
+      avatar: string;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -396,7 +360,8 @@ export type ContainersResponseFragment = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      email: string;
+      oauthId: string;
+      avatar: string;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -423,7 +388,8 @@ export type FindContainerQuery = {
         __typename?: 'User';
         uuid: string;
         username: string;
-        email: string;
+        oauthId: string;
+        avatar: string;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -451,7 +417,8 @@ export type FindUserContainersQuery = {
         __typename?: 'User';
         uuid: string;
         username: string;
-        email: string;
+        oauthId: string;
+        avatar: string;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -480,7 +447,8 @@ export type PlantFragment = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      email: string;
+      oauthId: string;
+      avatar: string;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -509,7 +477,8 @@ export type PlantResponseFragment = {
         __typename?: 'User';
         uuid: string;
         username: string;
-        email: string;
+        oauthId: string;
+        avatar: string;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -546,7 +515,8 @@ export type FindPlantQuery = {
           __typename?: 'User';
           uuid: string;
           username: string;
-          email: string;
+          oauthId: string;
+          avatar: string;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -558,7 +528,15 @@ export type FindPlantQuery = {
 
 export type UserResponseFragment = {
   __typename?: 'UserResponse';
-  user?: { __typename?: 'User'; uuid: string; username: string; email: string; createdAt: any; updatedAt: any } | null;
+  user?: {
+    __typename?: 'User';
+    uuid: string;
+    username: string;
+    oauthId: string;
+    avatar: string;
+    createdAt: any;
+    updatedAt: any;
+  } | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
 };
 
@@ -566,7 +544,8 @@ export type UserFragment = {
   __typename?: 'User';
   uuid: string;
   username: string;
-  email: string;
+  oauthId: string;
+  avatar: string;
   createdAt: any;
   updatedAt: any;
 };
@@ -583,7 +562,27 @@ export type FindUserQuery = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      email: string;
+      oauthId: string;
+      avatar: string;
+      createdAt: any;
+      updatedAt: any;
+    } | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = {
+  __typename?: 'Query';
+  me: {
+    __typename?: 'UserResponse';
+    user?: {
+      __typename?: 'User';
+      uuid: string;
+      username: string;
+      oauthId: string;
+      avatar: string;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -595,7 +594,8 @@ export const UserFragmentDoc = gql`
   fragment User on User {
     uuid
     username
-    email
+    oauthId
+    avatar
     createdAt
     updatedAt
   }
@@ -845,3 +845,38 @@ export function useFindUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<F
 export type FindUserQueryHookResult = ReturnType<typeof useFindUserQuery>;
 export type FindUserLazyQueryHookResult = ReturnType<typeof useFindUserLazyQuery>;
 export type FindUserQueryResult = Apollo.QueryResult<FindUserQuery, FindUserQueryVariables>;
+export const MeDocument = gql`
+  query me {
+    me {
+      ...UserResponse
+    }
+  }
+  ${UserResponseFragmentDoc}
+`;
+
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;

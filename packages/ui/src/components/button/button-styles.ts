@@ -34,3 +34,28 @@ export const BUTTON_COLOR_SCHEMES: AvailableColorSchemes = {
 
 export const BUTTON_BASE_STYLES: string =
   'inline-flex appearance-none items-center justify-center relative whitespace-nowrap align-middle rounded-lg font-medium focus-visible:outline-none focus-visible:ring-4 transition-colors text-neutral-900 dark:text-neutral-50 disabled:cursor-not-allowed';
+
+export const ICON_SIZE_CLASSES = {
+  xs: 'h-4 w-4',
+  sm: 'h-4 w-4',
+  base: 'h-5 w-5',
+  lg: 'h-5 w-5',
+  xl: 'h-5 w-5',
+  '2xl': 'h-6 w-6',
+};
+export const ICON_START_CLASSES = {
+  xs: '-ml-0.5 mr-1.5',
+  sm: '-ml-0.5 mr-1.5',
+  base: '-ml-1 mr-1.5',
+  lg: '-ml-1 mr-2',
+  xl: '-ml-1 mr-2',
+  '2xl': '-ml-1 mr-2',
+};
+export const ICON_END_CLASSES = {
+  xs: '-mr-0.5 ml-1.5',
+  sm: '-mr-0.5 ml-1.5',
+  base: '-mr-1 ml-1.5',
+  lg: '-mr-1 ml-2',
+  xl: '-mr-1 ml-2',
+  '2xl': '-mr-1 ml-2',
+};

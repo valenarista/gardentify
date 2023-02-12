@@ -1,5 +1,5 @@
 import useApiQuery from '@modules/common/hooks/use-api-query';
-import ContainerCard from '@modules/containers/components/cards/container-card';
+import ContainersFeed from '@modules/containers/components/feed/containers-feed';
 import {
   Container,
   FindUserContainersDocument,
@@ -33,20 +33,13 @@ const UserProfileContainers: React.FC = (props) => {
       <div className="flex w-full flex-col space-y-2">
         <h2 className="text-2xl font-bold">Containers</h2>
 
-        {response?.error ? <span>{response.error.message}</span> : null}
+        {response?.error ? (
+          <span className="text-neutral-800 dark:text-neutral-100">{response.error.message}</span>
+        ) : null}
         {loading ? (
           <span className="text-lg font-semibold text-neutral-800 dark:text-neutral-100">Loading...</span>
         ) : (
-          <div
-            className="grid gap-4"
-            style={{
-              gridTemplateColumns: 'repeat(auto-fill, minmax(275px, 1fr))',
-            }}
-          >
-            {containers.map((container, index) => {
-              return <ContainerCard key={`container-${index}`} container={container} />;
-            })}
-          </div>
+          <ContainersFeed containers={containers} />
         )}
       </div>
     </div>
