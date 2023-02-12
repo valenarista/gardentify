@@ -30,15 +30,20 @@ const AuthProvider: React.FC<AuthProviderProps> = (props) => {
     notifyOnNetworkStatusChange: true,
   });
 
+  const [userLoading, setUserLoading] = useState<boolean>(true);
   const [logggedInUser, setLoggedInUser] = useState<User>({} as User);
 
   useEffect(() => {
-    if (!loading && response?.data?.me.user) {
+    setUserLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
+    if (!userLoading && response?.data?.me.user) {
       setLoggedInUser(response.data.me.user);
     }
-  }, [response, loading]);
+  }, [response, userLoading]);
 
-  return <AuthContext.Provider value={{ user: logggedInUser, loading }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user: logggedInUser, loading: userLoading }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

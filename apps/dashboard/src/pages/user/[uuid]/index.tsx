@@ -37,15 +37,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
-  if (data && data.findUser.user) {
-    return {
+  console.log(data.findUser.errors);
+
+  if (data?.findUser?.errors?.length > 0) {
+    return { notFound: true };
+  }
+
+  return {
+    props: {
       props: {
         user: data.findUser.user,
       },
-    };
-  }
-
-  return { props: {} };
+    },
+  };
 };
 
 export default UserPage;

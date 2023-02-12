@@ -1,29 +1,26 @@
 import { Button, Modal } from '@gardentify/ui';
-import { useUserProfileEditContext } from '@modules/user/profile/context/edit/user-profile-edit-context';
-import React from 'react';
+import React, { useState } from 'react';
 
 const UserProfileManagementEdit: React.FC = () => {
-  const { isModalOpen, setIsModalOpen } = useUserProfileEditContext();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   return (
-    <>
-      <div className="flex flex-col space-y-2">
-        <Button
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        >
-          Edit Profile
-        </Button>
-      </div>
-      <Modal isModalOpen={isModalOpen} onModalClosed={handleModalClose} title="Edit Profile Details">
-        ashe
+    <div className="flex flex-col space-y-2">
+      <Button aria-label="Edit Profile" onClick={handleOpenModal}>
+        Edit Profile
+      </Button>
+      <Modal title="  Edit Profile" isModalOpen={modalOpen} onModalClosed={handleCloseModal}>
+        Hi
       </Modal>
-    </>
+    </div>
   );
 };
 export default UserProfileManagementEdit;

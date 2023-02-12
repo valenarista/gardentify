@@ -1,7 +1,7 @@
 import { Container } from '@modules/graphql/@generated/graphql';
 import React, { useEffect } from 'react';
 
-import { useUserContainerContext } from '../context/user-container-context';
+import { useUserContainerContext } from '../../context/user-container-context';
 import UserContainerDetails from './details/user-container-details';
 
 type UserContainerProps = {
