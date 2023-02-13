@@ -11,6 +11,7 @@ import { parseContainerType } from './lib/container-utils';
 import { RemovePlantFromContainerInput } from './dto/remove-plant-from-container.input';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { FindUserContainersInput } from './dto/find-user-containers.input';
+import { UpdateContainerInput } from './dto/update-container.input';
 
 @Injectable()
 export class ContainersService {
@@ -226,6 +227,30 @@ export class ContainersService {
         ],
       };
     }
+  }
+
+  async updateContainer(
+    input: UpdateContainerInput,
+  ): Promise<ContainerResponse> {
+    const container = await this.prismaService.container.update({
+      where: { uuid: input.uuid },
+      data: {
+        ...input,
+      },
+      include: { user: true },
+    });
+
+    if (!container) {
+      throw new NotFoundException('No container found with the given input!');
+    }
+    const parsedContainer: Container = {
+      ...container,
+      type: parseContainerType(container.type),
+    };
+
+    return {
+      container: parsedContainer,
+    };
   }
 
   async findUserContainers(

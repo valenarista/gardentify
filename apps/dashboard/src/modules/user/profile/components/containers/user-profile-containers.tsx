@@ -18,10 +18,10 @@ const UserProfileContainers: React.FC = (props) => {
     {
       variables: {
         input: {
-          userUuid: user.uuid,
+          userUuid: user?.uuid,
         },
       },
-      skip: user.uuid === undefined,
+      skip: user?.uuid === undefined,
     }
   );
 
@@ -31,7 +31,7 @@ const UserProfileContainers: React.FC = (props) => {
     <div className="flex rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
       {/* Details */}
       <div className="flex w-full flex-col space-y-2">
-        <h2 className="text-2xl font-bold">Containers</h2>
+        <h2 className="text-2xl font-bold">User Containers</h2>
 
         {response?.error ? (
           <span className="text-neutral-800 dark:text-neutral-100">{response.error.message}</span>

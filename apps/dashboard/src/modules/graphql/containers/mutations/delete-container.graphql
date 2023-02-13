@@ -1,0 +1,5 @@
+mutation deleteContainer($input: FindContainerInput!) {
+  deleteContainer(input: $input) {
+    ...DeleteObjectResponse
+  }
+}

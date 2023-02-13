@@ -4,6 +4,8 @@ import { createContext, useContext, useState } from 'react';
 type UserProfileContextState = {
   user: User;
   setUser: (user: User) => void;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
 };
 
 const UserProfileContext = createContext<UserProfileContextState>({} as UserProfileContextState);
@@ -25,12 +27,11 @@ type UserProfileProviderProps = {
 const UserProfileProvider: React.FC<UserProfileProviderProps> = (props) => {
   const { children } = props;
   const [user, setUser] = useState<User>({} as User);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const updateUser = (updatedUser: User) => {
-    setUser(updatedUser);
-  };
-
-  return <UserProfileContext.Provider value={{ user, setUser: updateUser }}>{children}</UserProfileContext.Provider>;
+  return (
+    <UserProfileContext.Provider value={{ user, setUser, loading, setLoading }}>{children}</UserProfileContext.Provider>
+  );
 };
 
 export default UserProfileProvider;

@@ -123,6 +123,7 @@ type Mutation {
   deleteHeightRegistration(find: FindHeightRegistrationInput!): DeleteObjectResponse!
   deletePlant(input: FindPlantInput!): DeleteObjectResponse!
   removePlantFromContainer(input: RemovePlantFromContainerInput!): DeleteObjectResponse!
+  updateContainer(input: UpdateContainerInput!): ContainerResponse!
   updatePlant(input: UpdatePlantInput!): PlantResponse!
 }
 
@@ -189,6 +190,15 @@ type Query {
 input RemovePlantFromContainerInput {
   containerUuid: String!
   plantUuid: String!
+}
+
+input UpdateContainerInput {
+  """Dirth depth of the container"""
+  dirtDepth: Float
+
+  """Type of the container"""
+  type: ContainerType
+  uuid: String!
 }
 
 input UpdatePlantInput {

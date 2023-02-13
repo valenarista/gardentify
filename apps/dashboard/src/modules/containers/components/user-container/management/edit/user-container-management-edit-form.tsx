@@ -1,7 +1,8 @@
 import { Button, SelectInput, TextInput } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
-import { ContainerType, useCreateContainerMutation } from '@modules/graphql/@generated/graphql';
+import { useUserContainerContext } from '@modules/containers/context/user-container-context';
+import { ContainerType, useUpdateContainerMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -20,40 +21,39 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
-const UserContainersManagementCreateForm: React.FC = () => {
+const UserContainersManagementEditForm: React.FC = () => {
   const router = useRouter();
   const { user } = useAuthContext();
+  const { container } = useUserContainerContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      type: ContainerType.Bag,
-      dirtDepth: 10,
+      ...container,
     },
   });
 
-  const [createContainer] = useCreateContainerMutation();
+  const [updateContainer] = useUpdateContainerMutation();
 
   const onSubmit = async (data: FormData) => {
     if (!user.uuid) return;
 
-    const container = await createContainer({
+    await updateContainer({
       variables: {
         input: {
-          ...data,
-          userUuid: user.uuid,
+          uuid: container.uuid,
+          dirtDepth: data.dirtDepth,
+          type: data.type,
         },
       },
     })
       .then((response) => {
-        return response.data?.createContainer;
+        return response.data?.updateContainer;
       })
       .catch((err) => {
         console.log({ err });
       });
 
-    if (container?.container?.uuid) {
-      await router.push(`/containers/${container?.container?.uuid}`);
-    }
+    await router.push(`/containers/${container.uuid}`);
   };
 
   const handleFormReset = () => {
@@ -94,7 +94,7 @@ const UserContainersManagementCreateForm: React.FC = () => {
       />
       <div className="flex w-full space-x-4 px-6">
         <Button className="w-full" type="submit">
-          Create
+          Update
         </Button>
         <Button className="w-full" type="reset" variant="ghost" colorScheme="danger" onClick={handleFormReset}>
           Reset
@@ -104,4 +104,4 @@ const UserContainersManagementCreateForm: React.FC = () => {
   );
 };
 
-export default UserContainersManagementCreateForm;
+export default UserContainersManagementEditForm;

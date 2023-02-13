@@ -2,6 +2,7 @@ import ThemeToggler from '@modules/theme/components/theme-toggler';
 import React from 'react';
 
 import SidebarLink, { SidebarLinkProps } from './sidebar-link';
+import SidebarUserDetails from './sidebar-user-details';
 
 const SIDEBAR_LINKS: SidebarLinkProps[] = [
   {
@@ -61,6 +62,7 @@ const Sidebar: React.FC = () => {
         })}
       </nav>
 
+      <SidebarUserDetails />
       <ThemeToggler />
     </div>
   );

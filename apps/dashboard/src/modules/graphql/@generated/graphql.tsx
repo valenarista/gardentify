@@ -137,6 +137,7 @@ export type Mutation = {
   deleteHeightRegistration: DeleteObjectResponse;
   deletePlant: DeleteObjectResponse;
   removePlantFromContainer: DeleteObjectResponse;
+  updateContainer: ContainerResponse;
   updatePlant: PlantResponse;
 };
 
@@ -170,6 +171,10 @@ export type MutationDeletePlantArgs = {
 
 export type MutationRemovePlantFromContainerArgs = {
   input: RemovePlantFromContainerInput;
+};
+
+export type MutationUpdateContainerArgs = {
+  input: UpdateContainerInput;
 };
 
 export type MutationUpdatePlantArgs = {
@@ -277,6 +282,14 @@ export type RemovePlantFromContainerInput = {
   plantUuid: Scalars['String'];
 };
 
+export type UpdateContainerInput = {
+  /** Dirth depth of the container */
+  dirtDepth?: InputMaybe<Scalars['Float']>;
+  /** Type of the container */
+  type?: InputMaybe<ContainerType>;
+  uuid: Scalars['String'];
+};
+
 export type UpdatePlantInput = {
   data: UpdatePlantInputData;
   find: FindPlantInput;
@@ -306,6 +319,12 @@ export type UserResponse = {
 };
 
 export type ErrorFragment = { __typename?: 'Error'; field: string; message: string };
+
+export type DeleteObjectResponseFragment = {
+  __typename?: 'DeleteObjectResponse';
+  deleted?: boolean | null;
+  errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+};
 
 export type ContainerFragment = {
   __typename?: 'Container';
@@ -367,6 +386,77 @@ export type ContainersResponseFragment = {
     } | null;
   }> | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+};
+
+export type CreateContainerMutationVariables = Exact<{
+  input: CreateContainerInput;
+}>;
+
+export type CreateContainerMutation = {
+  __typename?: 'Mutation';
+  createContainer: {
+    __typename?: 'ContainerResponse';
+    container?: {
+      __typename?: 'Container';
+      uuid: string;
+      type: ContainerType;
+      dirtDepth: number;
+      createdAt: any;
+      updatedAt: any;
+      user?: {
+        __typename?: 'User';
+        uuid: string;
+        username: string;
+        oauthId: string;
+        avatar: string;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+    } | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type DeleteContainerMutationVariables = Exact<{
+  input: FindContainerInput;
+}>;
+
+export type DeleteContainerMutation = {
+  __typename?: 'Mutation';
+  deleteContainer: {
+    __typename?: 'DeleteObjectResponse';
+    deleted?: boolean | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type UpdateContainerMutationVariables = Exact<{
+  input: UpdateContainerInput;
+}>;
+
+export type UpdateContainerMutation = {
+  __typename?: 'Mutation';
+  updateContainer: {
+    __typename?: 'ContainerResponse';
+    container?: {
+      __typename?: 'Container';
+      uuid: string;
+      type: ContainerType;
+      dirtDepth: number;
+      createdAt: any;
+      updatedAt: any;
+      user?: {
+        __typename?: 'User';
+        uuid: string;
+        username: string;
+        oauthId: string;
+        avatar: string;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+    } | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
 };
 
 export type FindContainerQueryVariables = Exact<{
@@ -590,6 +680,21 @@ export type MeQuery = {
   };
 };
 
+export const ErrorFragmentDoc = gql`
+  fragment Error on Error {
+    field
+    message
+  }
+`;
+export const DeleteObjectResponseFragmentDoc = gql`
+  fragment DeleteObjectResponse on DeleteObjectResponse {
+    deleted
+    errors {
+      ...Error
+    }
+  }
+  ${ErrorFragmentDoc}
+`;
 export const UserFragmentDoc = gql`
   fragment User on User {
     uuid
@@ -612,12 +717,6 @@ export const ContainerFragmentDoc = gql`
     updatedAt
   }
   ${UserFragmentDoc}
-`;
-export const ErrorFragmentDoc = gql`
-  fragment Error on Error {
-    field
-    message
-  }
 `;
 export const ContainerResponseFragmentDoc = gql`
   fragment ContainerResponse on ContainerResponse {
@@ -682,6 +781,141 @@ export const UserResponseFragmentDoc = gql`
   ${UserFragmentDoc}
   ${ErrorFragmentDoc}
 `;
+export const CreateContainerDocument = gql`
+  mutation createContainer($input: CreateContainerInput!) {
+    createContainer(input: $input) {
+      ...ContainerResponse
+    }
+  }
+  ${ContainerResponseFragmentDoc}
+`;
+export type CreateContainerMutationFn = Apollo.MutationFunction<
+  CreateContainerMutation,
+  CreateContainerMutationVariables
+>;
+
+/**
+ * __useCreateContainerMutation__
+ *
+ * To run a mutation, you first call `useCreateContainerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateContainerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createContainerMutation, { data, loading, error }] = useCreateContainerMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateContainerMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateContainerMutation, CreateContainerMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateContainerMutation, CreateContainerMutationVariables>(
+    CreateContainerDocument,
+    options
+  );
+}
+export type CreateContainerMutationHookResult = ReturnType<typeof useCreateContainerMutation>;
+export type CreateContainerMutationResult = Apollo.MutationResult<CreateContainerMutation>;
+export type CreateContainerMutationOptions = Apollo.BaseMutationOptions<
+  CreateContainerMutation,
+  CreateContainerMutationVariables
+>;
+export const DeleteContainerDocument = gql`
+  mutation deleteContainer($input: FindContainerInput!) {
+    deleteContainer(input: $input) {
+      ...DeleteObjectResponse
+    }
+  }
+  ${DeleteObjectResponseFragmentDoc}
+`;
+export type DeleteContainerMutationFn = Apollo.MutationFunction<
+  DeleteContainerMutation,
+  DeleteContainerMutationVariables
+>;
+
+/**
+ * __useDeleteContainerMutation__
+ *
+ * To run a mutation, you first call `useDeleteContainerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteContainerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteContainerMutation, { data, loading, error }] = useDeleteContainerMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteContainerMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteContainerMutation, DeleteContainerMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<DeleteContainerMutation, DeleteContainerMutationVariables>(
+    DeleteContainerDocument,
+    options
+  );
+}
+export type DeleteContainerMutationHookResult = ReturnType<typeof useDeleteContainerMutation>;
+export type DeleteContainerMutationResult = Apollo.MutationResult<DeleteContainerMutation>;
+export type DeleteContainerMutationOptions = Apollo.BaseMutationOptions<
+  DeleteContainerMutation,
+  DeleteContainerMutationVariables
+>;
+export const UpdateContainerDocument = gql`
+  mutation updateContainer($input: UpdateContainerInput!) {
+    updateContainer(input: $input) {
+      ...ContainerResponse
+    }
+  }
+  ${ContainerResponseFragmentDoc}
+`;
+export type UpdateContainerMutationFn = Apollo.MutationFunction<
+  UpdateContainerMutation,
+  UpdateContainerMutationVariables
+>;
+
+/**
+ * __useUpdateContainerMutation__
+ *
+ * To run a mutation, you first call `useUpdateContainerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateContainerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateContainerMutation, { data, loading, error }] = useUpdateContainerMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateContainerMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateContainerMutation, UpdateContainerMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateContainerMutation, UpdateContainerMutationVariables>(
+    UpdateContainerDocument,
+    options
+  );
+}
+export type UpdateContainerMutationHookResult = ReturnType<typeof useUpdateContainerMutation>;
+export type UpdateContainerMutationResult = Apollo.MutationResult<UpdateContainerMutation>;
+export type UpdateContainerMutationOptions = Apollo.BaseMutationOptions<
+  UpdateContainerMutation,
+  UpdateContainerMutationVariables
+>;
 export const FindContainerDocument = gql`
   query findContainer($input: FindContainerInput!) {
     findContainer(input: $input) {

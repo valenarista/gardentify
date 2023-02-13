@@ -10,7 +10,6 @@ type UserContainerProps = {
 
 const UserContainer: React.FC<UserContainerProps> = (props) => {
   const { container } = props;
-
   const { setContainer } = useUserContainerContext();
 
   useEffect(() => {

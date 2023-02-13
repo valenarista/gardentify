@@ -1,5 +1,6 @@
 import { GardentifyContext } from '@modules/graphql/graphql';
 import { Injectable } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common/exceptions';
 import { PrismaService } from 'nestjs-prisma';
 
 import { FindUserInput } from './dto/find-user.input';
@@ -20,6 +21,11 @@ export class UsersService {
         ],
       };
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (!context.req.session.passport)
+      throw new BadRequestException('No user is currently logged in!');
+
     const user = await this.prismaService.user.findUnique({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

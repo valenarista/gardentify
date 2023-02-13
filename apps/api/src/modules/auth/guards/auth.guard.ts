@@ -1,3 +1,4 @@
+import { GardentifyContext } from '@modules/graphql/graphql';
 import { Injectable, ExecutionContext, CanActivate } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
@@ -21,9 +22,10 @@ export class AuthenticatedGuard implements CanActivate {
 }
 
 @Injectable()
-export class GraphQLAuthGuard implements CanActivate {
-  canActivate(context: ExecutionContext) {
+export class GqlAuthenticatedGuard implements CanActivate {
+  async canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req?.session?.passport?.user;
+    const req = ctx.getContext<GardentifyContext>().req;
+    return req.isAuthenticated();
   }
 }

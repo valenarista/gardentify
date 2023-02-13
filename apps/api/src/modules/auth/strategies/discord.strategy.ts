@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { AuthenticationProvider, UserDetails } from '../auth';
 
 @Injectable()
-export class DiscordStrategy extends PassportStrategy(Strategy) {
+export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
   constructor(
     @Inject('AUTH_SERVICE') private authService: AuthenticationProvider,
   ) {

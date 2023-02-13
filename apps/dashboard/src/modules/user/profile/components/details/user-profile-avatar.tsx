@@ -1,25 +1,26 @@
+import { Skeleton } from '@gardentify/ui';
 import Image from 'next/image';
 import React from 'react';
 
-type UserProfileAvatarProps = {
-  avatar: string;
-  oauthId: string;
-};
+import { useUserProfileContext } from '../../context/user-profile-context';
 
-const UserProfileAvatar: React.FC<UserProfileAvatarProps> = (props) => {
-  const { avatar, oauthId } = props;
+const UserProfileAvatar: React.FC = () => {
+  const { user, loading } = useUserProfileContext();
 
-  const avatarSource = `https://cdn.discordapp.com/avatars/${oauthId}/${avatar}.png`;
   return (
     <div className="flex flex-col">
-      <Image
-        src={avatarSource}
-        alt={'Avatar'}
-        width={1000}
-        height={1000}
-        priority
-        className="h-40 rounded-lg object-cover object-center shadow-md md:h-36 md:w-36"
-      />
+      <Skeleton loading={loading}>
+        {user?.uuid ? (
+          <Image
+            src={`https://cdn.discordapp.com/avatars/${user?.oauthId}/${user?.avatar}.png`}
+            alt={'Avatar'}
+            width={800}
+            height={800}
+            loading="lazy"
+            className="h-40 rounded-lg object-cover object-center shadow-md md:h-36 md:w-36"
+          />
+        ) : null}
+      </Skeleton>
     </div>
   );
 };

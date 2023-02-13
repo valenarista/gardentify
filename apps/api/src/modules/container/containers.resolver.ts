@@ -9,6 +9,9 @@ import { AddPlantToContainerInput } from './dto/add-plant-to-container.input';
 import { RemovePlantFromContainerInput } from './dto/remove-plant-from-container.input';
 import { ContainersService } from './containers.service';
 import { FindUserContainersInput } from './dto/find-user-containers.input';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthenticatedGuard } from '@modules/auth/guards/auth.guard';
+import { UpdateContainerInput } from './dto/update-container.input';
 
 @Resolver(() => Container)
 export class ContainersResolver {
@@ -28,6 +31,7 @@ export class ContainersResolver {
     return await this.containersService.findContainers(input);
   }
 
+  @UseGuards(GqlAuthenticatedGuard)
   @Mutation(() => ContainerResponse)
   async createContainer(
     @Args('input') input: CreateContainerInput,
@@ -35,6 +39,7 @@ export class ContainersResolver {
     return await this.containersService.createContainer(input);
   }
 
+  @UseGuards(GqlAuthenticatedGuard)
   @Mutation(() => DeleteObjectResponse)
   async deleteContainer(
     @Args('input') input: FindContainerInput,
@@ -42,6 +47,7 @@ export class ContainersResolver {
     return await this.containersService.deleteContainer(input);
   }
 
+  @UseGuards(GqlAuthenticatedGuard)
   @Mutation(() => ContainerResponse)
   async addPlantToContainer(
     @Args('input') input: AddPlantToContainerInput,
@@ -49,11 +55,20 @@ export class ContainersResolver {
     return await this.containersService.addPlantToContainer(input);
   }
 
+  @UseGuards(GqlAuthenticatedGuard)
   @Mutation(() => DeleteObjectResponse)
   async removePlantFromContainer(
     @Args('input') input: RemovePlantFromContainerInput,
   ): Promise<DeleteObjectResponse> {
     return await this.containersService.removePlantFromContainer(input);
+  }
+
+  @UseGuards(GqlAuthenticatedGuard)
+  @Mutation(() => ContainerResponse)
+  async updateContainer(
+    @Args('input') input: UpdateContainerInput,
+  ): Promise<ContainerResponse> {
+    return await this.containersService.updateContainer(input);
   }
 
   @Query(() => ContainersResponse)

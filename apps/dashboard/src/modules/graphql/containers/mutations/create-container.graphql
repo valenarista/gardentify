@@ -1,0 +1,5 @@
+mutation createContainer($input: CreateContainerInput!) {
+  createContainer(input: $input) {
+    ...ContainerResponse
+  }
+}

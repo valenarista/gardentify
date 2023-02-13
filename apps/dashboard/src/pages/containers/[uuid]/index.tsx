@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
-  if (data && data.findContainer.container) {
+  if (data.findContainer && data.findContainer.container) {
     return {
       props: {
         container: data.findContainer.container,
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  return { props: {} };
+  return { notFound: true };
 };
 
 export default ContainerPage;
