@@ -20,15 +20,15 @@ const UserPage: React.FC<UserPageProps> = (props) => {
     },
   });
 
+  const user = response?.data?.findUser.user;
+
   return (
     <Layout
       headProps={{
         title: `User Page | Gardentify`,
       }}
     >
-      <UserProfileProvider>
-        <UserProfile user={response?.data?.findUser?.user} loading={loading} />
-      </UserProfileProvider>
+      <UserProfileProvider>{user ? <UserProfile user={user} loading={loading} /> : null}</UserProfileProvider>
     </Layout>
   );
 };

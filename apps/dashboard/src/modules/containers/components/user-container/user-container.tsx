@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 
 import { useUserContainerContext } from '../../context/user-container-context';
 import UserContainerDetails from './details/user-container-details';
+import UserContainerPlants from './plants/user-container-plants';
 
 type UserContainerProps = {
   container: Container;
@@ -19,6 +20,7 @@ const UserContainer: React.FC<UserContainerProps> = (props) => {
   return (
     <div className="container mx-auto flex max-w-6xl flex-col space-y-4 px-2 md:px-4 lg:px-6">
       <UserContainerDetails />
+      <UserContainerPlants />
     </div>
   );
 };

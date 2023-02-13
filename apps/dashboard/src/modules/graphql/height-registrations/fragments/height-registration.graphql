@@ -1,0 +1,9 @@
+fragment HeightRegistration on HeightRegistration {
+  uuid
+  height
+  plant {
+    ...Plant
+  }
+  createdAt
+  updatedAt
+}

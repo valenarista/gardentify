@@ -1,5 +1,4 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { PrismaService } from 'nestjs-prisma';
 
 import { HeightRegistration } from './models/height-registration.model';
 import { HeightRegistrationResponse } from './response/height-registration.response';
@@ -8,136 +7,39 @@ import { CreateHeightRegistrationInput } from './dto/create-height-registration.
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 import { HeightRegistrationsResponse } from './response/height-registrations.response';
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
+import { HeightRegistrationsService } from './height-registration.service';
 
 @Resolver(() => HeightRegistration)
 export class HeightRegistrationsResolver {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private heightRegistrationService: HeightRegistrationsService) {}
 
   @Query(() => HeightRegistrationResponse)
   async findHeightRegistration(
-    @Args('find') find: FindHeightRegistrationInput,
+    @Args('input') input: FindHeightRegistrationInput,
   ): Promise<HeightRegistrationResponse> {
-    try {
-      const heightRegistration =
-        await this.prismaService.heightRegistration.findUnique({
-          where: {
-            uuid: find.uuid,
-          },
-        });
-
-      if (!heightRegistration) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'No  height registration found with the given input!',
-            },
-          ],
-        };
-      }
-
-      return { heightRegistration };
-    } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
-    }
+    return await this.heightRegistrationService.findHeightRegistration(input);
   }
 
   @Mutation(() => HeightRegistrationResponse)
   async createHeightRegistration(
     @Args('input') input: CreateHeightRegistrationInput,
   ): Promise<HeightRegistrationResponse> {
-    try {
-      const heightRegistration =
-        await this.prismaService.heightRegistration.create({
-          data: {
-            height: input.height,
-            plant: { connect: { uuid: input.plantUuid } },
-          },
-        });
-
-      if (!heightRegistration) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message:
-                'Could not create height registration with the given input!',
-            },
-          ],
-        };
-      }
-      return { heightRegistration };
-    } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
-    }
+    return await this.heightRegistrationService.createHeightRegistration(input);
   }
 
   @Query(() => HeightRegistrationsResponse)
   async findPlantHeightRegistrations(
-    @Args('find') find: FindPlantInput,
+    @Args('input') input: FindPlantInput,
   ): Promise<HeightRegistrationsResponse> {
-    try {
-      const heightRegistrations =
-        await this.prismaService.heightRegistration.findMany({
-          where: { plantUuid: find.uuid },
-        });
-
-      if (!heightRegistrations) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message:
-                'Could not find height registrations with the given input!',
-            },
-          ],
-        };
-      }
-      return { heightRegistrations };
-    } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
-    }
+    return await this.heightRegistrationService.findPlantHeightRegistrations(
+      input,
+    );
   }
 
   @Mutation(() => DeleteObjectResponse)
   async deleteHeightRegistration(
-    @Args('find') find: FindHeightRegistrationInput,
+    @Args('input') input: FindHeightRegistrationInput,
   ): Promise<DeleteObjectResponse> {
-    try {
-      await this.prismaService.heightRegistration.delete({
-        where: { uuid: find.uuid },
-      });
-      return { deleted: true };
-    } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
-    }
+    return await this.heightRegistrationService.deleteHeightRegistration(input);
   }
 }

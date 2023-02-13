@@ -43,10 +43,10 @@ export class Plant extends BaseModel {
   variety?: string;
 
   @Field(() => Date, { nullable: true })
-  plantedSeedsOn?: Date;
+  seedsPlantedAt?: Date;
 
   @Field(() => Date, { nullable: true })
-  seedsSproutedOn?: Date;
+  seedsSproutedAt?: Date;
 
   @Field(() => Container, { nullable: true })
   container?: Container;

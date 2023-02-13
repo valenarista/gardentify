@@ -1,0 +1,8 @@
+fragment PlantsResponse on PlantsResponse {
+  plants {
+    ...Plant
+  }
+  errors {
+    ...Error
+  }
+}

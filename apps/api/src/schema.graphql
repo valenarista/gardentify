@@ -177,6 +177,7 @@ type PlantsResponse {
 
 type Query {
   findContainer(input: FindContainerInput!): ContainerResponse!
+  findContainerPlants(input: FindContainerInput!): PlantsResponse!
   findContainers(input: FindContainerInput!): ContainersResponse!
   findHeightRegistration(find: FindHeightRegistrationInput!): HeightRegistrationResponse!
   findPlant(input: FindPlantInput!): PlantResponse!

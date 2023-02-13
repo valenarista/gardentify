@@ -2,8 +2,8 @@ fragment Plant on Plant {
   uuid
   type
   variety
-  plantedSeedsOn
-  seedsSproutedOn
+  seedsPlantedAt
+  seedsSproutedAt
   container {
     ...Container
   }

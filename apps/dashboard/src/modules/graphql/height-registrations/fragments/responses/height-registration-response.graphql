@@ -1,0 +1,8 @@
+fragment HeightRegistrationResponse on HeightRegistrationResponse {
+  heightRegistration {
+    ...HeightRegistration
+  }
+  errors {
+    ...Error
+  }
+}

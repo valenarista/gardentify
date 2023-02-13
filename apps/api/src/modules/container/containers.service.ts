@@ -12,6 +12,9 @@ import { RemovePlantFromContainerInput } from './dto/remove-plant-from-container
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { FindUserContainersInput } from './dto/find-user-containers.input';
 import { UpdateContainerInput } from './dto/update-container.input';
+import { PlantsResponse } from '@modules/plants/responses/plants.response';
+import { Plant } from '@modules/plants/models/plant.model';
+import { parsePlantType } from '@modules/plants/lib/plant-utils';
 
 @Injectable()
 export class ContainersService {
@@ -276,5 +279,28 @@ export class ContainersService {
     });
 
     return { containers: parsedContainers };
+  }
+
+  async findContainerPlants(
+    input: FindContainerInput,
+  ): Promise<PlantsResponse> {
+    const plants = await this.prismaService.plant.findMany({
+      where: { containerUuid: input.uuid },
+    });
+
+    if (!plants.length) {
+      throw new NotFoundException(
+        'No plants were found for the given container!',
+      );
+    }
+
+    const parsedPlants: Plant[] = plants.map((plant) => {
+      return {
+        ...plant,
+        type: parsePlantType(plant.type),
+      };
+    });
+
+    return { plants: parsedPlants };
   }
 }

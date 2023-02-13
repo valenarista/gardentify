@@ -75,8 +75,8 @@ model Plant {
   variety String
   type    PlantType
 
-  plantedSeedsOn  DateTime @default(now())
-  seedsSproutedOn DateTime @default(now())
+  seedsPlantedAt  DateTime @default(now())
+  seedsSproutedAt DateTime @default(now())
 
   container     Container @relation(fields: [containerUuid], references: [uuid])
   containerUuid String

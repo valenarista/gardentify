@@ -1,0 +1,7 @@
+fragment PlantsResponse on PlantsResponse {
+  heightRegistrations {
+    ...HeightRegistration
+  }
+  errors {
+    ...Error
+  }

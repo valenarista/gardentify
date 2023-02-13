@@ -1,0 +1,5 @@
+mutation createHeightRegistration($input: CreateHeightRegistrationInput!) {
+  createHeightRegistration(input: $input) {
+    ...HeightRegistrationResponse
+  }
+}
