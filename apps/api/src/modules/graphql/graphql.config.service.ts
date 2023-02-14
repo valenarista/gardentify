@@ -14,6 +14,7 @@ export class GqlConfigService implements GqlOptionsFactory {
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },
+
       cors: {
         origin: 'http://localhost:3000',
         credentials: true,

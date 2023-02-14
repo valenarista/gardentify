@@ -1,9 +1,9 @@
 import { Button, Modal } from '@gardentify/ui';
 import React, { useState } from 'react';
 
-import UserContainersManagementEditForm from './container-plant-management-edit-form';
+import PlantManagementEditForm from './plant-management-edit-form';
 
-const ContainerPlantManagementEdit: React.FC = () => {
+const PlantManagementEdit: React.FC = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const handleOpenModal = () => {
@@ -16,13 +16,13 @@ const ContainerPlantManagementEdit: React.FC = () => {
 
   return (
     <div className="flex flex-col space-y-2">
-      <Button aria-label="Edit Container" onClick={handleOpenModal}>
+      <Button aria-label="Edit Plant" onClick={handleOpenModal}>
         Edit Plant
       </Button>
-      <Modal title="Edit Container" isModalOpen={modalOpen} onModalClosed={handleCloseModal}>
-        <UserContainersManagementEditForm />
+      <Modal title="Edit Plant" isModalOpen={modalOpen} onModalClosed={handleCloseModal}>
+        <PlantManagementEditForm />
       </Modal>
     </div>
   );
 };
-export default ContainerPlantManagementEdit;
+export default PlantManagementEdit;

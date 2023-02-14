@@ -854,6 +854,45 @@ export type PlantsResponseFragment = {
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
 };
 
+export type CreatePlantMutationVariables = Exact<{
+  input: CreatePlantInput;
+}>;
+
+export type CreatePlantMutation = {
+  __typename?: 'Mutation';
+  createPlant: {
+    __typename?: 'PlantResponse';
+    plant?: {
+      __typename?: 'Plant';
+      uuid: string;
+      type: PlantType;
+      variety: string;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      container?: {
+        __typename?: 'Container';
+        uuid: string;
+        type: ContainerType;
+        dirtDepth: number;
+        createdAt: Date;
+        updatedAt: Date;
+        user?: {
+          __typename?: 'User';
+          uuid: string;
+          username: string;
+          oauthId: string;
+          avatar: string;
+          createdAt: Date;
+          updatedAt: Date;
+        } | null;
+      } | null;
+    } | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
 export type DeletePlantMutationVariables = Exact<{
   input: FindPlantInput;
 }>;
@@ -1174,9 +1213,9 @@ export type CreateContainerMutationFn = Apollo.MutationFunction<
 /**
  * __useCreateContainerMutation__
  *
- * To run a mutation, you first call `useCreateContainerMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useCreateContainerMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useCreateContainerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -1219,9 +1258,9 @@ export type DeleteContainerMutationFn = Apollo.MutationFunction<
 /**
  * __useDeleteContainerMutation__
  *
- * To run a mutation, you first call `useDeleteContainerMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useDeleteContainerMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useDeleteContainerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -1264,9 +1303,9 @@ export type UpdateContainerMutationFn = Apollo.MutationFunction<
 /**
  * __useUpdateContainerMutation__
  *
- * To run a mutation, you first call `useUpdateContainerMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useUpdateContainerMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useUpdateContainerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -1305,7 +1344,7 @@ export const FindContainerPlantsDocument = gql`
 /**
  * __useFindContainerPlantsQuery__
  *
- * To run a query within a React component, call `useFindContainerPlantsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindContainerPlantsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindContainerPlantsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -1354,7 +1393,7 @@ export const FindContainerDocument = gql`
 /**
  * __useFindContainerQuery__
  *
- * To run a query within a React component, call `useFindContainerQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindContainerQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindContainerQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -1394,7 +1433,7 @@ export const FindUserContainersDocument = gql`
 /**
  * __useFindUserContainersQuery__
  *
- * To run a query within a React component, call `useFindUserContainersQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindUserContainersQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindUserContainersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -1447,9 +1486,9 @@ export type CreateHeightRegistrationMutationFn = Apollo.MutationFunction<
 /**
  * __useCreateHeightRegistrationMutation__
  *
- * To run a mutation, you first call `useCreateHeightRegistrationMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useCreateHeightRegistrationMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useCreateHeightRegistrationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -1488,7 +1527,7 @@ export const FindPlantHeightRegistrationsDocument = gql`
 /**
  * __useFindPlantHeightRegistrationsQuery__
  *
- * To run a query within a React component, call `useFindPlantHeightRegistrationsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindPlantHeightRegistrationsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindPlantHeightRegistrationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -1530,6 +1569,42 @@ export type FindPlantHeightRegistrationsQueryResult = Apollo.QueryResult<
   FindPlantHeightRegistrationsQuery,
   FindPlantHeightRegistrationsQueryVariables
 >;
+export const CreatePlantDocument = gql`
+  mutation createPlant($input: CreatePlantInput!) {
+    createPlant(input: $input) {
+      ...PlantResponse
+    }
+  }
+  ${PlantResponseFragmentDoc}
+`;
+export type CreatePlantMutationFn = Apollo.MutationFunction<CreatePlantMutation, CreatePlantMutationVariables>;
+
+/**
+ * __useCreatePlantMutation__
+ *
+ * To run a mutation, you first call `useCreatePlantMutation` within a React component and pass it Date options that fit your needs.
+ * When your component renders, `useCreatePlantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at Date time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPlantMutation, { data, loading, error }] = useCreatePlantMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreatePlantMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreatePlantMutation, CreatePlantMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreatePlantMutation, CreatePlantMutationVariables>(CreatePlantDocument, options);
+}
+export type CreatePlantMutationHookResult = ReturnType<typeof useCreatePlantMutation>;
+export type CreatePlantMutationResult = Apollo.MutationResult<CreatePlantMutation>;
+export type CreatePlantMutationOptions = Apollo.BaseMutationOptions<CreatePlantMutation, CreatePlantMutationVariables>;
 export const DeletePlantDocument = gql`
   mutation deletePlant($input: FindPlantInput!) {
     deletePlant(input: $input) {
@@ -1543,9 +1618,9 @@ export type DeletePlantMutationFn = Apollo.MutationFunction<DeletePlantMutation,
 /**
  * __useDeletePlantMutation__
  *
- * To run a mutation, you first call `useDeletePlantMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useDeletePlantMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useDeletePlantMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -1579,9 +1654,9 @@ export type UpdatePlantMutationFn = Apollo.MutationFunction<UpdatePlantMutation,
 /**
  * __useUpdatePlantMutation__
  *
- * To run a mutation, you first call `useUpdatePlantMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useUpdatePlantMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useUpdatePlantMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -1614,7 +1689,7 @@ export const FindPlantDocument = gql`
 /**
  * __useFindPlantQuery__
  *
- * To run a query within a React component, call `useFindPlantQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindPlantQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindPlantQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -1652,7 +1727,7 @@ export const FindUserDocument = gql`
 /**
  * __useFindUserQuery__
  *
- * To run a query within a React component, call `useFindUserQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindUserQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -1688,7 +1763,7 @@ export const MeDocument = gql`
 /**
  * __useMeQuery__
  *
- * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useMeQuery` and pass it Date options that fit your needs.
  * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *

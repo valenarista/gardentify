@@ -1,12 +1,17 @@
 import { client } from '@modules/apollo/apollo-client';
-import { FindPlantDocument, FindPlantQuery, FindPlantQueryVariables, Plant } from '@modules/graphql/@generated/graphql';
+import {
+  FindPlantDocument,
+  FindPlantQuery,
+  FindPlantQueryVariables,
+  Plant as PlantType,
+} from '@modules/graphql/@generated/graphql';
 import Layout from '@modules/layout/components/layout';
-import ContainerPlant from '@modules/plants/components/container-plant/container-plant';
+import Plant from '@modules/plants/components/plant/plant';
 import ContainerPlantProvider from '@modules/plants/context/container-plant-context';
 import { GetServerSideProps } from 'next';
 
 type PlantPageProps = {
-  plant: Plant;
+  plant: PlantType;
 };
 
 const PlantPage: React.FC<PlantPageProps> = (props) => {
@@ -19,7 +24,7 @@ const PlantPage: React.FC<PlantPageProps> = (props) => {
       }}
     >
       <ContainerPlantProvider>
-        <ContainerPlant plant={plant} />
+        <Plant plant={plant} />
       </ContainerPlantProvider>
     </Layout>
   );

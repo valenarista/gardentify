@@ -9,6 +9,8 @@ import {
 import PlantsFeed from '@modules/plants/components/feed/plants-feed';
 import React from 'react';
 
+import UserContainerPlantsHeader from './user-container-plants-header';
+
 const UserContainerPlants: React.FC = (props) => {
   const {} = props;
   const { container } = useUserContainerContext();
@@ -30,7 +32,7 @@ const UserContainerPlants: React.FC = (props) => {
     <div className="flex rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
       {/* Details */}
       <div className="flex w-full flex-col space-y-2">
-        <h2 className="text-2xl font-bold">Container Plants</h2>
+        <UserContainerPlantsHeader />
 
         {response?.error ? (
           <span className="text-neutral-800 dark:text-neutral-100">{response.error.message}</span>

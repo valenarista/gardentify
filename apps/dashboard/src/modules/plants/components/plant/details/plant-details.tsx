@@ -2,9 +2,9 @@ import { useAuthContext } from '@modules/auth/context/auth-context';
 import { useContainerPlantContext } from '@modules/plants/context/container-plant-context';
 import React from 'react';
 
-import ContainerPlantManagement from '../management/container-plant-management';
+import ContainerPlantManagement from '../management/plant-management';
 
-const ContainerPlantDetails: React.FC = (props) => {
+const PlantDetails: React.FC = (props) => {
   const {} = props;
   const { user } = useAuthContext();
   const { plant } = useContainerPlantContext();
@@ -33,4 +33,4 @@ const ContainerPlantDetails: React.FC = (props) => {
   );
 };
 
-export default ContainerPlantDetails;
+export default PlantDetails;

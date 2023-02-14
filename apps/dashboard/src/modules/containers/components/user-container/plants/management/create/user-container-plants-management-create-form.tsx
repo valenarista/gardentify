@@ -1,8 +1,7 @@
 import { Button, SelectInput, TextInput } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
-import { PlantType, useUpdatePlantMutation } from '@modules/graphql/@generated/graphql';
-import { useContainerPlantContext } from '@modules/plants/context/container-plant-context';
+import { PlantType, useCreatePlantMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -25,41 +24,45 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
-const PlantContainerManagementEditForm: React.FC = () => {
+const UserContainerPlantsManagementCreateForm: React.FC = () => {
   const router = useRouter();
-  const [updatePlant] = useUpdatePlantMutation();
+  const [createPlant] = useCreatePlantMutation();
   const { user } = useAuthContext();
-  const { plant } = useContainerPlantContext();
+
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      variety: plant.variety,
-      type: plant.type,
-      seedsPlantedAt: plant.seedsPlantedAt,
-      seedsSproutedAt: plant.seedsSproutedAt,
+      variety: 'Grand King',
+      type: PlantType.Tomato,
+      seedsPlantedAt: new Date(),
+      seedsSproutedAt: new Date(),
     },
   });
 
   const onSubmit = async (data: FormData) => {
     if (!user.uuid) return;
 
-    await updatePlant({
+    const containerUuid = router.query.uuid as string;
+
+    const plant = await createPlant({
       variables: {
         input: {
           ...data,
-          uuid: plant.uuid,
+          container: { uuid: containerUuid },
         },
       },
     })
       .then((response) => {
-        return response.data?.updatePlant;
+        return response.data?.createPlant;
       })
       .catch((err) => {
         console.log({ err });
       });
 
-    await router.push(`/plants/${plant.uuid}`);
+    if (plant?.plant?.uuid) {
+      await router.push(`/plants/${plant.plant.uuid}`);
+    }
   };
 
   const handleFormReset = () => {
@@ -136,7 +139,7 @@ const PlantContainerManagementEditForm: React.FC = () => {
       />
       <div className="flex w-full space-x-4 px-6">
         <Button className="w-full" type="submit">
-          Update
+          Create
         </Button>
         <Button className="w-full" type="reset" variant="ghost" colorScheme="danger" onClick={handleFormReset}>
           Reset
@@ -146,4 +149,4 @@ const PlantContainerManagementEditForm: React.FC = () => {
   );
 };
 
-export default PlantContainerManagementEditForm;
+export default UserContainerPlantsManagementCreateForm;

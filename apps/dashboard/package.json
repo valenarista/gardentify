@@ -12,7 +12,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "graphql-gen": "graphql-codegen --config graphql-codegen.yml --verbose"
+    "graphql-gen": "graphql-codegen --config graphql-codegen.ts --verbose"
   },
   "dependencies": {
     "@apollo/client": "^3.7.7",
@@ -33,15 +33,15 @@
     "@gardentify/eslint-config-custom": "*",
     "@gardentify/tailwind-config": "*",
     "@gardentify/tsconfig": "*",
-    "@graphql-codegen/cli": "^3.0.0",
-    "@graphql-codegen/typescript": "^3.0.0",
-    "@graphql-codegen/typescript-operations": "^3.0.0",
-    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
-    "@types/node": "^18.13.0",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.10",
+    "@graphql-codegen/cli": "3.0.0",
+    "@graphql-codegen/typescript": "3.0.0",
+    "@graphql-codegen/typescript-operations": "3.0.0",
+    "@graphql-codegen/typescript-react-apollo": "3.3.7",
+    "@types/node": "18.13.0",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.10",
     "eslint": "8.34.0",
     "eslint-define-config": "latest",
-    "typescript": "^4.9.5"
+    "typescript": "4.9.5"
   }
 }

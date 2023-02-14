@@ -4,10 +4,13 @@ import {
   FindPlantHeightRegistrationsQuery,
   FindPlantHeightRegistrationsQueryVariables,
 } from '@modules/graphql/@generated/graphql';
+import HeightRegistrationCard from '@modules/height-registrations/components/cards/height-registration-card';
 import { useContainerPlantContext } from '@modules/plants/context/container-plant-context';
 import React from 'react';
 
-const ContainerPlantHeightRegistrations: React.FC = () => {
+import PlantHeightRegistrationsHeader from './plant-height-registrations-header';
+
+const PlantHeightRegistrations: React.FC = () => {
   const { plant } = useContainerPlantContext();
   const { response, loading } = useApiQuery<
     FindPlantHeightRegistrationsQuery,
@@ -23,7 +26,7 @@ const ContainerPlantHeightRegistrations: React.FC = () => {
     <div className="flex rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
       {/* Details */}
       <div className="flex w-full flex-col space-y-2">
-        <h2 className="text-2xl font-bold">Height Registrations</h2>
+        <PlantHeightRegistrationsHeader />
 
         {response?.error ? (
           <span className="text-neutral-800 dark:text-neutral-100">{response.error.message}</span>
@@ -32,7 +35,7 @@ const ContainerPlantHeightRegistrations: React.FC = () => {
           <span className="text-lg font-semibold text-neutral-800 dark:text-neutral-100">Loading...</span>
         ) : heightRegistrations.length ? (
           heightRegistrations.map((heightRegistration, index) => {
-            return <div key={index}></div>;
+            return <HeightRegistrationCard key={index} heightRegistration={heightRegistration} />;
           })
         ) : null}
       </div>
@@ -40,4 +43,4 @@ const ContainerPlantHeightRegistrations: React.FC = () => {
   );
 };
 
-export default ContainerPlantHeightRegistrations;
+export default PlantHeightRegistrations;
