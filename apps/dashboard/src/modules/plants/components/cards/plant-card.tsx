@@ -20,16 +20,14 @@ const PlantCard: React.FC<PlantCardProps> = (props) => {
           <h3 className="text-sm font-medium">Variety: {plant.variety}</h3>
           {/* Planted Seeds at */}
           <p className="text-sm font-medium opacity-90">
-            Planted Seeds at {new Date(plant.plantedSeedsOn as Date).toDateString()}
+            Seeds Planted at {new Date(plant.seedsPlantedAt).toDateString()}
           </p>
           {/* Sprouted Seeds at */}
           <p className="text-sm font-medium opacity-90">
-            Sprouted Seeds at {new Date(plant.seedsSproutedOn as Date).toDateString()}
+            Seeds Sprouted at {new Date(plant.seedsSproutedAt).toDateString()}
           </p>
           {/* Date */}
-          <p className="text-sm font-medium opacity-90">
-            Created at {new Date(plant.createdAt as Date).toDateString()}
-          </p>
+          <p className="text-sm font-medium opacity-90">Created at {new Date(plant.createdAt).toDateString()}</p>
         </div>
       </div>
     </Link>

@@ -21,6 +21,7 @@ export class PlantsService {
         where: {
           uuid: input.uuid,
         },
+        include: { container: { include: { user: true } } },
       });
 
       if (!plant) {
@@ -37,6 +38,10 @@ export class PlantsService {
       const parsedPlant: Plant = {
         ...plant,
         type: parsePlantType(plant.type),
+        container: {
+          ...plant.container,
+          type: parseContainerType(plant.container.type),
+        },
       };
 
       return { plant: parsedPlant };
@@ -95,8 +100,8 @@ export class PlantsService {
         data: {
           variety: input.variety,
           type: parsePlantType(input.type),
-          plantedSeedsOn: input.plantedSeedsOn,
-          seedsSproutedOn: input.seedsSproutedOn,
+          seedsPlantedAt: input.seedsPlantedAt,
+          seedsSproutedAt: input.seedsSproutedAt,
           container: { connect: { uuid: input.container.uuid } },
         },
         include: { container: true },
@@ -156,9 +161,9 @@ export class PlantsService {
   async updatePlant(input: UpdatePlantInput): Promise<PlantResponse> {
     try {
       const updatedPlant = await this.prismaService.plant.update({
-        where: { uuid: input.find.uuid },
+        where: { uuid: input.uuid },
         data: {
-          ...input.data,
+          ...input,
         },
         include: { container: true },
       });

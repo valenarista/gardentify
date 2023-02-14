@@ -1,0 +1,5 @@
+query findPlantHeightRegistrations($input: FindPlantInput!) {
+  findPlantHeightRegistrations(input: $input) {
+    ...HeightRegistrationsResponse
+  }
+}

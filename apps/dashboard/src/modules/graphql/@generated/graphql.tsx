@@ -13,7 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  DateTime: any;
+  DateTime: Date;
 };
 
 export type AddPlantToContainerInput = {
@@ -67,8 +67,8 @@ export type CreateHeightRegistrationInput = {
 
 export type CreatePlantInput = {
   container: FindContainerInput;
-  plantedSeedsOn?: InputMaybe<Scalars['DateTime']>;
-  seedsSproutedOn?: InputMaybe<Scalars['DateTime']>;
+  seedsPlantedAt?: InputMaybe<Scalars['DateTime']>;
+  seedsSproutedAt?: InputMaybe<Scalars['DateTime']>;
   type: PlantType;
   variety: Scalars['String'];
 };
@@ -185,12 +185,12 @@ export type Plant = {
   __typename?: 'Plant';
   container?: Maybe<Container>;
   createdAt: Scalars['DateTime'];
-  plantedSeedsOn?: Maybe<Scalars['DateTime']>;
-  seedsSproutedOn?: Maybe<Scalars['DateTime']>;
-  type?: Maybe<PlantType>;
+  seedsPlantedAt: Scalars['DateTime'];
+  seedsSproutedAt: Scalars['DateTime'];
+  type: PlantType;
   updatedAt: Scalars['DateTime'];
   uuid: Scalars['String'];
-  variety?: Maybe<Scalars['String']>;
+  variety: Scalars['String'];
 };
 
 export type PlantResponse = {
@@ -259,7 +259,7 @@ export type QueryFindContainersArgs = {
 };
 
 export type QueryFindHeightRegistrationArgs = {
-  find: FindHeightRegistrationInput;
+  input: FindHeightRegistrationInput;
 };
 
 export type QueryFindPlantArgs = {
@@ -267,7 +267,7 @@ export type QueryFindPlantArgs = {
 };
 
 export type QueryFindPlantHeightRegistrationsArgs = {
-  find: FindPlantInput;
+  input: FindPlantInput;
 };
 
 export type QueryFindPlantsArgs = {
@@ -296,14 +296,10 @@ export type UpdateContainerInput = {
 };
 
 export type UpdatePlantInput = {
-  data: UpdatePlantInputData;
-  find: FindPlantInput;
-};
-
-export type UpdatePlantInputData = {
-  plantedSeedsOn?: InputMaybe<Scalars['DateTime']>;
-  seedsSproutedOn?: InputMaybe<Scalars['DateTime']>;
+  seedsPlantedAt?: InputMaybe<Scalars['DateTime']>;
+  seedsSproutedAt?: InputMaybe<Scalars['DateTime']>;
   type?: InputMaybe<PlantType>;
+  uuid: Scalars['String'];
   variety?: InputMaybe<Scalars['String']>;
 };
 
@@ -336,16 +332,16 @@ export type ContainerFragment = {
   uuid: string;
   type: ContainerType;
   dirtDepth: number;
-  createdAt: any;
-  updatedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
   user?: {
     __typename?: 'User';
     uuid: string;
     username: string;
     oauthId: string;
     avatar: string;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
   } | null;
 };
 
@@ -356,16 +352,16 @@ export type ContainerResponseFragment = {
     uuid: string;
     type: ContainerType;
     dirtDepth: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     user?: {
       __typename?: 'User';
       uuid: string;
       username: string;
       oauthId: string;
       avatar: string;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     } | null;
   } | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -378,16 +374,16 @@ export type ContainersResponseFragment = {
     uuid: string;
     type: ContainerType;
     dirtDepth: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     user?: {
       __typename?: 'User';
       uuid: string;
       username: string;
       oauthId: string;
       avatar: string;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     } | null;
   }> | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -406,16 +402,16 @@ export type CreateContainerMutation = {
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         oauthId: string;
         avatar: string;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -448,16 +444,16 @@ export type UpdateContainerMutation = {
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         oauthId: string;
         avatar: string;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -475,27 +471,27 @@ export type FindContainerPlantsQuery = {
     plants?: Array<{
       __typename?: 'Plant';
       uuid: string;
-      type?: PlantType | null;
-      variety?: string | null;
-      plantedSeedsOn?: any | null;
-      seedsSproutedOn?: any | null;
-      createdAt: any;
-      updatedAt: any;
+      type: PlantType;
+      variety: string;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
       container?: {
         __typename?: 'Container';
         uuid: string;
         type: ContainerType;
         dirtDepth: number;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
         user?: {
           __typename?: 'User';
           uuid: string;
           username: string;
           oauthId: string;
           avatar: string;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
         } | null;
       } | null;
     }> | null;
@@ -516,16 +512,16 @@ export type FindContainerQuery = {
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         oauthId: string;
         avatar: string;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -545,16 +541,221 @@ export type FindUserContainersQuery = {
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         oauthId: string;
         avatar: string;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
+      } | null;
+    }> | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type HeightRegistrationFragment = {
+  __typename?: 'HeightRegistration';
+  uuid: string;
+  height?: number | null;
+  createdAt: Date;
+  updatedAt: Date;
+  plant?: {
+    __typename?: 'Plant';
+    uuid: string;
+    type: PlantType;
+    variety: string;
+    seedsPlantedAt: Date;
+    seedsSproutedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    container?: {
+      __typename?: 'Container';
+      uuid: string;
+      type: ContainerType;
+      dirtDepth: number;
+      createdAt: Date;
+      updatedAt: Date;
+      user?: {
+        __typename?: 'User';
+        uuid: string;
+        username: string;
+        oauthId: string;
+        avatar: string;
+        createdAt: Date;
+        updatedAt: Date;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type HeightRegistrationResponseFragment = {
+  __typename?: 'HeightRegistrationResponse';
+  heightRegistration?: {
+    __typename?: 'HeightRegistration';
+    uuid: string;
+    height?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    plant?: {
+      __typename?: 'Plant';
+      uuid: string;
+      type: PlantType;
+      variety: string;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      container?: {
+        __typename?: 'Container';
+        uuid: string;
+        type: ContainerType;
+        dirtDepth: number;
+        createdAt: Date;
+        updatedAt: Date;
+        user?: {
+          __typename?: 'User';
+          uuid: string;
+          username: string;
+          oauthId: string;
+          avatar: string;
+          createdAt: Date;
+          updatedAt: Date;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
+  errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+};
+
+export type HeightRegistrationsResponseFragment = {
+  __typename?: 'HeightRegistrationsResponse';
+  heightRegistrations?: Array<{
+    __typename?: 'HeightRegistration';
+    uuid: string;
+    height?: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    plant?: {
+      __typename?: 'Plant';
+      uuid: string;
+      type: PlantType;
+      variety: string;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      container?: {
+        __typename?: 'Container';
+        uuid: string;
+        type: ContainerType;
+        dirtDepth: number;
+        createdAt: Date;
+        updatedAt: Date;
+        user?: {
+          __typename?: 'User';
+          uuid: string;
+          username: string;
+          oauthId: string;
+          avatar: string;
+          createdAt: Date;
+          updatedAt: Date;
+        } | null;
+      } | null;
+    } | null;
+  }> | null;
+  errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+};
+
+export type CreateHeightRegistrationMutationVariables = Exact<{
+  input: CreateHeightRegistrationInput;
+}>;
+
+export type CreateHeightRegistrationMutation = {
+  __typename?: 'Mutation';
+  createHeightRegistration: {
+    __typename?: 'HeightRegistrationResponse';
+    heightRegistration?: {
+      __typename?: 'HeightRegistration';
+      uuid: string;
+      height?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      plant?: {
+        __typename?: 'Plant';
+        uuid: string;
+        type: PlantType;
+        variety: string;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        container?: {
+          __typename?: 'Container';
+          uuid: string;
+          type: ContainerType;
+          dirtDepth: number;
+          createdAt: Date;
+          updatedAt: Date;
+          user?: {
+            __typename?: 'User';
+            uuid: string;
+            username: string;
+            oauthId: string;
+            avatar: string;
+            createdAt: Date;
+            updatedAt: Date;
+          } | null;
+        } | null;
+      } | null;
+    } | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type FindPlantHeightRegistrationsQueryVariables = Exact<{
+  input: FindPlantInput;
+}>;
+
+export type FindPlantHeightRegistrationsQuery = {
+  __typename?: 'Query';
+  findPlantHeightRegistrations: {
+    __typename?: 'HeightRegistrationsResponse';
+    heightRegistrations?: Array<{
+      __typename?: 'HeightRegistration';
+      uuid: string;
+      height?: number | null;
+      createdAt: Date;
+      updatedAt: Date;
+      plant?: {
+        __typename?: 'Plant';
+        uuid: string;
+        type: PlantType;
+        variety: string;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        container?: {
+          __typename?: 'Container';
+          uuid: string;
+          type: ContainerType;
+          dirtDepth: number;
+          createdAt: Date;
+          updatedAt: Date;
+          user?: {
+            __typename?: 'User';
+            uuid: string;
+            username: string;
+            oauthId: string;
+            avatar: string;
+            createdAt: Date;
+            updatedAt: Date;
+          } | null;
+        } | null;
       } | null;
     }> | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -564,27 +765,27 @@ export type FindUserContainersQuery = {
 export type PlantFragment = {
   __typename?: 'Plant';
   uuid: string;
-  type?: PlantType | null;
-  variety?: string | null;
-  plantedSeedsOn?: any | null;
-  seedsSproutedOn?: any | null;
-  createdAt: any;
-  updatedAt: any;
+  type: PlantType;
+  variety: string;
+  seedsPlantedAt: Date;
+  seedsSproutedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
   container?: {
     __typename?: 'Container';
     uuid: string;
     type: ContainerType;
     dirtDepth: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     user?: {
       __typename?: 'User';
       uuid: string;
       username: string;
       oauthId: string;
       avatar: string;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     } | null;
   } | null;
 };
@@ -594,27 +795,27 @@ export type PlantResponseFragment = {
   plant?: {
     __typename?: 'Plant';
     uuid: string;
-    type?: PlantType | null;
-    variety?: string | null;
-    plantedSeedsOn?: any | null;
-    seedsSproutedOn?: any | null;
-    createdAt: any;
-    updatedAt: any;
+    type: PlantType;
+    variety: string;
+    seedsPlantedAt: Date;
+    seedsSproutedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
     container?: {
       __typename?: 'Container';
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         oauthId: string;
         avatar: string;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
   } | null;
@@ -626,31 +827,83 @@ export type PlantsResponseFragment = {
   plants?: Array<{
     __typename?: 'Plant';
     uuid: string;
-    type?: PlantType | null;
-    variety?: string | null;
-    plantedSeedsOn?: any | null;
-    seedsSproutedOn?: any | null;
-    createdAt: any;
-    updatedAt: any;
+    type: PlantType;
+    variety: string;
+    seedsPlantedAt: Date;
+    seedsSproutedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
     container?: {
       __typename?: 'Container';
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         oauthId: string;
         avatar: string;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
   }> | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+};
+
+export type DeletePlantMutationVariables = Exact<{
+  input: FindPlantInput;
+}>;
+
+export type DeletePlantMutation = {
+  __typename?: 'Mutation';
+  deletePlant: {
+    __typename?: 'DeleteObjectResponse';
+    deleted?: boolean | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type UpdatePlantMutationVariables = Exact<{
+  input: UpdatePlantInput;
+}>;
+
+export type UpdatePlantMutation = {
+  __typename?: 'Mutation';
+  updatePlant: {
+    __typename?: 'PlantResponse';
+    plant?: {
+      __typename?: 'Plant';
+      uuid: string;
+      type: PlantType;
+      variety: string;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
+      container?: {
+        __typename?: 'Container';
+        uuid: string;
+        type: ContainerType;
+        dirtDepth: number;
+        createdAt: Date;
+        updatedAt: Date;
+        user?: {
+          __typename?: 'User';
+          uuid: string;
+          username: string;
+          oauthId: string;
+          avatar: string;
+          createdAt: Date;
+          updatedAt: Date;
+        } | null;
+      } | null;
+    } | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
 };
 
 export type FindPlantQueryVariables = Exact<{
@@ -664,27 +917,27 @@ export type FindPlantQuery = {
     plant?: {
       __typename?: 'Plant';
       uuid: string;
-      type?: PlantType | null;
-      variety?: string | null;
-      plantedSeedsOn?: any | null;
-      seedsSproutedOn?: any | null;
-      createdAt: any;
-      updatedAt: any;
+      type: PlantType;
+      variety: string;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
       container?: {
         __typename?: 'Container';
         uuid: string;
         type: ContainerType;
         dirtDepth: number;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
         user?: {
           __typename?: 'User';
           uuid: string;
           username: string;
           oauthId: string;
           avatar: string;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
         } | null;
       } | null;
     } | null;
@@ -700,8 +953,8 @@ export type UserResponseFragment = {
     username: string;
     oauthId: string;
     avatar: string;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
   } | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
 };
@@ -712,8 +965,8 @@ export type UserFragment = {
   username: string;
   oauthId: string;
   avatar: string;
-  createdAt: any;
-  updatedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type FindUserQueryVariables = Exact<{
@@ -730,8 +983,8 @@ export type FindUserQuery = {
       username: string;
       oauthId: string;
       avatar: string;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
   };
@@ -749,8 +1002,8 @@ export type MeQuery = {
       username: string;
       oauthId: string;
       avatar: string;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
   };
@@ -823,8 +1076,8 @@ export const PlantFragmentDoc = gql`
     uuid
     type
     variety
-    plantedSeedsOn
-    seedsSproutedOn
+    seedsPlantedAt
+    seedsSproutedAt
     container {
       ...Container
     }
@@ -832,6 +1085,42 @@ export const PlantFragmentDoc = gql`
     updatedAt
   }
   ${ContainerFragmentDoc}
+`;
+export const HeightRegistrationFragmentDoc = gql`
+  fragment HeightRegistration on HeightRegistration {
+    uuid
+    height
+    plant {
+      ...Plant
+    }
+    createdAt
+    updatedAt
+  }
+  ${PlantFragmentDoc}
+`;
+export const HeightRegistrationResponseFragmentDoc = gql`
+  fragment HeightRegistrationResponse on HeightRegistrationResponse {
+    heightRegistration {
+      ...HeightRegistration
+    }
+    errors {
+      ...Error
+    }
+  }
+  ${HeightRegistrationFragmentDoc}
+  ${ErrorFragmentDoc}
+`;
+export const HeightRegistrationsResponseFragmentDoc = gql`
+  fragment HeightRegistrationsResponse on HeightRegistrationsResponse {
+    heightRegistrations {
+      ...HeightRegistration
+    }
+    errors {
+      ...Error
+    }
+  }
+  ${HeightRegistrationFragmentDoc}
+  ${ErrorFragmentDoc}
 `;
 export const PlantResponseFragmentDoc = gql`
   fragment PlantResponse on PlantResponse {
@@ -1142,6 +1431,177 @@ export type FindUserContainersQueryResult = Apollo.QueryResult<
   FindUserContainersQuery,
   FindUserContainersQueryVariables
 >;
+export const CreateHeightRegistrationDocument = gql`
+  mutation createHeightRegistration($input: CreateHeightRegistrationInput!) {
+    createHeightRegistration(input: $input) {
+      ...HeightRegistrationResponse
+    }
+  }
+  ${HeightRegistrationResponseFragmentDoc}
+`;
+export type CreateHeightRegistrationMutationFn = Apollo.MutationFunction<
+  CreateHeightRegistrationMutation,
+  CreateHeightRegistrationMutationVariables
+>;
+
+/**
+ * __useCreateHeightRegistrationMutation__
+ *
+ * To run a mutation, you first call `useCreateHeightRegistrationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateHeightRegistrationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createHeightRegistrationMutation, { data, loading, error }] = useCreateHeightRegistrationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateHeightRegistrationMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateHeightRegistrationMutation, CreateHeightRegistrationMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateHeightRegistrationMutation, CreateHeightRegistrationMutationVariables>(
+    CreateHeightRegistrationDocument,
+    options
+  );
+}
+export type CreateHeightRegistrationMutationHookResult = ReturnType<typeof useCreateHeightRegistrationMutation>;
+export type CreateHeightRegistrationMutationResult = Apollo.MutationResult<CreateHeightRegistrationMutation>;
+export type CreateHeightRegistrationMutationOptions = Apollo.BaseMutationOptions<
+  CreateHeightRegistrationMutation,
+  CreateHeightRegistrationMutationVariables
+>;
+export const FindPlantHeightRegistrationsDocument = gql`
+  query findPlantHeightRegistrations($input: FindPlantInput!) {
+    findPlantHeightRegistrations(input: $input) {
+      ...HeightRegistrationsResponse
+    }
+  }
+  ${HeightRegistrationsResponseFragmentDoc}
+`;
+
+/**
+ * __useFindPlantHeightRegistrationsQuery__
+ *
+ * To run a query within a React component, call `useFindPlantHeightRegistrationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindPlantHeightRegistrationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindPlantHeightRegistrationsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFindPlantHeightRegistrationsQuery(
+  baseOptions: Apollo.QueryHookOptions<FindPlantHeightRegistrationsQuery, FindPlantHeightRegistrationsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindPlantHeightRegistrationsQuery, FindPlantHeightRegistrationsQueryVariables>(
+    FindPlantHeightRegistrationsDocument,
+    options
+  );
+}
+export function useFindPlantHeightRegistrationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FindPlantHeightRegistrationsQuery,
+    FindPlantHeightRegistrationsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindPlantHeightRegistrationsQuery, FindPlantHeightRegistrationsQueryVariables>(
+    FindPlantHeightRegistrationsDocument,
+    options
+  );
+}
+export type FindPlantHeightRegistrationsQueryHookResult = ReturnType<typeof useFindPlantHeightRegistrationsQuery>;
+export type FindPlantHeightRegistrationsLazyQueryHookResult = ReturnType<
+  typeof useFindPlantHeightRegistrationsLazyQuery
+>;
+export type FindPlantHeightRegistrationsQueryResult = Apollo.QueryResult<
+  FindPlantHeightRegistrationsQuery,
+  FindPlantHeightRegistrationsQueryVariables
+>;
+export const DeletePlantDocument = gql`
+  mutation deletePlant($input: FindPlantInput!) {
+    deletePlant(input: $input) {
+      ...DeleteObjectResponse
+    }
+  }
+  ${DeleteObjectResponseFragmentDoc}
+`;
+export type DeletePlantMutationFn = Apollo.MutationFunction<DeletePlantMutation, DeletePlantMutationVariables>;
+
+/**
+ * __useDeletePlantMutation__
+ *
+ * To run a mutation, you first call `useDeletePlantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePlantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePlantMutation, { data, loading, error }] = useDeletePlantMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeletePlantMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeletePlantMutation, DeletePlantMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<DeletePlantMutation, DeletePlantMutationVariables>(DeletePlantDocument, options);
+}
+export type DeletePlantMutationHookResult = ReturnType<typeof useDeletePlantMutation>;
+export type DeletePlantMutationResult = Apollo.MutationResult<DeletePlantMutation>;
+export type DeletePlantMutationOptions = Apollo.BaseMutationOptions<DeletePlantMutation, DeletePlantMutationVariables>;
+export const UpdatePlantDocument = gql`
+  mutation updatePlant($input: UpdatePlantInput!) {
+    updatePlant(input: $input) {
+      ...PlantResponse
+    }
+  }
+  ${PlantResponseFragmentDoc}
+`;
+export type UpdatePlantMutationFn = Apollo.MutationFunction<UpdatePlantMutation, UpdatePlantMutationVariables>;
+
+/**
+ * __useUpdatePlantMutation__
+ *
+ * To run a mutation, you first call `useUpdatePlantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePlantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePlantMutation, { data, loading, error }] = useUpdatePlantMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePlantMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdatePlantMutation, UpdatePlantMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdatePlantMutation, UpdatePlantMutationVariables>(UpdatePlantDocument, options);
+}
+export type UpdatePlantMutationHookResult = ReturnType<typeof useUpdatePlantMutation>;
+export type UpdatePlantMutationResult = Apollo.MutationResult<UpdatePlantMutation>;
+export type UpdatePlantMutationOptions = Apollo.BaseMutationOptions<UpdatePlantMutation, UpdatePlantMutationVariables>;
 export const FindPlantDocument = gql`
   query findPlant($input: FindPlantInput!) {
     findPlant(input: $input) {

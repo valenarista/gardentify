@@ -17,14 +17,14 @@ const UserProfileDetails: React.FC = () => {
       <div className="flex-1 flex-col">
         {/* Name */}
         <Skeleton loading={loading}>
-          <h1 className="mb-1 text-3xl font-bold">{user?.username}</h1>
+          <h1 className="mb-1 text-3xl font-bold">{user.username}</h1>
         </Skeleton>
         {/* Joined at */}
         <Skeleton loading={loading}>
-          <p className="text-sm font-medium opacity-90">Joined at {new Date(user?.createdAt as Date).toDateString()}</p>
+          <p className="text-sm font-medium opacity-90">Joined at {new Date(user.createdAt).toDateString()}</p>
         </Skeleton>
       </div>
-      {logggedInUser.uuid && logggedInUser.uuid === user?.uuid ? <UserProfileManagement /> : null}
+      {logggedInUser && logggedInUser.uuid === user?.uuid ? <UserProfileManagement /> : null}
     </div>
   );
 };

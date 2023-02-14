@@ -1,4 +1,4 @@
-import client from '@modules/apollo/apollo-client';
+import { client } from '@modules/apollo/apollo-client';
 import { FindPlantDocument, FindPlantQuery, FindPlantQueryVariables, Plant } from '@modules/graphql/@generated/graphql';
 import Layout from '@modules/layout/components/layout';
 import ContainerPlant from '@modules/plants/components/container-plant/container-plant';

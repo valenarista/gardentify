@@ -1,9 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { PlantType } from '../models/plant.model';
-import { FindPlantInput } from './find-plant.input';
 
 @InputType()
-class UpdatePlantInputData {
+export class UpdatePlantInput {
+  @Field(() => String)
+  uuid: string;
+
   @Field(() => String, { nullable: true })
   variety?: string;
 
@@ -11,17 +13,8 @@ class UpdatePlantInputData {
   type?: PlantType;
 
   @Field(() => Date, { nullable: true })
-  plantedSeedsOn?: Date;
+  seedsPlantedAt?: Date;
 
   @Field(() => Date, { nullable: true })
-  seedsSproutedOn?: Date;
-}
-
-@InputType()
-export class UpdatePlantInput {
-  @Field(() => FindPlantInput)
-  find: FindPlantInput;
-
-  @Field(() => UpdatePlantInputData)
-  data: UpdatePlantInputData;
+  seedsSproutedAt?: Date;
 }

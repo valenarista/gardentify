@@ -3,6 +3,7 @@ import { useContainerPlantContext } from '@modules/plants/context/container-plan
 import React, { useEffect } from 'react';
 
 import ContainerPlantDetails from './details/container-plant-details';
+import ContainerPlantHeightRegistrations from './height-registrations/container-plant-height-registrations';
 
 type ContainerPlantProps = {
   plant: Plant;
@@ -19,7 +20,10 @@ const ContainerPlant: React.FC<ContainerPlantProps> = (props) => {
 
   return (
     <div className="container mx-auto flex max-w-6xl flex-col space-y-4 px-2 md:px-4 lg:px-6">
+      {/* Details */}
       <ContainerPlantDetails />
+      {/* Height Registrations */}
+      <ContainerPlantHeightRegistrations />
     </div>
   );
 };

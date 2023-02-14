@@ -1,0 +1,5 @@
+mutation updatePlant($input: UpdatePlantInput!) {
+  updatePlant(input: $input) {
+    ...PlantResponse
+  }
+}

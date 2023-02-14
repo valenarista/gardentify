@@ -60,7 +60,7 @@ export class HeightRegistrationsService {
         where: { plantUuid: input.uuid },
       });
 
-    if (!heightRegistrations) {
+    if (!heightRegistrations.length) {
       throw new NotFoundException(
         'No height registrations found with the given input!',
       );

@@ -54,8 +54,8 @@ input CreateHeightRegistrationInput {
 
 input CreatePlantInput {
   container: FindContainerInput!
-  plantedSeedsOn: DateTime
-  seedsSproutedOn: DateTime
+  seedsPlantedAt: DateTime
+  seedsSproutedAt: DateTime
   type: PlantType!
   variety: String!
 }
@@ -130,12 +130,12 @@ type Mutation {
 type Plant {
   container: Container
   createdAt: DateTime!
-  plantedSeedsOn: DateTime
-  seedsSproutedOn: DateTime
-  type: PlantType
+  seedsPlantedAt: DateTime!
+  seedsSproutedAt: DateTime!
+  type: PlantType!
   updatedAt: DateTime!
   uuid: String!
-  variety: String
+  variety: String!
 }
 
 type PlantResponse {
@@ -179,9 +179,9 @@ type Query {
   findContainer(input: FindContainerInput!): ContainerResponse!
   findContainerPlants(input: FindContainerInput!): PlantsResponse!
   findContainers(input: FindContainerInput!): ContainersResponse!
-  findHeightRegistration(find: FindHeightRegistrationInput!): HeightRegistrationResponse!
+  findHeightRegistration(input: FindHeightRegistrationInput!): HeightRegistrationResponse!
   findPlant(input: FindPlantInput!): PlantResponse!
-  findPlantHeightRegistrations(find: FindPlantInput!): HeightRegistrationsResponse!
+  findPlantHeightRegistrations(input: FindPlantInput!): HeightRegistrationsResponse!
   findPlants(input: FindPlantInput!): PlantsResponse!
   findUser(input: FindUserInput!): UserResponse!
   findUserContainers(input: FindUserContainersInput!): ContainersResponse!
@@ -203,14 +203,10 @@ input UpdateContainerInput {
 }
 
 input UpdatePlantInput {
-  data: UpdatePlantInputData!
-  find: FindPlantInput!
-}
-
-input UpdatePlantInputData {
-  plantedSeedsOn: DateTime
-  seedsSproutedOn: DateTime
+  seedsPlantedAt: DateTime
+  seedsSproutedAt: DateTime
   type: PlantType
+  uuid: String!
   variety: String
 }
 

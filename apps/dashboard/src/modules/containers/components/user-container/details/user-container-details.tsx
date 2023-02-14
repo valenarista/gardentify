@@ -20,9 +20,7 @@ const UserContainerDetails: React.FC = (props) => {
         {/* Dirt depth */}
         <h3 className="font-medium">Dirt Depth: {container.dirtDepth} cms</h3>
         {/* Joined at */}
-        <p className="text-sm font-medium opacity-90">
-          Created at {new Date(container.createdAt as Date).toDateString()}
-        </p>
+        <p className="text-sm font-medium opacity-90">Created at {new Date(container.createdAt).toDateString()}</p>
       </div>
       {container.user && user.uuid === container.user.uuid ? <UserContainerManagement /> : null}
     </div>

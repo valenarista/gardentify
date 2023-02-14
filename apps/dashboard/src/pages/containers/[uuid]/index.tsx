@@ -1,4 +1,4 @@
-import client from '@modules/apollo/apollo-client';
+import { client } from '@modules/apollo/apollo-client';
 import UserContainer from '@modules/containers/components/user-container/user-container';
 import UserContainerProvider from '@modules/containers/context/user-container-context';
 import {

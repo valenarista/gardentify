@@ -9,9 +9,11 @@ import { CreatePlantInput } from './dto/create-plant.input';
 import { UpdatePlantInput } from './dto/update-plant.input';
 
 import { PlantsService } from './plants.service';
+import { UseGuards } from '@nestjs/common';
+import { GraphqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
+import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
 
 @Resolver(() => Plant)
-// @UseGuards(GqlAuthGuard)
 export class PlantsResolver {
   constructor(private plantsService: PlantsService) {}
 
@@ -30,6 +32,7 @@ export class PlantsResolver {
   }
 
   @Mutation(() => PlantResponse)
+  @UseGuards(JwtAuthGuard)
   async createPlant(
     @Args('input') input: CreatePlantInput,
   ): Promise<PlantResponse> {

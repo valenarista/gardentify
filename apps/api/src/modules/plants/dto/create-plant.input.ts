@@ -15,8 +15,8 @@ export class CreatePlantInput {
   type: PlantType;
 
   @Field(() => Date, { nullable: true })
-  plantedSeedsOn?: Date;
+  seedsPlantedAt?: Date;
 
   @Field(() => Date, { nullable: true })
-  seedsSproutedOn?: Date;
+  seedsSproutedAt?: Date;
 }

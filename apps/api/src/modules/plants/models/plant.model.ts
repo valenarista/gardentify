@@ -36,17 +36,17 @@ registerEnumType(PlantType, {
 
 @ObjectType()
 export class Plant extends BaseModel {
-  @Field(() => PlantType, { nullable: true })
-  type?: PlantType;
+  @Field(() => PlantType)
+  type: PlantType;
 
-  @Field(() => String, { nullable: true })
-  variety?: string;
+  @Field(() => String)
+  variety: string;
 
-  @Field(() => Date, { nullable: true })
-  seedsPlantedAt?: Date;
+  @Field(() => Date)
+  seedsPlantedAt: Date;
 
-  @Field(() => Date, { nullable: true })
-  seedsSproutedAt?: Date;
+  @Field(() => Date)
+  seedsSproutedAt: Date;
 
   @Field(() => Container, { nullable: true })
   container?: Container;

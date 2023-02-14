@@ -19,9 +19,7 @@ const ContainerCard: React.FC<ContainerCardProps> = (props) => {
           {/* Dirth depth */}
           <h3 className="text-sm font-medium">Dirth Depth: {container.dirtDepth} cms</h3>
           {/* Date */}
-          <p className="text-sm font-medium opacity-90">
-            Created at {new Date(container.createdAt as Date).toDateString()}
-          </p>
+          <p className="text-sm font-medium opacity-90">Created at {new Date(container.createdAt).toDateString()}</p>
         </div>
       </div>
     </Link>

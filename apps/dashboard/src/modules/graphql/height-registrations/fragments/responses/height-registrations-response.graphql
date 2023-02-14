@@ -1,7 +1,8 @@
-fragment PlantsResponse on PlantsResponse {
+fragment HeightRegistrationsResponse on HeightRegistrationsResponse {
   heightRegistrations {
     ...HeightRegistration
   }
   errors {
     ...Error
   }
+}

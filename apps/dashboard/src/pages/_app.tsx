@@ -1,7 +1,7 @@
 import '@styles/global.css';
 
 import { ApolloProvider } from '@apollo/client';
-import client from '@modules/apollo/apollo-client';
+import { client } from '@modules/apollo/apollo-client';
 import AuthProvider from '@modules/auth/context/auth-context';
 import ThemeProvider from '@modules/theme/context/theme-context';
 import { Inter } from '@next/font/google';
