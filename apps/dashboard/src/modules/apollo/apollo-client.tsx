@@ -6,7 +6,10 @@ export const createApolloClient = () => {
   let token: string | null = null;
 
   const httpLink = createHttpLink({
-    uri: `http://localhost:4000/graphql`,
+    uri:
+      process.env.NODE_ENV === 'production'
+        ? 'https://gardentify-api.onrender.com/graphql'
+        : `http://localhost:4000/graphql`,
     credentials: 'include',
   });
 

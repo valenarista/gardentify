@@ -5,10 +5,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 import { AppModule } from './app.module';
 
-import session from 'express-session';
-import passport from 'passport';
-
-import { __PROD__ } from '@modules/common/lib/constants';
+import { ConfigService } from '@nestjs/config';
+import { IConfig } from '@modules/config/config.module';
 
 const bootstrap = async () => {
   /*==================Initialization================*/
@@ -16,6 +14,8 @@ const bootstrap = async () => {
 
   /*================== VALIDATION ==================*/
   app.useGlobalPipes(new ValidationPipe());
+
+  const configService = app.get<IConfig>(ConfigService);
 
   /*================== PRISMA ==================*/
   const prismaService: PrismaService = app.get(PrismaService);
@@ -34,26 +34,8 @@ const bootstrap = async () => {
     type: VersioningType.URI,
   });
 
-  // app.use(
-  //   session({
-  //     secret: process.env.JWT_SECRET,
-  //     name: 'session',
-  //     resave: true,
-  //     saveUninitialized: true,
-  //     cookie: {
-  //       secure: __PROD__,
-  //       sameSite: __PROD__ ? 'none' : 'lax',
-  //       maxAge: 24 * 60 * 60 * 365 * 1000,
-  //     },
-  //   }),
-  // );
-
-  // /*========= PASSPORT =========*/
-  // app.use(passport.initialize());
-  // app.use(passport.session());
-
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: configService.app.clientUrl,
     credentials: true,
   });
 

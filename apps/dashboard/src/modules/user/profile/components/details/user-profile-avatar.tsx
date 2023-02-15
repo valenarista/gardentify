@@ -5,11 +5,11 @@ import React from 'react';
 import { useUserProfileContext } from '../../context/user-profile-context';
 
 const UserProfileAvatar: React.FC = () => {
-  const { user, loading } = useUserProfileContext();
+  const { user } = useUserProfileContext();
 
   return (
     <div className="flex flex-col">
-      <Skeleton loading={loading}>
+      <Skeleton loading={false}>
         {user?.uuid ? (
           <Image
             src={`https://cdn.discordapp.com/avatars/${user?.oauthId}/${user?.avatar}.png`}

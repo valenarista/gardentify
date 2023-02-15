@@ -11,8 +11,6 @@ CREATE TABLE "User" (
     "username" TEXT NOT NULL,
     "avatar" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "accessToken" TEXT NOT NULL,
-    "refreshToken" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
