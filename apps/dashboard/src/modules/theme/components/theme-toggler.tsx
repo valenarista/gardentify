@@ -1,4 +1,4 @@
-import { IconButton } from '@gardentify/ui';
+import { Button } from '@gardentify/ui';
 import React from 'react';
 
 import { useThemeContext } from '../context/theme-context';
@@ -8,12 +8,11 @@ const ThemeToggler: React.FC = () => {
 
   const renderLightModeIcon = (
     <svg
-      className="h-5 w-5"
+      className="h-5 w-5 stroke-black dark:stroke-white"
       xmlns="http://www.w3.org/2000/svg"
       strokeLinejoin="round"
       strokeLinecap="round"
       strokeWidth="2"
-      stroke="#fff"
       fill="none"
       viewBox="0 0 24 24"
       height="35"
@@ -34,11 +33,10 @@ const ThemeToggler: React.FC = () => {
   const renderDarkModeIcon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="h-5 w-5"
+      className="h-5 w-5 stroke-black dark:stroke-white"
       strokeLinejoin="round"
       strokeLinecap="round"
       strokeWidth="2"
-      stroke="#000"
       fill="none"
       viewBox="0 0 24 24"
       height="35"
@@ -53,7 +51,19 @@ const ThemeToggler: React.FC = () => {
     return renderDarkModeIcon;
   };
 
-  return <IconButton variant="ghost" aria-label="Toggle Theme" onClick={() => toggle()} icon={themeIcon()} />;
+  return (
+    <Button
+      variant="ghost"
+      aria-label="Toggle Theme"
+      onClick={() => toggle()}
+      className="w-full !justify-start"
+      size="lg"
+      iconPosition="start"
+      icon={themeIcon()}
+    >
+      Toggle Theme
+    </Button>
+  );
 };
 
 export default ThemeToggler;

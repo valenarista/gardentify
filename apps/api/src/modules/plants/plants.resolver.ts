@@ -9,8 +9,8 @@ import { CreatePlantInput } from './dto/create-plant.input';
 import { UpdatePlantInput } from './dto/update-plant.input';
 
 import { PlantsService } from './plants.service';
-import { GqlAuthenticatedGuard } from '@modules/auth/guards/auth.guard';
 import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
 
 @Resolver(() => Plant)
 export class PlantsResolver {
@@ -31,7 +31,7 @@ export class PlantsResolver {
   }
 
   @Mutation(() => PlantResponse)
-  @UseGuards(GqlAuthenticatedGuard)
+  @UseGuards(GqlAuthGuard)
   async createPlant(
     @Args('input') input: CreatePlantInput,
   ): Promise<PlantResponse> {
@@ -39,7 +39,7 @@ export class PlantsResolver {
   }
 
   @Mutation(() => DeleteObjectResponse)
-  @UseGuards(GqlAuthenticatedGuard)
+  @UseGuards(GqlAuthGuard)
   async deletePlant(
     @Args('input') input: FindPlantInput,
   ): Promise<DeleteObjectResponse> {
@@ -47,7 +47,7 @@ export class PlantsResolver {
   }
 
   @Mutation(() => PlantResponse)
-  @UseGuards(GqlAuthenticatedGuard)
+  @UseGuards(GqlAuthGuard)
   async updatePlant(
     @Args('input') input: UpdatePlantInput,
   ): Promise<PlantResponse> {

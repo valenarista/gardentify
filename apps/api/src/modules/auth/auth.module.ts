@@ -1,30 +1,39 @@
+import { IConfig } from '@modules/config/config.module';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
+import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { SessionSerializer } from './session-serializer';
-import { DiscordStrategy } from './strategies/discord.strategy';
+import { GqlAuthGuard } from './guards/gql-auth.guard';
+import { PasswordService } from './password.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
     ConfigModule,
-    PassportModule.register({ session: true, defaultStrategy: 'discord' }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.registerAsync({
+      useFactory: async (configService: ConfigService<IConfig>) => {
+        return {
+          secret: configService.get('jwt', { infer: true }).secret,
+          signOptions: {
+            expiresIn: configService.get('jwt', { infer: true }).accessExpiry,
+          },
+        };
+      },
+      inject: [ConfigService],
+    }),
   ],
   controllers: [AuthController],
   providers: [
-    DiscordStrategy,
-    SessionSerializer,
-    {
-      provide: 'AUTH_SERVICE',
-      useClass: AuthService,
-    },
+    AuthService,
+    AuthResolver,
+    JwtStrategy,
+    GqlAuthGuard,
+    PasswordService,
   ],
-  exports: [
-    {
-      provide: 'AUTH_SERVICE',
-      useClass: AuthService,
-    },
-  ],
+  exports: [GqlAuthGuard],
 })
 export class AuthModule {}

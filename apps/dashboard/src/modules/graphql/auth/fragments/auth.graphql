@@ -1,0 +1,7 @@
+fragment Auth on Auth {
+  user {
+    ...User
+  }
+  accessToken
+  refreshToken
+}

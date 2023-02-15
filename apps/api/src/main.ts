@@ -34,23 +34,23 @@ const bootstrap = async () => {
     type: VersioningType.URI,
   });
 
-  app.use(
-    session({
-      secret: process.env.JWT_SECRET,
-      name: 'session',
-      resave: true,
-      saveUninitialized: true,
-      cookie: {
-        secure: __PROD__,
-        sameSite: __PROD__ ? 'none' : 'lax',
-        maxAge: 24 * 60 * 60 * 365 * 1000,
-      },
-    }),
-  );
+  // app.use(
+  //   session({
+  //     secret: process.env.JWT_SECRET,
+  //     name: 'session',
+  //     resave: true,
+  //     saveUninitialized: true,
+  //     cookie: {
+  //       secure: __PROD__,
+  //       sameSite: __PROD__ ? 'none' : 'lax',
+  //       maxAge: 24 * 60 * 60 * 365 * 1000,
+  //     },
+  //   }),
+  // );
 
-  /*========= PASSPORT =========*/
-  app.use(passport.initialize());
-  app.use(passport.session());
+  // /*========= PASSPORT =========*/
+  // app.use(passport.initialize());
+  // app.use(passport.session());
 
   app.enableCors({
     origin: 'http://localhost:3000',

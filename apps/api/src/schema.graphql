@@ -7,6 +7,15 @@ input AddPlantToContainerInput {
   plantUuid: String!
 }
 
+type Auth {
+  """JWT access token"""
+  accessToken: String!
+
+  """JWT refresh token"""
+  refreshToken: String!
+  user: User!
+}
+
 type Container {
   createdAt: DateTime!
 
@@ -114,6 +123,11 @@ type HeightRegistrationsResponse {
   heightRegistrations: [HeightRegistration!]
 }
 
+input LoginInput {
+  password: String!
+  username: String!
+}
+
 type Mutation {
   addPlantToContainer(input: AddPlantToContainerInput!): ContainerResponse!
   createContainer(input: CreateContainerInput!): ContainerResponse!
@@ -122,7 +136,10 @@ type Mutation {
   deleteContainer(input: FindContainerInput!): DeleteObjectResponse!
   deleteHeightRegistration(find: FindHeightRegistrationInput!): DeleteObjectResponse!
   deletePlant(input: FindPlantInput!): DeleteObjectResponse!
+  login(data: LoginInput!): Auth!
+  refreshToken(input: RefreshTokenInput!): Token!
   removePlantFromContainer(input: RemovePlantFromContainerInput!): DeleteObjectResponse!
+  signup(data: SignupInput!): Auth!
   updateContainer(input: UpdateContainerInput!): ContainerResponse!
   updatePlant(input: UpdatePlantInput!): PlantResponse!
 }
@@ -188,9 +205,26 @@ type Query {
   me: UserResponse!
 }
 
+input RefreshTokenInput {
+  token: String!
+}
+
 input RemovePlantFromContainerInput {
   containerUuid: String!
   plantUuid: String!
+}
+
+input SignupInput {
+  password: String!
+  username: String!
+}
+
+type Token {
+  """JWT access token"""
+  accessToken: String!
+
+  """JWT refresh token"""
+  refreshToken: String!
 }
 
 input UpdateContainerInput {

@@ -4,7 +4,7 @@ import {
   FindPlantHeightRegistrationsQuery,
   FindPlantHeightRegistrationsQueryVariables,
 } from '@modules/graphql/@generated/graphql';
-import HeightRegistrationCard from '@modules/height-registrations/components/cards/height-registration-card';
+import HeightRegistrationsFeed from '@modules/height-registrations/components/feed/height-registrationS-feed';
 import { useContainerPlantContext } from '@modules/plants/context/container-plant-context';
 import React from 'react';
 
@@ -34,9 +34,7 @@ const PlantHeightRegistrations: React.FC = () => {
         {loading ? (
           <span className="text-lg font-semibold text-neutral-800 dark:text-neutral-100">Loading...</span>
         ) : heightRegistrations.length ? (
-          heightRegistrations.map((heightRegistration, index) => {
-            return <HeightRegistrationCard key={index} heightRegistration={heightRegistration} />;
-          })
+          <HeightRegistrationsFeed heightRegistrations={heightRegistrations} />
         ) : null}
       </div>
     </div>

@@ -13,10 +13,8 @@ export interface IConfig {
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [app, jwt, security, auth],
-      cache: true,
       isGlobal: true,
-      expandVariables: true,
+      load: [app, jwt, security, auth],
     }),
   ],
   providers: [ConfigService],
