@@ -7,11 +7,10 @@ import UserProfileDetails from './details/user-profile-details';
 
 type UserProfileProps = {
   user: User;
-  loading: boolean;
 };
 
 const UserProfile: React.FC<UserProfileProps> = (props) => {
-  const { user, loading } = props;
+  const { user } = props;
   const { setUser } = useUserProfileContext();
 
   useEffect(() => {

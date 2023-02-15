@@ -31,7 +31,7 @@ const UserContainerPlants: React.FC = (props) => {
   return (
     <div className="flex rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
       {/* Details */}
-      <div className="flex w-full flex-col space-y-2">
+      <div className="flex w-full flex-col space-y-4">
         <UserContainerPlantsHeader />
 
         {response?.error ? (

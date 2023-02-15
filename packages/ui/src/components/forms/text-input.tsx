@@ -5,10 +5,10 @@ import { InputWrapper, InputWrapperProps } from './input-wrapper';
 type TextInputProps = InputWrapperProps & InputHTMLAttributes<HTMLInputElement> & {};
 
 export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
-  const { id, label, error, errorMessage, name, children, ...rest } = props;
+  const { id, label, error, errorMessage, help, helpMessage, name, children, ...rest } = props;
 
   return (
-    <InputWrapper id={id} label={label} error={error} errorMessage={errorMessage}>
+    <InputWrapper id={id} label={label} error={error} errorMessage={errorMessage} help={help} helpMessage={helpMessage}>
       <input
         ref={ref}
         name={name}

@@ -20,7 +20,7 @@ const UserContainersManagementCreate: React.FC = () => {
         Create Container
       </Button>
       <Modal title="Create Container" isModalOpen={modalOpen} onModalClosed={handleCloseModal}>
-        <UserContainersManagementCreateForm />
+        <UserContainersManagementCreateForm onSubmitted={handleCloseModal} />
       </Modal>
     </div>
   );

@@ -9,10 +9,10 @@ generator client {
 }
 
 model User {
-  uuid     String @id @default(cuid())
-  oauthId  String @unique
-  username String @unique
-  avatar   String
+  uuid     String  @id @default(cuid())
+  oauthId  String? @unique
+  username String  @unique
+  avatar   String?
 
   password String
 

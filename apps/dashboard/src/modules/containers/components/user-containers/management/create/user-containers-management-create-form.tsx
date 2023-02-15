@@ -20,11 +20,17 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
-const UserContainersManagementCreateForm: React.FC = () => {
+type UserContainersManagementCreateFormProps = {
+  onSubmitted: () => void;
+};
+
+const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreateFormProps> = (props) => {
+  const { onSubmitted } = props;
   const router = useRouter();
   const { user } = useAuthContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
+    mode: 'all',
     defaultValues: {
       type: ContainerType.Bag,
       dirtDepth: 10,
@@ -53,6 +59,7 @@ const UserContainersManagementCreateForm: React.FC = () => {
 
     if (container?.container?.uuid) {
       await router.push(`/containers/${container?.container?.uuid}`);
+      onSubmitted();
     }
   };
 
@@ -88,6 +95,8 @@ const UserContainersManagementCreateForm: React.FC = () => {
             type="number"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
+            help
+            helpMessage="Dirth depth in centimeters"
             {...field}
           />
         )}

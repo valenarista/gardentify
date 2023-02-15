@@ -5,10 +5,10 @@ import { InputWrapper, InputWrapperProps } from './input-wrapper';
 type SelectInputProps = InputWrapperProps & InputHTMLAttributes<HTMLSelectElement> & {};
 
 export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>((props, ref) => {
-  const { id, label, error, errorMessage, name, children, ...rest } = props;
+  const { id, label, error, errorMessage, name, help, helpMessage, children, ...rest } = props;
 
   return (
-    <InputWrapper id={id} label={label} error={error} errorMessage={errorMessage}>
+    <InputWrapper id={id} label={label} error={error} errorMessage={errorMessage} help={help} helpMessage={helpMessage}>
       <select
         ref={ref}
         name={name}

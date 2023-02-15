@@ -1,9 +1,13 @@
 import { GardentifyContext } from '@modules/graphql/graphql';
 import { Injectable } from '@nestjs/common';
-import { BadRequestException } from '@nestjs/common/exceptions';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common/exceptions';
 import { PrismaService } from 'nestjs-prisma';
 
 import { FindUserInput } from './dto/find-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
 import { UserResponse } from './responses/user.response';
 
 @Injectable()
@@ -65,5 +69,18 @@ export class UsersService {
         ],
       };
     }
+  }
+
+  async updateUser(input: UpdateUserInput): Promise<UserResponse> {
+    const user = await this.prismaService.user.update({
+      where: { uuid: input.uuid },
+      data: { ...input },
+    });
+
+    if (!user) {
+      throw new NotFoundException('No user found with the given input!');
+    }
+
+    return { user };
   }
 }

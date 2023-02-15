@@ -24,7 +24,12 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
-const UserContainerPlantsManagementCreateForm: React.FC = () => {
+type UserContainerPlantsManagementCreateFormProps = {
+  onSubmitted: () => void;
+};
+
+const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManagementCreateFormProps> = (props) => {
+  const { onSubmitted } = props;
   const router = useRouter();
   const [createPlant] = useCreatePlantMutation();
   const { user } = useAuthContext();
@@ -62,6 +67,7 @@ const UserContainerPlantsManagementCreateForm: React.FC = () => {
 
     if (plant?.plant?.uuid) {
       await router.push(`/plants/${plant.plant.uuid}`);
+      onSubmitted();
     }
   };
 

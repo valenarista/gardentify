@@ -1,6 +1,8 @@
 import { Button, Modal } from '@gardentify/ui';
 import React, { useState } from 'react';
 
+import UserProfileManagementEditForm from './user-profile-management-edit-form';
+
 const UserProfileManagementEdit: React.FC = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -17,8 +19,8 @@ const UserProfileManagementEdit: React.FC = () => {
       <Button aria-label="Edit Profile" onClick={handleOpenModal}>
         Edit Profile
       </Button>
-      <Modal title="  Edit Profile" isModalOpen={modalOpen} onModalClosed={handleCloseModal}>
-        Hi
+      <Modal title="Edit Profile" isModalOpen={modalOpen} onModalClosed={handleCloseModal}>
+        <UserProfileManagementEditForm onSubmitted={handleCloseModal} />
       </Modal>
     </div>
   );

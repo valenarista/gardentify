@@ -1,7 +1,7 @@
 import { Button, TextInput } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
-import { useCreateHeightRegistrationMutation } from '@modules/graphql/@generated/graphql';
+import { useUpdateUserMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -9,50 +9,49 @@ import * as yup from 'yup';
 
 const schema = yup
   .object({
-    height: yup
-      .number()
-      .typeError('Height registration height must be a number!')
-      .min(0.1, 'The minimum height is 0.1 cms!.')
-      .required('Height registration height is required!'),
+    username: yup.string().typeError('Username must be a string!').required('Username is required!'),
   })
   .required();
 
 type FormData = yup.InferType<typeof schema>;
 
-const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
-  const router = useRouter();
-  const [createHeightRegistration] = useCreateHeightRegistrationMutation();
-  const { user } = useAuthContext();
+type UserProfileManagementEditFormProps = {
+  onSubmitted: () => void;
+};
 
+const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps> = (props) => {
+  const { onSubmitted } = props;
+  const router = useRouter();
+  const { user } = useAuthContext();
+  const [updateUser] = useUpdateUserMutation();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      height: 2,
+      username: user.username,
     },
   });
 
   const onSubmit = async (data: FormData) => {
     if (!user.uuid) return;
 
-    const plantUuid = router.query.uuid as string;
-
-    await createHeightRegistration({
+    await updateUser({
       variables: {
         input: {
-          ...data,
-          plantUuid,
+          uuid: user.uuid,
+          username: data.username,
         },
       },
     })
       .then((response) => {
-        return response.data?.createHeightRegistration;
+        return response.data?.updateUser;
       })
       .catch((err) => {
         console.log({ err });
       });
 
-    await router.push(`/plants/${plantUuid}`);
+    //await router.push(`/users/${user.uuid}`);
+    onSubmitted();
   };
 
   const handleFormReset = () => {
@@ -62,25 +61,21 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
   return (
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <Controller
-        name="height"
+        name="username"
         control={control}
         render={({ field, fieldState }) => (
           <TextInput
             id={field.name}
-            label="Height"
-            type="number"
+            label="Username"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            help
-            helpMessage="Height in centimeters"
             {...field}
           />
         )}
       />
-
       <div className="flex w-full space-x-4 px-6">
         <Button className="w-full" type="submit">
-          Create
+          Update
         </Button>
         <Button className="w-full" type="reset" variant="ghost" colorScheme="danger" onClick={handleFormReset}>
           Reset
@@ -90,4 +85,4 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
   );
 };
 
-export default PlantHeightRegistrationsManagementCreateForm;
+export default UserProfileManagementEditForm;

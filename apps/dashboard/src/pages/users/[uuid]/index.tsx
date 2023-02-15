@@ -20,7 +20,7 @@ const UserPage: React.FC<UserPageProps> = (props) => {
       }}
     >
       <UserProfileProvider>
-        <UserProfile user={user} loading={false} />
+        <UserProfile user={user} />
       </UserProfileProvider>
     </Layout>
   );
@@ -29,7 +29,6 @@ const UserPage: React.FC<UserPageProps> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
   const uuid = query.uuid as string;
-
   const client = createApolloClient();
 
   const { data } = await client.query<FindUserQuery, FindUserQueryVariables>({

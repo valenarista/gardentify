@@ -9,6 +9,7 @@ import {
 import React from 'react';
 
 import { useUserProfileContext } from '../../context/user-profile-context';
+import UserProfileContainersHeader from './user-profile-containers-header';
 
 const UserProfileContainers: React.FC = (props) => {
   const {} = props;
@@ -30,8 +31,8 @@ const UserProfileContainers: React.FC = (props) => {
   return (
     <div className="flex rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
       {/* Details */}
-      <div className="flex w-full flex-col space-y-2">
-        <h2 className="text-2xl font-bold">User Containers</h2>
+      <div className="flex w-full flex-col space-y-4">
+        <UserProfileContainersHeader />
 
         {response?.error ? (
           <span className="text-neutral-800 dark:text-neutral-100">{response.error.message}</span>

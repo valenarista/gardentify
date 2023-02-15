@@ -6,9 +6,9 @@ export class User extends BaseModel {
   @Field(() => String)
   username: string;
 
-  @Field(() => String)
-  oauthId: string;
+  @Field(() => String, { nullable: true })
+  oauthId?: string;
 
-  @Field(() => String)
-  avatar: string;
+  @Field(() => String, { nullable: true })
+  avatar?: string;
 }

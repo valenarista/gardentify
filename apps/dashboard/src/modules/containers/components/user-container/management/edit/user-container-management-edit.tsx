@@ -20,7 +20,7 @@ const UserContainerManagementEdit: React.FC = () => {
         Edit Container
       </Button>
       <Modal title="Edit Container" isModalOpen={modalOpen} onModalClosed={handleCloseModal}>
-        <UserContainersManagementEditForm />
+        <UserContainersManagementEditForm onSubmitted={handleCloseModal} />
       </Modal>
     </div>
   );

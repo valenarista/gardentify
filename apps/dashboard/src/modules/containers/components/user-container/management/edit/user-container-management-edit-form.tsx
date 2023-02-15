@@ -21,12 +21,18 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
-const UserContainersManagementEditForm: React.FC = () => {
+type UserContainersManagementEditFormProps = {
+  onSubmitted: () => void;
+};
+
+const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFormProps> = (props) => {
+  const { onSubmitted } = props;
   const router = useRouter();
   const { user } = useAuthContext();
   const { container } = useUserContainerContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
+    mode: 'all',
     defaultValues: {
       ...container,
     },
@@ -54,6 +60,7 @@ const UserContainersManagementEditForm: React.FC = () => {
       });
 
     await router.push(`/containers/${container.uuid}`);
+    onSubmitted();
   };
 
   const handleFormReset = () => {
@@ -88,6 +95,8 @@ const UserContainersManagementEditForm: React.FC = () => {
             type="number"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
+            help
+            helpMessage="Dirth depth in centimeters"
             {...field}
           />
         )}

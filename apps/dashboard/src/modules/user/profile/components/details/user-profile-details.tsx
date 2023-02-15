@@ -4,10 +4,10 @@ import React from 'react';
 
 import { useUserProfileContext } from '../../context/user-profile-context';
 import UserProfileManagement from '../management/user-profile-management';
-import UserProfileAvatar from './user-profile-avatar';
+import UserProfileAvatar from './avatar/user-profile-avatar';
 
 const UserProfileDetails: React.FC = () => {
-  const { user: logggedInUser } = useAuthContext();
+  const { user: logggedInUser, loading } = useAuthContext();
   const { user } = useUserProfileContext();
 
   return (
@@ -24,7 +24,9 @@ const UserProfileDetails: React.FC = () => {
           <p className="text-sm font-medium opacity-90">Joined at {new Date(user.createdAt).toDateString()}</p>
         </Skeleton>
       </div>
-      {logggedInUser && logggedInUser.uuid === user?.uuid ? <UserProfileManagement /> : null}
+      {!loading && user && user.uuid && logggedInUser && logggedInUser.uuid === user.uuid ? (
+        <UserProfileManagement />
+      ) : null}
     </div>
   );
 };

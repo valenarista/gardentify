@@ -20,7 +20,7 @@ const UserContainerPlantsManagementCreate: React.FC = () => {
         Create Plant
       </Button>
       <Modal title="Create Plant" isModalOpen={modalOpen} onModalClosed={handleCloseModal}>
-        <UserContainerPlantsManagementCreateForm />
+        <UserContainerPlantsManagementCreateForm onSubmitted={handleCloseModal} />
       </Modal>
     </div>
   );
