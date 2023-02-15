@@ -4,7 +4,7 @@ import {
   FindPlantHeightRegistrationsQuery,
   FindPlantHeightRegistrationsQueryVariables,
 } from '@modules/graphql/@generated/graphql';
-import HeightRegistrationsFeed from '@modules/height-registrations/components/feed/height-registrationS-feed';
+import HeightRegistrationsFeed from '@modules/height-registrations/components/feed/height-registrations-feed';
 import { useContainerPlantContext } from '@modules/plants/context/container-plant-context';
 import React from 'react';
 
