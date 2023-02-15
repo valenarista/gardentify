@@ -5,8 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 import { AppModule } from './app.module';
 
-import { ConfigService } from '@nestjs/config';
-import { IConfig } from '@modules/config/config.module';
+import { __PROD__ } from '@modules/common/lib/constants';
 
 const bootstrap = async () => {
   /*==================Initialization================*/
@@ -14,8 +13,6 @@ const bootstrap = async () => {
 
   /*================== VALIDATION ==================*/
   app.useGlobalPipes(new ValidationPipe());
-
-  const configService = app.get<IConfig>(ConfigService);
 
   /*================== PRISMA ==================*/
   const prismaService: PrismaService = app.get(PrismaService);
@@ -35,7 +32,7 @@ const bootstrap = async () => {
   });
 
   app.enableCors({
-    origin: configService.app.clientUrl,
+    origin: __PROD__ ? process.env.CLIENT_URL_DEPLOY : process.env.CLIENT_URL,
     credentials: true,
   });
 
