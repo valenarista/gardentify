@@ -1,4 +1,4 @@
-import { Button, SelectInput, TextInput } from '@gardentify/ui';
+import { Button, SelectInput, TextInput, useToast } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { useUserContainerContext } from '@modules/containers/context/user-container-context';
@@ -28,7 +28,8 @@ type UserContainersManagementEditFormProps = {
 const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFormProps> = (props) => {
   const { onSubmitted } = props;
   const router = useRouter();
-  const { user } = useAuthContext();
+  const { state } = useAuthContext();
+  const { toast } = useToast();
   const { container } = useUserContainerContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -41,7 +42,7 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
   const [updateContainer] = useUpdateContainerMutation();
 
   const onSubmit = async (data: FormData) => {
-    if (!user.uuid) return;
+    if (!state.user) return;
 
     await updateContainer({
       variables: {
@@ -56,7 +57,8 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
         return response.data?.updateContainer;
       })
       .catch((err) => {
-        console.log({ err });
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
       });
 
     await router.push(`/containers/${container.uuid}`);

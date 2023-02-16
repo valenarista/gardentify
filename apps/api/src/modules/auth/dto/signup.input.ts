@@ -2,7 +2,7 @@ import { IsNotEmpty, MinLength } from 'class-validator';
 import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
-export class SignupInput {
+export class SignUpInput {
   @Field()
   username: string;
 

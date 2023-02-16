@@ -10,15 +10,15 @@ import {
 import UserContainersHeader from './user-containers-header';
 
 const UserContainers: React.FC = () => {
-  const { user, loading: userLoading } = useAuthContext();
+  const { state } = useAuthContext();
 
   const { response, loading } = useApiQuery<FindUserContainersQuery, FindUserContainersQueryVariables>(
     FindUserContainersDocument,
     {
+      skip: !state.user?.uuid,
       variables: {
-        input: { userUuid: user.uuid },
+        input: { userUuid: state.user?.uuid! },
       },
-      skip: userLoading || !user.uuid,
     }
   );
 
@@ -29,7 +29,7 @@ const UserContainers: React.FC = () => {
       <div className="flex rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 ">
         {/* Details */}
         <div className="flex w-full flex-col space-y-4">
-          <UserContainersHeader username={user.username} />
+          <UserContainersHeader username={state.user?.username!} />
 
           {response?.error ? (
             <span className="text-neutral-800 dark:text-neutral-100">{response.error.message}</span>

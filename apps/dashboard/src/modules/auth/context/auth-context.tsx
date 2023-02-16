@@ -1,11 +1,8 @@
-import useApiQuery from '@modules/common/hooks/use-api-query';
-import { MeDocument, MeQuery, MeQueryVariables, User } from '@modules/graphql/@generated/graphql';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 
-type AuthContextState = {
-  user: User;
-  loading: boolean;
-};
+import useLoggedInUser from '../hooks/use-logged-in-user';
+import { reducer } from './reducer';
+import { AuthActionType, AuthContextState } from './reducer/types';
 
 const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 
@@ -25,25 +22,31 @@ type AuthProviderProps = {
 
 const AuthProvider: React.FC<AuthProviderProps> = (props) => {
   const { children } = props;
-  const { response, loading } = useApiQuery<MeQuery, MeQueryVariables>(MeDocument, {
-    ssr: true,
-    notifyOnNetworkStatusChange: true,
+  const [state, dispatch] = useReducer(reducer, {
+    user: null,
+    loading: false,
   });
 
-  const [userLoading, setUserLoading] = useState<boolean>(true);
-  const [logggedInUser, setLoggedInUser] = useState<User>({} as User);
+  const { loggedInUser } = useLoggedInUser();
 
   useEffect(() => {
-    setUserLoading(loading);
-  }, [loading]);
+    if (!loggedInUser) return;
 
-  useEffect(() => {
-    if (!userLoading && response?.data?.me.user) {
-      setLoggedInUser(response.data.me.user);
+    if (localStorage) {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      dispatch({
+        type: AuthActionType.LOGIN,
+        payload: {
+          accessToken: token,
+          user: loggedInUser,
+        },
+      });
     }
-  }, [response, userLoading]);
+  }, [loggedInUser]);
 
-  return <AuthContext.Provider value={{ user: logggedInUser, loading: userLoading }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ state, dispatch }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

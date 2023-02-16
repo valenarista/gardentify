@@ -1,4 +1,4 @@
-import { Button, SelectInput, TextInput } from '@gardentify/ui';
+import { Button, SelectInput, TextInput, useToast } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { PlantType, useUpdatePlantMutation } from '@modules/graphql/@generated/graphql';
@@ -28,7 +28,8 @@ type FormData = yup.InferType<typeof schema>;
 const PlantManagementEditForm: React.FC = () => {
   const router = useRouter();
   const [updatePlant] = useUpdatePlantMutation();
-  const { user } = useAuthContext();
+  const { toast } = useToast();
+  const { state } = useAuthContext();
   const { plant } = useContainerPlantContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -42,7 +43,7 @@ const PlantManagementEditForm: React.FC = () => {
   });
 
   const onSubmit = async (data: FormData) => {
-    if (!user.uuid) return;
+    if (!state.user) return;
 
     await updatePlant({
       variables: {
@@ -56,7 +57,8 @@ const PlantManagementEditForm: React.FC = () => {
         return response.data?.updatePlant;
       })
       .catch((err) => {
-        console.log({ err });
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
       });
 
     await router.push(`/plants/${plant.uuid}`);

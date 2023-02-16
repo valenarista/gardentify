@@ -14,12 +14,11 @@ const Layout: React.FC<LayoutProps> = (props) => {
   const { children, headProps } = props;
 
   return (
-    <div className="flex min-h-screen flex-row overflow-hidden bg-neutral-50 dark:bg-neutral-900">
+    <div className="flex min-h-screen flex-row overflow-hidden bg-neutral-100 dark:bg-neutral-900">
       {/* HEAD */}
       <LayoutHead {...headProps} />
 
-      {/* NAVBAR */}
-      {/* <Navbar /> */}
+      {/* SIDEBAR */}
       <Sidebar />
       {/* CONTENT */}
       <div className="flex flex-1 flex-col items-center py-4 md:py-6 lg:py-10">{children}</div>

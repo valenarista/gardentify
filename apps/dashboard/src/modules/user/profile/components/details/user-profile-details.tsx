@@ -7,7 +7,7 @@ import UserProfileManagement from '../management/user-profile-management';
 import UserProfileAvatar from './avatar/user-profile-avatar';
 
 const UserProfileDetails: React.FC = () => {
-  const { user: logggedInUser, loading } = useAuthContext();
+  const { state } = useAuthContext();
   const { user } = useUserProfileContext();
 
   return (
@@ -24,9 +24,7 @@ const UserProfileDetails: React.FC = () => {
           <p className="text-sm font-medium opacity-90">Joined at {new Date(user.createdAt).toDateString()}</p>
         </Skeleton>
       </div>
-      {!loading && user && user.uuid && logggedInUser && logggedInUser.uuid === user.uuid ? (
-        <UserProfileManagement />
-      ) : null}
+      {user && user.uuid && state.user && state.user.uuid === user.uuid ? <UserProfileManagement /> : null}
     </div>
   );
 };

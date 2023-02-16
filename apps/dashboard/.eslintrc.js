@@ -28,6 +28,8 @@ module.exports = defineConfig({
         'class-methods-use-this': 'off',
         'no-empty-pattern': 'off',
         'consistent-return': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
         '@typescript-eslint/no-unsafe-return': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-argument': 'off',

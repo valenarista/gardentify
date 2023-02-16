@@ -1,4 +1,4 @@
-import { Button, SelectInput, TextInput } from '@gardentify/ui';
+import { Button, SelectInput, TextInput, useToast } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { PlantType, useCreatePlantMutation } from '@modules/graphql/@generated/graphql';
@@ -31,8 +31,9 @@ type UserContainerPlantsManagementCreateFormProps = {
 const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManagementCreateFormProps> = (props) => {
   const { onSubmitted } = props;
   const router = useRouter();
+  const { state } = useAuthContext();
+  const { toast } = useToast();
   const [createPlant] = useCreatePlantMutation();
-  const { user } = useAuthContext();
 
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -46,7 +47,7 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
   });
 
   const onSubmit = async (data: FormData) => {
-    if (!user.uuid) return;
+    if (!state.user) return;
 
     const containerUuid = router.query.uuid as string;
 
@@ -62,7 +63,8 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
         return response.data?.createPlant;
       })
       .catch((err) => {
-        console.log({ err });
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
       });
 
     if (plant?.plant?.uuid) {

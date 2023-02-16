@@ -136,10 +136,10 @@ type Mutation {
   deleteContainer(input: FindContainerInput!): DeleteObjectResponse!
   deleteHeightRegistration(find: FindHeightRegistrationInput!): DeleteObjectResponse!
   deletePlant(input: FindPlantInput!): DeleteObjectResponse!
-  login(data: LoginInput!): Auth!
+  login(input: LoginInput!): Auth!
   refreshToken(input: RefreshTokenInput!): Token!
   removePlantFromContainer(input: RemovePlantFromContainerInput!): DeleteObjectResponse!
-  signup(data: SignupInput!): Auth!
+  signup(input: SignUpInput!): Auth!
   updateContainer(input: UpdateContainerInput!): ContainerResponse!
   updatePlant(input: UpdatePlantInput!): PlantResponse!
   updateUser(input: UpdateUserInput!): UserResponse!
@@ -215,7 +215,7 @@ input RemovePlantFromContainerInput {
   plantUuid: String!
 }
 
-input SignupInput {
+input SignUpInput {
   password: String!
   username: String!
 }

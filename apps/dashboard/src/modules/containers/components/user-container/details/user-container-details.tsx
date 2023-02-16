@@ -6,7 +6,7 @@ import UserContainerManagement from '../management/user-container-management';
 
 const UserContainerDetails: React.FC = (props) => {
   const {} = props;
-  const { user } = useAuthContext();
+  const { state } = useAuthContext();
   const { container } = useUserContainerContext();
 
   return (
@@ -22,7 +22,7 @@ const UserContainerDetails: React.FC = (props) => {
         {/* Joined at */}
         <p className="text-sm font-medium opacity-90">Created at {new Date(container.createdAt).toDateString()}</p>
       </div>
-      {container.user && user.uuid === container.user.uuid ? <UserContainerManagement /> : null}
+      {container.user && state.user && state.user.uuid === container.user.uuid ? <UserContainerManagement /> : null}
     </div>
   );
 };

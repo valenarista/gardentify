@@ -6,12 +6,12 @@ import { useEffect } from 'react';
 
 const ContainersPage: React.FC = () => {
   const router = useRouter();
-  const { user, loading: userLoading } = useAuthContext();
+  const { state } = useAuthContext();
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    if (!userLoading && !user.uuid) router.push('/');
-  }, [user]);
+    if (!state.user) router.push('/');
+  }, [state]);
 
   return (
     <Layout

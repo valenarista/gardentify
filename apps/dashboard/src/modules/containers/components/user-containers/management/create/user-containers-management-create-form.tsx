@@ -1,4 +1,4 @@
-import { Button, SelectInput, TextInput } from '@gardentify/ui';
+import { Button, SelectInput, TextInput, useToast } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { ContainerType, useCreateContainerMutation } from '@modules/graphql/@generated/graphql';
@@ -27,7 +27,8 @@ type UserContainersManagementCreateFormProps = {
 const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreateFormProps> = (props) => {
   const { onSubmitted } = props;
   const router = useRouter();
-  const { user } = useAuthContext();
+  const { toast } = useToast();
+  const { state } = useAuthContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'all',
@@ -40,13 +41,13 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
   const [createContainer] = useCreateContainerMutation();
 
   const onSubmit = async (data: FormData) => {
-    if (!user.uuid) return;
+    if (!state.user) return;
 
     const container = await createContainer({
       variables: {
         input: {
           ...data,
-          userUuid: user.uuid,
+          userUuid: state.user.uuid,
         },
       },
     })
@@ -54,7 +55,8 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
         return response.data?.createContainer;
       })
       .catch((err) => {
-        console.log({ err });
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
       });
 
     if (container?.container?.uuid) {

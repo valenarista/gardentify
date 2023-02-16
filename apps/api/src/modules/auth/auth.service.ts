@@ -1,6 +1,8 @@
 import { IConfig } from '@modules/config/config.module';
+import { Prisma } from '@prisma/client';
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -9,7 +11,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
-import { SignupInput } from './dto/signup.input';
+import { SignUpInput } from './dto/signup.input';
 import { Token } from './models/token.model';
 import { PasswordService } from './password.service';
 
@@ -22,15 +24,15 @@ export class AuthService {
     private readonly configService: ConfigService<IConfig>,
   ) {}
 
-  async createUser(payload: SignupInput): Promise<Token> {
+  async createUser(input: SignUpInput): Promise<Token> {
     const hashedPassword = await this.passwordService.hashPassword(
-      payload.password,
+      input.password,
     );
 
     try {
       const user = await this.prisma.user.create({
         data: {
-          ...payload,
+          ...input,
           password: hashedPassword,
         },
       });
@@ -39,7 +41,15 @@ export class AuthService {
         userUuid: user.uuid,
       });
     } catch (e) {
-      console.log({ e });
+      // Username already taken error.
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === 'P2002'
+      ) {
+        throw new ConflictException(
+          `Username ${input.username} is already taken!`,
+        );
+      }
     }
   }
 
@@ -65,8 +75,6 @@ export class AuthService {
   }
 
   async validateUser(userUuid: string): Promise<User> {
-    console.log({ userUuid });
-
     return this.prisma.user.findUnique({ where: { uuid: userUuid } });
   }
 

@@ -3,16 +3,17 @@ import { useAuthContext } from '@modules/auth/context/auth-context';
 import Link from 'next/link';
 import React from 'react';
 
-const SidebarUserDetails: React.FC = () => {
-  const { user, loading } = useAuthContext();
+const SidebarUserDetailsProfile: React.FC = () => {
+  const { state } = useAuthContext();
 
-  if (!loading && !user.uuid) return null;
+  if (!state.user) return null;
 
   return (
-    <Link href={`/users/${user.uuid}`}>
+    <Link href={`/users/${state.user.uuid}`}>
       <Button
         className="w-full !justify-start"
         size="lg"
+        aria-label="User Profile"
         icon={
           <svg
             className="h-5 w-5 stroke-black dark:stroke-white"
@@ -28,9 +29,9 @@ const SidebarUserDetails: React.FC = () => {
           </svg>
         }
       >
-        {loading ? 'Loading' : user.username}
+        {state.user.username}
       </Button>
     </Link>
   );
 };
-export default SidebarUserDetails;
+export default SidebarUserDetailsProfile;

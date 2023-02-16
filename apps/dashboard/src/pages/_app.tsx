@@ -1,6 +1,7 @@
 import '@styles/global.css';
 
 import { ApolloProvider } from '@apollo/client';
+import { ToastProvider, ToastsContainer } from '@gardentify/ui';
 import { createApolloClient } from '@modules/apollo/apollo-client';
 import AuthProvider from '@modules/auth/context/auth-context';
 import ThemeProvider from '@modules/theme/context/theme-context';
@@ -17,19 +18,21 @@ const InterFont = Inter({
 const GardentifyApp: React.FC<AppProps> = ({ Component, ...rest }) => {
   return (
     <ApolloProvider client={createApolloClient()}>
-      <ThemeProvider>
-        <main className={`${InterFont.variable} relative scroll-smooth font-sans antialiased`}>
+      <ToastProvider>
+        <ThemeProvider>
           <AuthProvider>
-            <Component {...rest.pageProps} />
+            <main className={`${InterFont.variable} relative scroll-smooth font-sans antialiased`}>
+              <Component {...rest.pageProps} />
+              <style jsx global>{`
+                :root {
+                  --font-sans: ${InterFont.style.fontFamily};
+                }
+              `}</style>
+            </main>
+            <ToastsContainer />
           </AuthProvider>
-
-          <style jsx global>{`
-            :root {
-              --font-sans: ${InterFont.style.fontFamily};
-            }
-          `}</style>
-        </main>
-      </ThemeProvider>
+        </ThemeProvider>
+      </ToastProvider>
     </ApolloProvider>
   );
 };

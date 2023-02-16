@@ -1,8 +1,7 @@
-import { Button, TextInput } from '@gardentify/ui';
+import { Button, TextInput, useToast } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { useUpdateUserMutation } from '@modules/graphql/@generated/graphql';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -21,24 +20,25 @@ type UserProfileManagementEditFormProps = {
 
 const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps> = (props) => {
   const { onSubmitted } = props;
-  const router = useRouter();
-  const { user } = useAuthContext();
+  const { state } = useAuthContext();
+  const { toast } = useToast();
   const [updateUser] = useUpdateUserMutation();
+
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      username: user.username,
+      username: state?.user?.username,
     },
   });
 
   const onSubmit = async (data: FormData) => {
-    if (!user.uuid) return;
+    if (!state.user) return;
 
     await updateUser({
       variables: {
         input: {
-          uuid: user.uuid,
+          uuid: state.user.uuid,
           username: data.username,
         },
       },
@@ -47,7 +47,8 @@ const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps
         return response.data?.updateUser;
       })
       .catch((err) => {
-        console.log({ err });
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
       });
 
     //await router.push(`/users/${user.uuid}`);
