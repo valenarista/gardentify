@@ -21,6 +21,8 @@ const PlantPage: React.FC<PlantPageProps> = (props) => {
     <Layout
       headProps={{
         title: `Plant Page | Gardentify`,
+        description:
+          'Gardentify is a web application that lets you manage and keep tracks of the plants in your garden.',
       }}
     >
       <ContainerPlantProvider>

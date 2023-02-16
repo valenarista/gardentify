@@ -15,7 +15,7 @@ const UserPage: React.FC<UserPageProps> = (props) => {
   return (
     <Layout
       headProps={{
-        title: `${user.username || 'Username'} Page | Gardentify`,
+        title: `${user.username} Page | Gardentify`,
         description: `Personal page of ${user.username} showing their containers and more informations about their account.`,
       }}
     >

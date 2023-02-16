@@ -6,6 +6,8 @@ const HomePage: React.FC = () => {
     <Layout
       headProps={{
         title: 'Home | Gardentify',
+        description:
+          'Gardentify is a web application that lets you manage and keep tracks of the plants in your garden.',
       }}
     >
       <h1 className="text-primary-500 text-4xl font-bold">Dashbord </h1>

@@ -21,7 +21,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, InputWrapperProps>(
   const { id, label, error, errorMessage = '', help = false, helpMessage = '', children } = props;
 
   return (
-    <div className="flex flex-col items-start" ref={ref}>
+    <div className="flex flex-col items-start w-full" ref={ref}>
       <label htmlFor={id} className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
         {label}
       </label>

@@ -15,12 +15,12 @@ type LayoutHeadProps = {
 };
 
 const LayoutHead: React.FC<LayoutHeadProps> = (props) => {
-  const { title, description, url, canonicalUrl, image = '/images/marketing/landscape-logo.png' } = props;
+  const { title, description, url, canonicalUrl, image = '/assets/images/logo-banner.png' } = props;
   return (
     <Head>
       <title>{title}</title>
       {/* Manifest */}
-      {/* <link rel="manifest" href="/manifest.json" /> */}
+      <link rel="manifest" href="/manifest.json" />
       {/* Base */}
       <meta charSet="UTF-8" />
       <meta name="robots" content="index" />
