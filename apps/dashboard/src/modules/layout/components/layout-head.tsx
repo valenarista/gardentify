@@ -30,7 +30,7 @@ const LayoutHead: React.FC<LayoutHeadProps> = (props) => {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
 
       <link rel="canonical" href={canonicalUrl} />
-      <meta content="#6936F5" name="theme-color" />
+      <meta content="#50A060" name="theme-color" />
 
       {/* Open graph */}
       <meta property="og:url" content={url} />
