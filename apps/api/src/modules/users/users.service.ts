@@ -1,10 +1,10 @@
 import { GardentifyContext } from '@modules/graphql/graphql';
+import { PrismaService } from '@modules/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { PrismaService } from 'nestjs-prisma';
 
 import { FindUserInput } from './dto/find-user.input';
 import { UpdateUserInput } from './dto/update-user.input';

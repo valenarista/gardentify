@@ -10,16 +10,16 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
-import { PrismaService } from 'nestjs-prisma';
 import { SignUpInput } from './dto/signup.input';
 import { Token } from './models/token.model';
 import { PasswordService } from './password.service';
+import { PrismaService } from '@modules/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly prisma: PrismaService,
+    private readonly prismaService: PrismaService,
     private readonly passwordService: PasswordService,
     private readonly configService: ConfigService<IConfig>,
   ) {}
@@ -30,7 +30,7 @@ export class AuthService {
     );
 
     try {
-      const user = await this.prisma.user.create({
+      const user = await this.prismaService.user.create({
         data: {
           ...input,
           password: hashedPassword,
@@ -54,7 +54,9 @@ export class AuthService {
   }
 
   async login(username: string, password: string): Promise<Token> {
-    const user = await this.prisma.user.findUnique({ where: { username } });
+    const user = await this.prismaService.user.findUnique({
+      where: { username },
+    });
 
     if (!user) {
       throw new NotFoundException(`No user found for username: ${username}`);
@@ -75,12 +77,12 @@ export class AuthService {
   }
 
   async validateUser(userUuid: string): Promise<User> {
-    return this.prisma.user.findUnique({ where: { uuid: userUuid } });
+    return this.prismaService.user.findUnique({ where: { uuid: userUuid } });
   }
 
   getUserFromToken(token: string): Promise<User> {
     const uuid = this.jwtService.decode(token)['userUuid'];
-    return this.prisma.user.findUnique({ where: { uuid } });
+    return this.prismaService.user.findUnique({ where: { uuid } });
   }
 
   generateTokens(payload: { userUuid: string }): Token {

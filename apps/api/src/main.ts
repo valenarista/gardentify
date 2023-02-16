@@ -1,11 +1,12 @@
 import 'class-validator';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
+
 import { AppModule } from './app.module';
 
 import { __PROD__ } from '@modules/common/lib/constants';
+import { PrismaService } from '@modules/prisma/prisma.service';
 
 const bootstrap = async () => {
   /*==================Initialization================*/
@@ -17,9 +18,6 @@ const bootstrap = async () => {
   /*================== PRISMA ==================*/
   const prismaService: PrismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
-
-  const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
   /*========= PREFIX =========*/
   app.setGlobalPrefix('api');

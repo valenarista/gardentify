@@ -1,5 +1,4 @@
 import { Args } from '@nestjs/graphql';
-import { PrismaService } from 'nestjs-prisma';
 import { CreateContainerInput } from './dto/create-container.input';
 import { FindContainerInput } from './dto/find-container.input';
 import { Container, ContainerType } from './models/container.model';
@@ -15,6 +14,7 @@ import { UpdateContainerInput } from './dto/update-container.input';
 import { PlantsResponse } from '@modules/plants/responses/plants.response';
 import { Plant } from '@modules/plants/models/plant.model';
 import { parsePlantType } from '@modules/plants/lib/plant-utils';
+import { PrismaService } from '@modules/prisma/prisma.service';
 
 @Injectable()
 export class ContainersService {

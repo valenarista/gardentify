@@ -1,5 +1,3 @@
-import { PrismaService } from 'nestjs-prisma';
-
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
 import { Plant } from './models/plant.model';
 import { PlantResponse } from './responses/plant.response';
@@ -10,6 +8,7 @@ import { CreatePlantInput } from './dto/create-plant.input';
 import { parseContainerType } from '@modules/container/lib/container-utils';
 import { UpdatePlantInput } from './dto/update-plant.input';
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '@modules/prisma/prisma.service';
 
 @Injectable()
 export class PlantsService {

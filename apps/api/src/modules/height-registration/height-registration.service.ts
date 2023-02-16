@@ -1,5 +1,4 @@
 import { Args, Mutation } from '@nestjs/graphql';
-import { PrismaService } from 'nestjs-prisma';
 
 import { HeightRegistrationResponse } from './response/height-registration.response';
 import { FindHeightRegistrationInput } from './dto/find-height-registrations.input';
@@ -9,6 +8,7 @@ import { HeightRegistrationsResponse } from './response/height-registrations.res
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BadRequestException } from '@nestjs/common/exceptions';
+import { PrismaService } from '@modules/prisma/prisma.service';
 
 @Injectable()
 export class HeightRegistrationsService {
