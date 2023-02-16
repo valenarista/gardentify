@@ -15,6 +15,12 @@ import { SignUpInput } from './dto/signup.input';
 import { Token } from './models/token.model';
 import { PasswordService } from './password.service';
 import { PrismaService } from '@modules/prisma/prisma.service';
+import { MailerService } from '@modules/mailer/mailer.service';
+import { RequestResetPasswordInput } from './dto/request-reset-password.input';
+import { nanoid } from 'nanoid';
+import { ResetPasswordInput } from './dto/reset-password.input';
+import { RequestResetPasswordResponse } from './responses/request-reset-password.response';
+import { ResetPasswordResponse } from './responses/reset-password.response';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +29,7 @@ export class AuthService {
     @Inject(PrismaService)
     private readonly prismaService: PrismaService,
     private readonly passwordService: PasswordService,
+    private readonly mailerService: MailerService,
     private readonly configService: ConfigService<IConfig>,
   ) {}
 
@@ -76,6 +83,75 @@ export class AuthService {
     return this.generateTokens({
       userUuid: user.uuid,
     });
+  }
+
+  async requestResetPassword(
+    input: RequestResetPasswordInput,
+  ): Promise<RequestResetPasswordResponse> {
+    const user = await this.prismaService.user.findUnique({
+      where: { email: input.email },
+    });
+
+    if (!user) {
+      throw new NotFoundException('No user found with the given input!');
+    }
+
+    await this.prismaService.passwordReset.deleteMany({
+      where: { userId: user.uuid },
+    });
+
+    const resetPasswordToken = nanoid();
+
+    const passwordReset = await this.prismaService.passwordReset.create({
+      data: {
+        userId: user.uuid,
+        token: resetPasswordToken,
+      },
+    });
+
+    const passwordResetLink = `${
+      this.configService.get('app', { infer: true }).clientUrl
+    }/auth/reset-password?token=${passwordReset.token}`;
+
+    await this.mailerService.sendEmail({
+      template: 'reset-password',
+      to: input.email,
+      subject: 'Reset Password',
+      from: 'gardentify@gmail.com',
+      replacements: {
+        username: user.username,
+        email: user.email,
+        link: passwordResetLink,
+      },
+    });
+
+    return { emailSent: true };
+  }
+
+  async resetPassword(
+    input: ResetPasswordInput,
+  ): Promise<ResetPasswordResponse> {
+    const passwordReset = await this.prismaService.passwordReset.findUnique({
+      where: { token: input.token },
+    });
+
+    if (passwordReset === null || passwordReset.validUntil < new Date())
+      throw new NotFoundException('No password reset request found!');
+
+    const hashedPassword = await this.passwordService.hashPassword(
+      input.password,
+    );
+
+    await this.prismaService.user.update({
+      where: {
+        uuid: passwordReset.userId,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
+    return { success: true };
   }
 
   async validateUser(userUuid: string): Promise<User> {

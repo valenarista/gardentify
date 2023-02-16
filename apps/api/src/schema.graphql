@@ -139,6 +139,8 @@ type Mutation {
   login(input: LoginInput!): Auth!
   refreshToken(input: RefreshTokenInput!): Token!
   removePlantFromContainer(input: RemovePlantFromContainerInput!): DeleteObjectResponse!
+  requestResetPassword(input: RequestResetPasswordInput!): RequestResetPasswordResponse!
+  resetPassword(input: ResetPasswordInput!): ResetPasswordResponse!
   signup(input: SignUpInput!): Auth!
   updateContainer(input: UpdateContainerInput!): ContainerResponse!
   updatePlant(input: UpdatePlantInput!): PlantResponse!
@@ -215,7 +217,25 @@ input RemovePlantFromContainerInput {
   plantUuid: String!
 }
 
+input RequestResetPasswordInput {
+  email: String!
+}
+
+type RequestResetPasswordResponse {
+  emailSent: Boolean!
+}
+
+input ResetPasswordInput {
+  password: String!
+  token: String!
+}
+
+type ResetPasswordResponse {
+  success: Boolean!
+}
+
 input SignUpInput {
+  email: String!
   password: String!
   username: String!
 }

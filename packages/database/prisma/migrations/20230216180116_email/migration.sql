@@ -7,9 +7,11 @@ CREATE TYPE "PlantType" AS ENUM ('NONE', 'TOMATO', 'POTATO', 'CARROT', 'ONION', 
 -- CreateTable
 CREATE TABLE "User" (
     "uuid" TEXT NOT NULL,
-    "oauthId" TEXT NOT NULL,
+    "oauthId" TEXT,
     "username" TEXT NOT NULL,
-    "avatar" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "avatar" TEXT,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -59,6 +61,9 @@ CREATE UNIQUE INDEX "User_oauthId_key" ON "User"("oauthId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE INDEX "Container_userUuid_idx" ON "Container"("userUuid");

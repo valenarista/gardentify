@@ -12,6 +12,10 @@ import { LoginInput } from './dto/login.input';
 import { SignUpInput } from './dto/signup.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
 import { User } from '@modules/users/models/user.model';
+import { RequestResetPasswordInput } from './dto/request-reset-password.input';
+import { ResetPasswordInput } from './dto/reset-password.input';
+import { RequestResetPasswordResponse } from './responses/request-reset-password.response';
+import { ResetPasswordResponse } from './responses/reset-password.response';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -47,5 +51,19 @@ export class AuthResolver {
   @ResolveField('user', () => User)
   async user(@Parent() auth: Auth) {
     return await this.auth.getUserFromToken(auth.accessToken);
+  }
+
+  @Mutation(() => RequestResetPasswordResponse)
+  async requestResetPassword(
+    @Args('input') input: RequestResetPasswordInput,
+  ): Promise<RequestResetPasswordResponse> {
+    return await this.auth.requestResetPassword(input);
+  }
+
+  @Mutation(() => ResetPasswordResponse)
+  async resetPassword(
+    @Args('input') input: ResetPasswordInput,
+  ): Promise<ResetPasswordResponse> {
+    return await this.auth.resetPassword(input);
   }
 }
