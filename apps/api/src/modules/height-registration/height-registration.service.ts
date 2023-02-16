@@ -6,13 +6,13 @@ import { CreateHeightRegistrationInput } from './dto/create-height-registration.
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 import { HeightRegistrationsResponse } from './response/height-registrations.response';
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { BadRequestException } from '@nestjs/common/exceptions';
 import { PrismaService } from '@modules/prisma/prisma.service';
 
 @Injectable()
 export class HeightRegistrationsService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   async findHeightRegistration(
     input: FindHeightRegistrationInput,

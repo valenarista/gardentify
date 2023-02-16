@@ -4,24 +4,16 @@ import { ContainersModule } from '@modules/container/containers.module';
 import { GqlConfigService } from '@modules/graphql/graphql.config.service';
 import { HeightRegistrationsModule } from '@modules/height-registration/height-registration.module';
 import { PlantsModule } from '@modules/plants/plants.module';
+import { PrismaService } from '@modules/prisma/prisma.service';
 import { UsersModule } from '@modules/users/users.module';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { loggingMiddleware, PrismaModule } from 'nestjs-prisma';
 
 @Module({
   imports: [
     // Confige module setup.
     GlobalConfigModule,
-
-    // Prisma module setup.
-    PrismaModule.forRoot({
-      isGlobal: true,
-      prismaServiceOptions: {
-        middlewares: [loggingMiddleware()],
-      },
-    }),
 
     // Graphql module setup.
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
@@ -35,5 +27,6 @@ import { loggingMiddleware, PrismaModule } from 'nestjs-prisma';
     PlantsModule,
     HeightRegistrationsModule,
   ],
+  providers: [PrismaService],
 })
 export class AppModule {}

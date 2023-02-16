@@ -1,8 +1,10 @@
 import { GardentifyContext } from '@modules/graphql/graphql';
 import { PrismaService } from '@modules/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import {
   BadRequestException,
+  ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
 
@@ -12,7 +14,7 @@ import { UserResponse } from './responses/user.response';
 
 @Injectable()
 export class UsersService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   async me(context: GardentifyContext): Promise<UserResponse> {
     if (!context.req) {
@@ -72,15 +74,27 @@ export class UsersService {
   }
 
   async updateUser(input: UpdateUserInput): Promise<UserResponse> {
-    const user = await this.prismaService.user.update({
-      where: { uuid: input.uuid },
-      data: { ...input },
-    });
+    try {
+      const user = await this.prismaService.user.update({
+        where: { uuid: input.uuid },
+        data: { ...input },
+      });
 
-    if (!user) {
-      throw new NotFoundException('No user found with the given input!');
+      if (!user) {
+        throw new NotFoundException('No user found with the given input!');
+      }
+
+      return { user };
+    } catch (error) {
+      // Username already taken error.
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException(
+          `Username ${input.username} is already taken!`,
+        );
+      }
     }
-
-    return { user };
   }
 }

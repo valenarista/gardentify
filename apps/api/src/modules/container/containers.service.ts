@@ -8,7 +8,7 @@ import { DeleteObjectResponse } from '@modules/common/responses/delete-object.re
 import { AddPlantToContainerInput } from './dto/add-plant-to-container.input';
 import { parseContainerType } from './lib/container-utils';
 import { RemovePlantFromContainerInput } from './dto/remove-plant-from-container.input';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { FindUserContainersInput } from './dto/find-user-containers.input';
 import { UpdateContainerInput } from './dto/update-container.input';
 import { PlantsResponse } from '@modules/plants/responses/plants.response';
@@ -18,7 +18,7 @@ import { PrismaService } from '@modules/prisma/prisma.service';
 
 @Injectable()
 export class ContainersService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   async findContainer(
     @Args('input') input: FindContainerInput,

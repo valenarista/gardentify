@@ -1,4 +1,5 @@
 import { IConfig } from '@modules/config/config.module';
+import { PrismaService } from '@modules/prisma/prisma.service';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -28,6 +29,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   ],
   controllers: [AuthController],
   providers: [
+    PrismaService,
     AuthService,
     AuthResolver,
     JwtStrategy,

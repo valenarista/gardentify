@@ -7,12 +7,12 @@ import { PlantsResponse } from './responses/plants.response';
 import { CreatePlantInput } from './dto/create-plant.input';
 import { parseContainerType } from '@modules/container/lib/container-utils';
 import { UpdatePlantInput } from './dto/update-plant.input';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '@modules/prisma/prisma.service';
 
 @Injectable()
 export class PlantsService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   async findPlant(input: FindPlantInput): Promise<PlantResponse> {
     try {

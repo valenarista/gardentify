@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -19,6 +20,7 @@ import { PrismaService } from '@modules/prisma/prisma.service';
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
+    @Inject(PrismaService)
     private readonly prismaService: PrismaService,
     private readonly passwordService: PasswordService,
     private readonly configService: ConfigService<IConfig>,
