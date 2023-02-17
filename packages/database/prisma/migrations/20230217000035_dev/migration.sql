@@ -20,6 +20,15 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "PasswordReset" (
+    "token" CHAR(21) NOT NULL,
+    "userId" TEXT NOT NULL,
+    "validUntil" TIMESTAMP(6) NOT NULL DEFAULT (timezone('utc'::text, now()) + '2 days'::interval),
+
+    CONSTRAINT "PasswordReset_pkey" PRIMARY KEY ("token")
+);
+
+-- CreateTable
 CREATE TABLE "Container" (
     "uuid" TEXT NOT NULL,
     "type" "ContainerType" NOT NULL,
@@ -64,6 +73,9 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PasswordReset_userId_key" ON "PasswordReset"("userId");
 
 -- CreateIndex
 CREATE INDEX "Container_userUuid_idx" ON "Container"("userUuid");

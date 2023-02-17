@@ -5,7 +5,7 @@ import { useSignupMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import AuthCredentialsForm, { AuthCredentialsFormData } from '../forms/auth-credentials-form';
+import AuthSignupForm, { AuthSignupFormData } from './auth-signup-form';
 
 const AuthSignUp: React.FC = () => {
   const router = useRouter();
@@ -13,7 +13,7 @@ const AuthSignUp: React.FC = () => {
   const { toast } = useToast();
   const [signup] = useSignupMutation();
 
-  const handleSignUp = async (data: AuthCredentialsFormData) => {
+  const handleSignUp = async (data: AuthSignupFormData) => {
     const signupData = await signup({
       variables: {
         input: {
@@ -45,7 +45,7 @@ const AuthSignUp: React.FC = () => {
     <div className="flex w-[350px] flex-col rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 md:p-6">
       <h1 className="mb-4 text-3xl font-bold md:text-4xl">Sign Up</h1>
 
-      <AuthCredentialsForm onSubmitted={handleSignUp} />
+      <AuthSignupForm onSubmitted={handleSignUp} />
     </div>
   );
 };

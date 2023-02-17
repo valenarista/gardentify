@@ -19,21 +19,21 @@ const schema = yup.object({
     .max(32, 'The max lenght is 32 characters'),
 });
 
-export type AuthCredentialsFormData = yup.InferType<typeof schema>;
+export type AuthSignupFormData = yup.InferType<typeof schema>;
 
-type AuthCredentialsFormProps = {
-  onSubmitted: (data: AuthCredentialsFormData) => void;
+type AuthSignupFormProps = {
+  onSubmitted: (data: AuthSignupFormData) => void;
 };
 
-const AuthCredentialsForm: React.FC<AuthCredentialsFormProps> = (props) => {
+const AuthSignupForm: React.FC<AuthSignupFormProps> = (props) => {
   const { onSubmitted } = props;
-  const { control, handleSubmit } = useForm<AuthCredentialsFormData>({
+  const { control, handleSubmit } = useForm<AuthSignupFormData>({
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      email: 'email@mail.com',
-      username: 'Username',
-      password: 'Password',
+      email: '',
+      username: '',
+      password: '',
     },
   });
 
@@ -88,11 +88,11 @@ const AuthCredentialsForm: React.FC<AuthCredentialsFormProps> = (props) => {
           </Link>
         </div>
         <Button className="w-full" type="submit">
-          Submit
+          Create Account
         </Button>
       </div>
     </form>
   );
 };
 
-export default AuthCredentialsForm;
+export default AuthSignupForm;

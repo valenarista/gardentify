@@ -21,6 +21,7 @@ import { nanoid } from 'nanoid';
 import { ResetPasswordInput } from './dto/reset-password.input';
 import { RequestResetPasswordResponse } from './responses/request-reset-password.response';
 import { ResetPasswordResponse } from './responses/reset-password.response';
+import { LoginInput } from './dto/login.input';
 
 @Injectable()
 export class AuthService {
@@ -62,17 +63,17 @@ export class AuthService {
     }
   }
 
-  async login(username: string, password: string): Promise<Token> {
+  async login(input: LoginInput): Promise<Token> {
     const user = await this.prismaService.user.findUnique({
-      where: { username },
+      where: { email: input.email },
     });
 
     if (!user) {
-      throw new NotFoundException(`No user found for username: ${username}`);
+      throw new NotFoundException(`An error ocurred!`);
     }
 
     const passwordValid = await this.passwordService.validatePassword(
-      password,
+      input.password,
       user.password,
     );
 
@@ -149,6 +150,10 @@ export class AuthService {
       data: {
         password: hashedPassword,
       },
+    });
+
+    await this.prismaService.passwordReset.delete({
+      where: { token: passwordReset.token },
     });
 
     return { success: true };

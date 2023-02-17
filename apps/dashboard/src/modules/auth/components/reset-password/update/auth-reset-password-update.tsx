@@ -1,6 +1,7 @@
 import { ApolloError } from '@apollo/client';
 import { useToast } from '@gardentify/ui';
 import { useResetPasswordMutation } from '@modules/graphql/@generated/graphql';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import AuthResetPasswordUpdateForm, { AuthResetPasswordUpdateFormData } from './auth-reset-password-update-form';
@@ -11,6 +12,7 @@ type AuthResetPasswordUpdateProps = {
 
 const AuthResetPasswordUpdate: React.FC<AuthResetPasswordUpdateProps> = (props) => {
   const { token } = props;
+  const router = useRouter();
   const { toast } = useToast();
   const [resetPassword] = useResetPasswordMutation();
 
@@ -32,7 +34,8 @@ const AuthResetPasswordUpdate: React.FC<AuthResetPasswordUpdateProps> = (props) 
       });
 
     if (reset && reset.success) {
-      toast({ variant: 'success', content: 'Reset password email sent!' });
+      toast({ variant: 'success', content: 'Password updated successfully!' });
+      await router.push('/auth/login');
     }
   };
 
