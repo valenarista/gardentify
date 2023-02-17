@@ -1,6 +1,9 @@
 import QRCode from 'qrcode';
-import { PrismaService } from '@modules/prisma/prisma.service';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { authenticator } from 'otplib';
 import { GenerateTwoFactorInput } from './dto/generate-two-factor.input';
 import { ValidateTwoFactorCodeInput } from './dto/validate-two-factor-code.input';
@@ -9,27 +12,22 @@ import { ValidateTwoFactorCodeResponse } from './responses/validate-two-factor-c
 
 @Injectable()
 export class TwoFactorService {
-  constructor(
-    @Inject(PrismaService)
-    private readonly prismaService: PrismaService,
-  ) {}
-
   async generateTwoFactor(
     input: GenerateTwoFactorInput,
   ): Promise<GenerateTwoFactorResponse> {
-    const twoFactorSecret = authenticator.generateSecret();
+    try {
+      const twoFactorSecret = authenticator.generateSecret();
 
-    const otpUrl = authenticator.keyuri(
-      input.email,
-      'Gardentify',
-      twoFactorSecret,
-    );
+      const otpUrl = authenticator.keyuri(
+        input.email,
+        'Gardentify',
+        twoFactorSecret,
+      );
 
-    await this.prismaService.user.update({
-      where: { email: input.email },
-      data: { twoFactorSecret },
-    });
-    return { otpUrl, twoFactorSecret };
+      return { otpUrl, twoFactorSecret };
+    } catch (error) {
+      throw new NotFoundException('An error ocurred!');
+    }
   }
 
   async generateTwoFactorCode(otpUrl: string): Promise<string> {

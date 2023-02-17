@@ -6,7 +6,8 @@ const TwoFactorPage: React.FC = () => {
     <Layout
       headProps={{
         title: 'Two Factor Setup | Gardentify',
-        description: 'Signup to Gardentify to unlock all the features in just a couple of clicks.',
+        description:
+          'Setup two factor authentication in Gardentify to keep your account secure and access to more auth features.',
       }}
     >
       <AuthTwoFactor />

@@ -42,9 +42,9 @@ const AuthSignUp: React.FC = () => {
   };
 
   return (
-    <div className="flex w-[350px] flex-col rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 md:p-6">
-      <h1 className="mb-4 text-3xl font-bold md:text-4xl">Sign Up</h1>
-
+    <div className="flex w-[350px] flex-col space-y-2 rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 md:w-[450px] md:p-6">
+      <h1 className="text-3xl font-bold md:text-4xl">Sign Up</h1>
+      <p>Create your Gardentify account using your email, a custom username and a secure password.</p>
       <AuthSignupForm onSubmitted={handleSignUp} />
     </div>
   );

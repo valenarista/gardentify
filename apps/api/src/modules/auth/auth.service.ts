@@ -94,31 +94,41 @@ export class AuthService {
   async setupTwoFactorCode(
     input: SetupTwoFactorCodeInput,
   ): Promise<SetupTwoFactorCodeResponse> {
-    const { otpUrl } = await this.twoFactorService.generateTwoFactor({
-      email: input.email,
-    });
+    try {
+      const { otpUrl, twoFactorSecret } =
+        await this.twoFactorService.generateTwoFactor({
+          email: input.email,
+        });
 
-    const qrCode = await this.twoFactorService.generateTwoFactorCode(otpUrl);
+      const qrCode = await this.twoFactorService.generateTwoFactorCode(otpUrl);
 
-    await this.mailerService.sendEmail({
-      template: 'two-factor-setup',
-      to: input.email,
-      subject: 'Two Factor Setup',
-      from: 'gardentify@gmail.com',
-      replacements: {
-        username: input.username,
-        image: qrCode,
-      },
-      attachments: [
-        {
-          filename: 'qrcode.png',
-          path: qrCode,
-          cid: 'qrcode',
+      const user = await this.prismaService.user.update({
+        where: { email: input.email },
+        data: { twoFactorSecret, twoFactorEnabled: true },
+      });
+
+      await this.mailerService.sendEmail({
+        template: 'two-factor-setup',
+        to: input.email,
+        subject: 'Two Factor Setup',
+        from: 'gardentify@gmail.com',
+        replacements: {
+          username: user.username,
+          image: qrCode,
         },
-      ],
-    });
+        attachments: [
+          {
+            filename: 'qrcode.png',
+            path: qrCode,
+            cid: 'qrcode',
+          },
+        ],
+      });
 
-    return { emailSent: true };
+      return { emailSent: true };
+    } catch (error) {
+      throw new NotFoundException('An error ocurred!');
+    }
   }
 
   async requestResetPassword(

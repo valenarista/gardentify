@@ -238,7 +238,6 @@ type ResetPasswordResponse {
 
 input SetupTwoFactorCodeInput {
   email: String!
-  username: String!
 }
 
 type SetupTwoFactorCodeResponse {

@@ -7,8 +7,4 @@ export class SetupTwoFactorCodeInput {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
-  @Field()
-  @IsNotEmpty()
-  username: string;
 }

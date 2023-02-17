@@ -5,11 +5,6 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 const schema = yup.object({
-  username: yup
-    .string()
-    .required('Username is required')
-    .min(5, 'The minimum lenght is 5 characters')
-    .max(32, 'The max lenght is 32 characters'),
   email: yup.string().required('Email is required').email('Email must be of type email'),
 });
 
@@ -25,25 +20,12 @@ const AuthTwoFactorForm: React.FC<AuthTwoFactorFormProps> = (props) => {
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      email: 'youremail@mail.com',
+      email: '',
     },
   });
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit(onSubmitted)}>
-      <Controller
-        name="username"
-        control={control}
-        render={({ field, fieldState }) => (
-          <TextInput
-            id={field.name}
-            label="Username"
-            error={fieldState.invalid}
-            errorMessage={fieldState.error?.message}
-            {...field}
-          />
-        )}
-      />
       <Controller
         name="email"
         control={control}
@@ -58,10 +40,9 @@ const AuthTwoFactorForm: React.FC<AuthTwoFactorFormProps> = (props) => {
           />
         )}
       />
-
       <div className="flex w-full flex-col space-y-1">
-        <Button className="w-full" type="submit">
-          Setup
+        <Button className="w-full" type="submit" size="lg">
+          Setup 2FA
         </Button>
       </div>
     </form>

@@ -124,7 +124,7 @@ export const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>((props, 
 
   return (
     <InputWrapper {...rest} ref={ref}>
-      <div className="flex w-full space-x-4">
+      <div className="flex w-full space-x-2">
         {items.map((digit, idx) => (
           <input
             key={idx}
@@ -136,7 +136,7 @@ export const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>((props, 
             onChange={(e) => handleInputChange(e, idx)}
             onKeyDown={inputOnKeyDown}
             onFocus={inputOnFocus}
-            className="h-12 w-full rounded-md border-[2px] border-neutral-300 bg-neutral-50 p-0 text-center text-3xl font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-50"
+            className="h-12 w-full rounded-md border-[2px] border-neutral-300 bg-neutral-50 p-0 text-center text-3xl font-bold text-neutral-800 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-50 md:h-14"
             value={digit}
           />
         ))}

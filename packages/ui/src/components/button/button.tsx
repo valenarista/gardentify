@@ -34,11 +34,12 @@ export type ButtonStyle = {
 
 type ButtonIconPosition = 'start' | 'end';
 
-export type ButtonProps = ButtonStyle & {
-  disabled?: boolean;
-  icon?: React.ReactElement;
-  iconPosition?: ButtonIconPosition;
-};
+export type ButtonProps = ButtonStyle &
+  HTMLButtonProps & {
+    disabled?: boolean;
+    icon?: React.ReactElement;
+    iconPosition?: ButtonIconPosition;
+  };
 
 type ButtonContentProps = ButtonProps & {
   loading?: boolean;
@@ -67,7 +68,7 @@ const ButtonContent: React.FC<ButtonContentProps> = (props) => {
   );
 };
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps & HTMLButtonProps>((props, ref) => {
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const { children, className = '', disabled, size, variant, colorScheme, icon, iconPosition, ...rest } = props;
 
   return (

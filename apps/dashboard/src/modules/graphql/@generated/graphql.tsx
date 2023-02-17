@@ -362,7 +362,6 @@ export type ResetPasswordResponse = {
 
 export type SetupTwoFactorCodeInput = {
   email: Scalars['String'];
-  username: Scalars['String'];
 };
 
 export type SetupTwoFactorCodeResponse = {

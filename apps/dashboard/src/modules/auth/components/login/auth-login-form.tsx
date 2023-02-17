@@ -41,6 +41,7 @@ const AuthSigninForm: React.FC<AuthSigninFormProps> = (props) => {
             id={field.name}
             label="Email"
             type="email"
+            placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             {...field}
@@ -55,20 +56,21 @@ const AuthSigninForm: React.FC<AuthSigninFormProps> = (props) => {
             id={field.name}
             label="Password"
             type="password"
+            placeholder="Secure Password"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             {...field}
           />
         )}
       />
-      <div className="flex w-full flex-col space-y-1">
+      <div className="!mt-2 flex w-full flex-col space-y-2">
         <div className="flex space-x-1 text-sm">
           <p className="font-medium">Forgot your password?</p>
           <Link className="font-bold text-red-800 dark:text-red-400" href="/auth/reset-password">
             Reset it
           </Link>
         </div>
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" size="lg">
           Sign in
         </Button>
       </div>

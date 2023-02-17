@@ -34,15 +34,15 @@ const AuthResetPasswordResetForm: React.FC<AuthResetPasswordResetFormProps> = (p
             id={field.name}
             label="Email"
             type="email"
+            placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             {...field}
           />
         )}
       />
-
       <div className="flex w-full flex-col space-y-1">
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" size="lg">
           Reset
         </Button>
       </div>
