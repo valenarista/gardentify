@@ -141,6 +141,7 @@ type Mutation {
   removePlantFromContainer(input: RemovePlantFromContainerInput!): DeleteObjectResponse!
   requestResetPassword(input: RequestResetPasswordInput!): RequestResetPasswordResponse!
   resetPassword(input: ResetPasswordInput!): ResetPasswordResponse!
+  setupTwoFactorCode(input: SetupTwoFactorCodeInput!): SetupTwoFactorCodeResponse!
   signup(input: SignUpInput!): Auth!
   updateContainer(input: UpdateContainerInput!): ContainerResponse!
   updatePlant(input: UpdatePlantInput!): PlantResponse!
@@ -228,10 +229,20 @@ type RequestResetPasswordResponse {
 input ResetPasswordInput {
   password: String!
   token: String!
+  twoFactorCode: String!
 }
 
 type ResetPasswordResponse {
   success: Boolean!
+}
+
+input SetupTwoFactorCodeInput {
+  email: String!
+  username: String!
+}
+
+type SetupTwoFactorCodeResponse {
+  emailSent: Boolean!
 }
 
 input SignUpInput {
@@ -271,9 +282,9 @@ input UpdateUserInput {
 }
 
 type User {
-  avatar: String
   createdAt: DateTime!
-  oauthId: String
+  email: String!
+  twoFactorEnabled: Boolean!
   updatedAt: DateTime!
   username: String!
   uuid: String!

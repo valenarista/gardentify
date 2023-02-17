@@ -21,6 +21,7 @@ const AuthResetPasswordUpdate: React.FC<AuthResetPasswordUpdateProps> = (props) 
       variables: {
         input: {
           password: data.password,
+          twoFactorCode: data.twoFactorCode,
           token,
         },
       },

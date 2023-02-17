@@ -7,6 +7,7 @@ import { MailerModule } from '@modules/mailer/mailer.module';
 import { PlantsModule } from '@modules/plants/plants.module';
 import { PrismaService } from '@modules/prisma/prisma.service';
 import { NestServeStaticModule } from '@modules/static/serve-static.module';
+import { TwoFactorModule } from '@modules/twofactor/twofactor.module';
 import { UsersModule } from '@modules/users/users.module';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
@@ -29,6 +30,7 @@ import { GraphQLModule } from '@nestjs/graphql';
     PlantsModule,
     HeightRegistrationsModule,
     MailerModule,
+    TwoFactorModule,
     NestServeStaticModule,
   ],
   providers: [PrismaService],

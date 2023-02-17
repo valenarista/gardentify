@@ -1,0 +1,3 @@
+fragment SetupTwoFactorCodeResponse on SetupTwoFactorCodeResponse {
+  emailSent
+}

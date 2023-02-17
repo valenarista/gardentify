@@ -1,0 +1,5 @@
+mutation setupTwoFactorCode($input: SetupTwoFactorCodeInput!) {
+  setupTwoFactorCode(input: $input) {
+    ...SetupTwoFactorCodeResponse
+  }
+}

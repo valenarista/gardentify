@@ -155,6 +155,7 @@ export type Mutation = {
   removePlantFromContainer: DeleteObjectResponse;
   requestResetPassword: RequestResetPasswordResponse;
   resetPassword: ResetPasswordResponse;
+  setupTwoFactorCode: SetupTwoFactorCodeResponse;
   signup: Auth;
   updateContainer: ContainerResponse;
   updatePlant: PlantResponse;
@@ -207,6 +208,10 @@ export type MutationRequestResetPasswordArgs = {
 
 export type MutationResetPasswordArgs = {
   input: ResetPasswordInput;
+};
+
+export type MutationSetupTwoFactorCodeArgs = {
+  input: SetupTwoFactorCodeInput;
 };
 
 export type MutationSignupArgs = {
@@ -347,11 +352,22 @@ export type RequestResetPasswordResponse = {
 export type ResetPasswordInput = {
   password: Scalars['String'];
   token: Scalars['String'];
+  twoFactorCode: Scalars['String'];
 };
 
 export type ResetPasswordResponse = {
   __typename?: 'ResetPasswordResponse';
   success: Scalars['Boolean'];
+};
+
+export type SetupTwoFactorCodeInput = {
+  email: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type SetupTwoFactorCodeResponse = {
+  __typename?: 'SetupTwoFactorCodeResponse';
+  emailSent: Scalars['Boolean'];
 };
 
 export type SignUpInput = {
@@ -391,9 +407,9 @@ export type UpdateUserInput = {
 
 export type User = {
   __typename?: 'User';
-  avatar?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
-  oauthId?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  twoFactorEnabled: Scalars['Boolean'];
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
   uuid: Scalars['String'];
@@ -413,8 +429,8 @@ export type AuthFragment = {
     __typename?: 'User';
     uuid: string;
     username: string;
-    oauthId?: string | null;
-    avatar?: string | null;
+    email: string;
+    twoFactorEnabled: boolean;
     createdAt: any;
     updatedAt: any;
   };
@@ -423,6 +439,8 @@ export type AuthFragment = {
 export type RequestResetPasswordResponseFragment = { __typename?: 'RequestResetPasswordResponse'; emailSent: boolean };
 
 export type ResetPasswordResponseFragment = { __typename?: 'ResetPasswordResponse'; success: boolean };
+
+export type SetupTwoFactorCodeResponseFragment = { __typename?: 'SetupTwoFactorCodeResponse'; emailSent: boolean };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
@@ -438,8 +456,8 @@ export type LoginMutation = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      oauthId?: string | null;
-      avatar?: string | null;
+      email: string;
+      twoFactorEnabled: boolean;
       createdAt: any;
       updatedAt: any;
     };
@@ -464,6 +482,15 @@ export type ResetPasswordMutation = {
   resetPassword: { __typename?: 'ResetPasswordResponse'; success: boolean };
 };
 
+export type SetupTwoFactorCodeMutationVariables = Exact<{
+  input: SetupTwoFactorCodeInput;
+}>;
+
+export type SetupTwoFactorCodeMutation = {
+  __typename?: 'Mutation';
+  setupTwoFactorCode: { __typename?: 'SetupTwoFactorCodeResponse'; emailSent: boolean };
+};
+
 export type SignupMutationVariables = Exact<{
   input: SignUpInput;
 }>;
@@ -478,8 +505,8 @@ export type SignupMutation = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      oauthId?: string | null;
-      avatar?: string | null;
+      email: string;
+      twoFactorEnabled: boolean;
       createdAt: any;
       updatedAt: any;
     };
@@ -505,8 +532,8 @@ export type ContainerFragment = {
     __typename?: 'User';
     uuid: string;
     username: string;
-    oauthId?: string | null;
-    avatar?: string | null;
+    email: string;
+    twoFactorEnabled: boolean;
     createdAt: any;
     updatedAt: any;
   } | null;
@@ -525,8 +552,8 @@ export type ContainerResponseFragment = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      oauthId?: string | null;
-      avatar?: string | null;
+      email: string;
+      twoFactorEnabled: boolean;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -547,8 +574,8 @@ export type ContainersResponseFragment = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      oauthId?: string | null;
-      avatar?: string | null;
+      email: string;
+      twoFactorEnabled: boolean;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -575,8 +602,8 @@ export type CreateContainerMutation = {
         __typename?: 'User';
         uuid: string;
         username: string;
-        oauthId?: string | null;
-        avatar?: string | null;
+        email: string;
+        twoFactorEnabled: boolean;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -617,8 +644,8 @@ export type UpdateContainerMutation = {
         __typename?: 'User';
         uuid: string;
         username: string;
-        oauthId?: string | null;
-        avatar?: string | null;
+        email: string;
+        twoFactorEnabled: boolean;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -655,8 +682,8 @@ export type FindContainerPlantsQuery = {
           __typename?: 'User';
           uuid: string;
           username: string;
-          oauthId?: string | null;
-          avatar?: string | null;
+          email: string;
+          twoFactorEnabled: boolean;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -685,8 +712,8 @@ export type FindContainerQuery = {
         __typename?: 'User';
         uuid: string;
         username: string;
-        oauthId?: string | null;
-        avatar?: string | null;
+        email: string;
+        twoFactorEnabled: boolean;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -714,8 +741,8 @@ export type FindUserContainersQuery = {
         __typename?: 'User';
         uuid: string;
         username: string;
-        oauthId?: string | null;
-        avatar?: string | null;
+        email: string;
+        twoFactorEnabled: boolean;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -750,8 +777,8 @@ export type HeightRegistrationFragment = {
         __typename?: 'User';
         uuid: string;
         username: string;
-        oauthId?: string | null;
-        avatar?: string | null;
+        email: string;
+        twoFactorEnabled: boolean;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -787,8 +814,8 @@ export type HeightRegistrationResponseFragment = {
           __typename?: 'User';
           uuid: string;
           username: string;
-          oauthId?: string | null;
-          avatar?: string | null;
+          email: string;
+          twoFactorEnabled: boolean;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -826,8 +853,8 @@ export type HeightRegistrationsResponseFragment = {
           __typename?: 'User';
           uuid: string;
           username: string;
-          oauthId?: string | null;
-          avatar?: string | null;
+          email: string;
+          twoFactorEnabled: boolean;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -871,8 +898,8 @@ export type CreateHeightRegistrationMutation = {
             __typename?: 'User';
             uuid: string;
             username: string;
-            oauthId?: string | null;
-            avatar?: string | null;
+            email: string;
+            twoFactorEnabled: boolean;
             createdAt: any;
             updatedAt: any;
           } | null;
@@ -917,8 +944,8 @@ export type FindPlantHeightRegistrationsQuery = {
             __typename?: 'User';
             uuid: string;
             username: string;
-            oauthId?: string | null;
-            avatar?: string | null;
+            email: string;
+            twoFactorEnabled: boolean;
             createdAt: any;
             updatedAt: any;
           } | null;
@@ -949,8 +976,8 @@ export type PlantFragment = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      oauthId?: string | null;
-      avatar?: string | null;
+      email: string;
+      twoFactorEnabled: boolean;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -979,8 +1006,8 @@ export type PlantResponseFragment = {
         __typename?: 'User';
         uuid: string;
         username: string;
-        oauthId?: string | null;
-        avatar?: string | null;
+        email: string;
+        twoFactorEnabled: boolean;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -1011,8 +1038,8 @@ export type PlantsResponseFragment = {
         __typename?: 'User';
         uuid: string;
         username: string;
-        oauthId?: string | null;
-        avatar?: string | null;
+        email: string;
+        twoFactorEnabled: boolean;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -1049,8 +1076,8 @@ export type CreatePlantMutation = {
           __typename?: 'User';
           uuid: string;
           username: string;
-          oauthId?: string | null;
-          avatar?: string | null;
+          email: string;
+          twoFactorEnabled: boolean;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -1101,8 +1128,8 @@ export type UpdatePlantMutation = {
           __typename?: 'User';
           uuid: string;
           username: string;
-          oauthId?: string | null;
-          avatar?: string | null;
+          email: string;
+          twoFactorEnabled: boolean;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -1140,8 +1167,8 @@ export type FindPlantQuery = {
           __typename?: 'User';
           uuid: string;
           username: string;
-          oauthId?: string | null;
-          avatar?: string | null;
+          email: string;
+          twoFactorEnabled: boolean;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -1157,8 +1184,8 @@ export type UserResponseFragment = {
     __typename?: 'User';
     uuid: string;
     username: string;
-    oauthId?: string | null;
-    avatar?: string | null;
+    email: string;
+    twoFactorEnabled: boolean;
     createdAt: any;
     updatedAt: any;
   } | null;
@@ -1169,8 +1196,8 @@ export type UserFragment = {
   __typename?: 'User';
   uuid: string;
   username: string;
-  oauthId?: string | null;
-  avatar?: string | null;
+  email: string;
+  twoFactorEnabled: boolean;
   createdAt: any;
   updatedAt: any;
 };
@@ -1187,8 +1214,8 @@ export type UpdateUserMutation = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      oauthId?: string | null;
-      avatar?: string | null;
+      email: string;
+      twoFactorEnabled: boolean;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -1208,8 +1235,8 @@ export type FindUserQuery = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      oauthId?: string | null;
-      avatar?: string | null;
+      email: string;
+      twoFactorEnabled: boolean;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -1227,8 +1254,8 @@ export type MeQuery = {
       __typename?: 'User';
       uuid: string;
       username: string;
-      oauthId?: string | null;
-      avatar?: string | null;
+      email: string;
+      twoFactorEnabled: boolean;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -1240,8 +1267,8 @@ export const UserFragmentDoc = gql`
   fragment User on User {
     uuid
     username
-    oauthId
-    avatar
+    email
+    twoFactorEnabled
     createdAt
     updatedAt
   }
@@ -1264,6 +1291,11 @@ export const RequestResetPasswordResponseFragmentDoc = gql`
 export const ResetPasswordResponseFragmentDoc = gql`
   fragment ResetPasswordResponse on ResetPasswordResponse {
     success
+  }
+`;
+export const SetupTwoFactorCodeResponseFragmentDoc = gql`
+  fragment SetupTwoFactorCodeResponse on SetupTwoFactorCodeResponse {
+    emailSent
   }
 `;
 export const ErrorFragmentDoc = gql`
@@ -1522,6 +1554,51 @@ export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMut
 export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<
   ResetPasswordMutation,
   ResetPasswordMutationVariables
+>;
+export const SetupTwoFactorCodeDocument = gql`
+  mutation setupTwoFactorCode($input: SetupTwoFactorCodeInput!) {
+    setupTwoFactorCode(input: $input) {
+      ...SetupTwoFactorCodeResponse
+    }
+  }
+  ${SetupTwoFactorCodeResponseFragmentDoc}
+`;
+export type SetupTwoFactorCodeMutationFn = Apollo.MutationFunction<
+  SetupTwoFactorCodeMutation,
+  SetupTwoFactorCodeMutationVariables
+>;
+
+/**
+ * __useSetupTwoFactorCodeMutation__
+ *
+ * To run a mutation, you first call `useSetupTwoFactorCodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetupTwoFactorCodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setupTwoFactorCodeMutation, { data, loading, error }] = useSetupTwoFactorCodeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSetupTwoFactorCodeMutation(
+  baseOptions?: Apollo.MutationHookOptions<SetupTwoFactorCodeMutation, SetupTwoFactorCodeMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<SetupTwoFactorCodeMutation, SetupTwoFactorCodeMutationVariables>(
+    SetupTwoFactorCodeDocument,
+    options
+  );
+}
+export type SetupTwoFactorCodeMutationHookResult = ReturnType<typeof useSetupTwoFactorCodeMutation>;
+export type SetupTwoFactorCodeMutationResult = Apollo.MutationResult<SetupTwoFactorCodeMutation>;
+export type SetupTwoFactorCodeMutationOptions = Apollo.BaseMutationOptions<
+  SetupTwoFactorCodeMutation,
+  SetupTwoFactorCodeMutationVariables
 >;
 export const SignupDocument = gql`
   mutation signup($input: SignUpInput!) {

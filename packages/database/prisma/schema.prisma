@@ -9,17 +9,17 @@ generator client {
 }
 
 model User {
-  uuid     String  @id @default(cuid())
-  oauthId  String? @unique
-  username String  @unique
+  uuid     String @id @default(cuid())
+  username String @unique
 
   email         String  @unique
   emailVerified Boolean @default(false)
 
-  avatar String?
-
   password      String
   passwordReset PasswordReset?
+
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret  String?
 
   containers Container[]
 
@@ -33,7 +33,7 @@ model PasswordReset {
   userId String @unique
   user   User   @relation(fields: [userId], references: [uuid], onDelete: Cascade)
 
-  validUntil DateTime @default(dbgenerated("(timezone('utc'::text, now()) + '2 days'::interval)")) @db.Timestamp(6)
+  validUntil DateTime @default(dbgenerated("(timezone('utc'::text, now()) + '1 days'::interval)")) @db.Timestamp(6)
 }
 
 enum ContainerType {

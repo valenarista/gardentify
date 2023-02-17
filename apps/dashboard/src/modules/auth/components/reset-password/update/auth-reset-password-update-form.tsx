@@ -1,5 +1,6 @@
 import { Button, TextInput } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { OtpInput } from '@modules/common/components/otp-input';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -10,6 +11,10 @@ const schema = yup.object({
     .required('Password is required')
     .min(8, 'The minimum lenght is 8 characters')
     .max(32, 'The max lenght is 32 characters'),
+  twoFactorCode: yup
+    .string()
+    .required('Two factor code is required!')
+    .notOneOf(['     '], 'Confirmation code is invalid!'),
 });
 
 export type AuthResetPasswordUpdateFormData = yup.InferType<typeof schema>;
@@ -25,6 +30,7 @@ const AuthResetPasswordUpdateForm: React.FC<AuthResetPasswordUpdateFormProps> = 
     mode: 'all',
     defaultValues: {
       password: '',
+      twoFactorCode: '',
     },
   });
 
@@ -38,14 +44,35 @@ const AuthResetPasswordUpdateForm: React.FC<AuthResetPasswordUpdateFormProps> = 
             id={field.name}
             label="Password"
             type="password"
+            placeholder="Password"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             {...field}
           />
         )}
       />
+      <Controller
+        name="twoFactorCode"
+        control={control}
+        render={({ field, fieldState }) => {
+          const { onChange, value, ...rest } = field;
 
-      <div className="!mt-1.5 flex w-full flex-col space-y-1">
+          return (
+            <OtpInput
+              id={field.name}
+              label="Confirmation Code"
+              valueLength={6}
+              error={fieldState.invalid}
+              errorMessage={fieldState.error?.message}
+              value={value}
+              onChange={onChange}
+              {...rest}
+            />
+          );
+        }}
+      />
+
+      <div className="flex w-full flex-col space-y-1">
         <Button className="w-full" type="submit">
           Update
         </Button>

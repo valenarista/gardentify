@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { GqlAuthGuard } from './guards/gql-auth.guard';
 import { PasswordService } from './password.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { TwoFactorService } from '@modules/twofactor/twofactor.service';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     JwtStrategy,
     MailerService,
     GqlAuthGuard,
+    TwoFactorService,
     PasswordService,
   ],
   exports: [GqlAuthGuard],

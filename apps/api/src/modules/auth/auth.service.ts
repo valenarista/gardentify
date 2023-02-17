@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Inject,
   Injectable,
   NotFoundException,
@@ -22,6 +23,9 @@ import { ResetPasswordInput } from './dto/reset-password.input';
 import { RequestResetPasswordResponse } from './responses/request-reset-password.response';
 import { ResetPasswordResponse } from './responses/reset-password.response';
 import { LoginInput } from './dto/login.input';
+import { TwoFactorService } from '@modules/twofactor/twofactor.service';
+import { SetupTwoFactorCodeInput } from './dto/setup-two-factor-code.input';
+import { SetupTwoFactorCodeResponse } from './responses/setup-two-factor-code.response';
 
 @Injectable()
 export class AuthService {
@@ -31,6 +35,7 @@ export class AuthService {
     private readonly prismaService: PrismaService,
     private readonly passwordService: PasswordService,
     private readonly mailerService: MailerService,
+    private readonly twoFactorService: TwoFactorService,
     private readonly configService: ConfigService<IConfig>,
   ) {}
 
@@ -86,6 +91,36 @@ export class AuthService {
     });
   }
 
+  async setupTwoFactorCode(
+    input: SetupTwoFactorCodeInput,
+  ): Promise<SetupTwoFactorCodeResponse> {
+    const { otpUrl } = await this.twoFactorService.generateTwoFactor({
+      email: input.email,
+    });
+
+    const qrCode = await this.twoFactorService.generateTwoFactorCode(otpUrl);
+
+    await this.mailerService.sendEmail({
+      template: 'two-factor-setup',
+      to: input.email,
+      subject: 'Two Factor Setup',
+      from: 'gardentify@gmail.com',
+      replacements: {
+        username: input.username,
+        image: qrCode,
+      },
+      attachments: [
+        {
+          filename: 'qrcode.png',
+          path: qrCode,
+          cid: 'qrcode',
+        },
+      ],
+    });
+
+    return { emailSent: true };
+  }
+
   async requestResetPassword(
     input: RequestResetPasswordInput,
   ): Promise<RequestResetPasswordResponse> {
@@ -95,6 +130,10 @@ export class AuthService {
 
     if (!user) {
       throw new NotFoundException('No user found with the given input!');
+    }
+
+    if (!user.twoFactorEnabled) {
+      throw new ConflictException('You have not setup up 2FA yet!');
     }
 
     await this.prismaService.passwordReset.deleteMany({
@@ -134,10 +173,19 @@ export class AuthService {
   ): Promise<ResetPasswordResponse> {
     const passwordReset = await this.prismaService.passwordReset.findUnique({
       where: { token: input.token },
+      include: { user: true },
     });
 
     if (passwordReset === null || passwordReset.validUntil < new Date())
       throw new NotFoundException('No password reset request found!');
+
+    const twoFactorValid = this.twoFactorService.validateTwoFactorCode({
+      twoFactorCode: input.twoFactorCode,
+      userSecret: passwordReset.user.twoFactorSecret,
+    });
+
+    if (!twoFactorValid.valid)
+      throw new ForbiddenException('The two factor code is invalid!');
 
     const hashedPassword = await this.passwordService.hashPassword(
       input.password,

@@ -11,4 +11,8 @@ export class ResetPasswordInput {
   @IsNotEmpty()
   @Field(() => String)
   token: string;
+
+  @IsNotEmpty()
+  @Field(() => String)
+  twoFactorCode: string;
 }

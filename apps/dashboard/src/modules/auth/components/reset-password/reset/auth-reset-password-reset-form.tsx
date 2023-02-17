@@ -41,7 +41,7 @@ const AuthResetPasswordResetForm: React.FC<AuthResetPasswordResetFormProps> = (p
         )}
       />
 
-      <div className="!mt-1.5 flex w-full flex-col space-y-1">
+      <div className="flex w-full flex-col space-y-1">
         <Button className="w-full" type="submit">
           Reset
         </Button>

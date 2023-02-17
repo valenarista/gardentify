@@ -16,6 +16,8 @@ import { RequestResetPasswordInput } from './dto/request-reset-password.input';
 import { ResetPasswordInput } from './dto/reset-password.input';
 import { RequestResetPasswordResponse } from './responses/request-reset-password.response';
 import { ResetPasswordResponse } from './responses/reset-password.response';
+import { SetupTwoFactorCodeInput } from './dto/setup-two-factor-code.input';
+import { SetupTwoFactorCodeResponse } from './responses/setup-two-factor-code.response';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -48,6 +50,13 @@ export class AuthResolver {
   @ResolveField('user', () => User)
   async user(@Parent() auth: Auth) {
     return await this.auth.getUserFromToken(auth.accessToken);
+  }
+
+  @Mutation(() => SetupTwoFactorCodeResponse)
+  async setupTwoFactorCode(
+    @Args('input') input: SetupTwoFactorCodeInput,
+  ): Promise<SetupTwoFactorCodeResponse> {
+    return await this.auth.setupTwoFactorCode(input);
   }
 
   @Mutation(() => RequestResetPasswordResponse)
