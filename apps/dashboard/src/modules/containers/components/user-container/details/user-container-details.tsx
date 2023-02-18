@@ -1,11 +1,15 @@
 import { useAuthContext } from '@modules/auth/context/auth-context';
+import { __URL__ } from '@modules/common/lib/constants';
 import { useUserContainerContext } from '@modules/containers/context/user-container-context';
+import ObjectQrCode from '@modules/qr-codes/components/object-qr-code';
+import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 
 import UserContainerManagement from '../management/user-container-management';
 
 const UserContainerDetails: React.FC = (props) => {
   const {} = props;
+  const router = useRouter();
   const { state } = useAuthContext();
   const { container } = useUserContainerContext();
 
@@ -14,7 +18,10 @@ const UserContainerDetails: React.FC = (props) => {
       {/* Details */}
       <div className="flex-1 flex-col">
         {/* Name */}
-        <h1 className="mb-1 text-3xl font-bold">Container</h1>
+        <div className="flex items-center space-x-2">
+          <h1 className="mb-1 text-3xl font-bold">Container</h1>
+          <ObjectQrCode urlToEncode={`${__URL__}${router.asPath}`} />
+        </div>
         {/* Type */}
         <h2 className="font-medium">Type: {container.type}</h2>
         {/* Dirt depth */}
