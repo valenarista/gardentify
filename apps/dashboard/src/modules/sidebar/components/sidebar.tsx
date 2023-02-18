@@ -1,9 +1,12 @@
 import ThemeToggler from '@modules/theme/components/theme-toggler';
-import React from 'react';
+import clsx from 'clsx';
+import { AnimatePresence, motion, useCycle, useMotionValue, useMotionValueEvent } from 'framer-motion';
+import React, { useState } from 'react';
 
 import SidebarAuth from './auth/sidebar-auth';
 import SidebarLink, { SidebarLinkProps } from './sidebar-link';
 import SidebarLogo from './sidebar-logo';
+import SidebarToggle from './sidebar-toggle';
 import SidebarUserDetails from './user-details/sidebar-user-details';
 
 const SIDEBAR_LINKS: SidebarLinkProps[] = [
@@ -47,23 +50,52 @@ const SIDEBAR_LINKS: SidebarLinkProps[] = [
 ];
 
 const Sidebar: React.FC = () => {
-  return (
-    <div className="bg-primary-400 dark:bg-primary-800 float-left hidden h-screen w-60 flex-col space-y-4 rounded-r-lg p-4 shadow-lg md:flex">
-      {/* Logo */}
-      <SidebarLogo />
-      {/* Links */}
-      <nav className="flex grow flex-col space-y-2">
-        {SIDEBAR_LINKS.map((link) => {
-          return <SidebarLink key={link.label} {...link} />;
-        })}
-      </nav>
-      {/* Theme Toggler */}
-      <ThemeToggler />
+  const width = useMotionValue(0);
+  const [collapseFinished, setCollapseFinished] = useState<boolean>(false);
+  const [collapsed, cycleCollapsed] = useCycle(false, true);
 
-      {/* User Details */}
-      <SidebarUserDetails />
-      {/* Auth */}
-      <SidebarAuth />
+  useMotionValueEvent(width, 'animationStart', () => {
+    setCollapseFinished(true);
+  });
+
+  useMotionValueEvent(width, 'animationComplete', () => {
+    setCollapseFinished(collapsed);
+  });
+
+  return (
+    <div className={clsx('absolute inset-0', collapseFinished ? 'z-20' : '')}>
+      <AnimatePresence>
+        {collapsed ? (
+          <motion.aside
+            className="h-screen"
+            initial={{ width: 0 }}
+            animate={{ width: 250 }}
+            exit={{ width: 0 }}
+            style={{ width }}
+          >
+            <div className="bg-primary-400 dark:bg-primary-800 float-left flex h-full flex-col space-y-4 rounded-r-lg p-4 shadow-lg">
+              {/* Logo */}
+              <SidebarLogo />
+              {/* Links */}
+              <nav className="flex grow flex-col space-y-2">
+                {SIDEBAR_LINKS.map((link) => {
+                  return <SidebarLink key={link.label} {...link} />;
+                })}
+              </nav>
+              {/* Theme Toggler */}
+              <ThemeToggler />
+
+              {/* User Details */}
+              <SidebarUserDetails />
+              {/* Auth */}
+              <SidebarAuth />
+            </div>
+          </motion.aside>
+        ) : null}
+      </AnimatePresence>
+      <div className={clsx('absolute bottom-0 right-0 p-2.5')}>
+        <SidebarToggle onClick={cycleCollapsed} />
+      </div>
     </div>
   );
 };

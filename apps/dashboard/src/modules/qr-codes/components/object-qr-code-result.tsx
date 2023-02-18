@@ -59,13 +59,20 @@ const ObjectQrCodeResult: React.FC<ObjectQrCodeResultProps> = (props) => {
     <Modal title="QR Code" isModalOpen={isModalOpen} onModalClosed={onModalClosed}>
       <div className="mt-4 flex flex-col items-center justify-center space-y-2">
         {result ? (
-          <Image ref={qrCodeRef} src={result} alt="QR Code" width={250} height={250} className="rounded-md border-2" />
+          <Image
+            ref={qrCodeRef}
+            src={result}
+            alt="QR Code"
+            width={250}
+            height={250}
+            className="w-[250px] rounded-md border-2 md:w-[275px]"
+          />
         ) : null}
         <p>
           Scan using your phone the following QR Code to access this page easily or save the image to your device and
           print it.
         </p>
-        <div className="space-x-2">
+        <div className="flex w-full flex-col justify-center space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-2">
           <Button aria-label="Save QR Code" onClick={handleQRSave}>
             Save to Desktop
           </Button>

@@ -18,7 +18,7 @@ const PlantDetails: React.FC = (props) => {
       {/* Details */}
       <div className="flex-1 flex-col">
         {/* Name */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-between space-x-2 md:justify-start">
           <h1 className="mb-1 text-3xl font-bold">Plant</h1>
           <ObjectQrCode urlToEncode={`${__URL__}${router.asPath}`} />
         </div>

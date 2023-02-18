@@ -12,4 +12,8 @@ export class LoginInput {
   @IsNotEmpty()
   @MinLength(8)
   password: string;
+
+  @IsNotEmpty()
+  @Field(() => String)
+  twoFactorCode: string;
 }

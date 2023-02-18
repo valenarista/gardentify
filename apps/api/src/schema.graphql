@@ -126,6 +126,7 @@ type HeightRegistrationsResponse {
 input LoginInput {
   email: String!
   password: String!
+  twoFactorCode: String!
 }
 
 type Mutation {

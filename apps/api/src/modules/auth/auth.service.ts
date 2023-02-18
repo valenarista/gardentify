@@ -71,11 +71,26 @@ export class AuthService {
   async login(input: LoginInput): Promise<Token> {
     const user = await this.prismaService.user.findUnique({
       where: { email: input.email },
+      include: { passwordReset: true },
     });
 
     if (!user) {
       throw new NotFoundException(`An error ocurred!`);
     }
+
+    if (!user.twoFactorEnabled) {
+      throw new ConflictException('You have not setup up 2FA yet!');
+    }
+
+    const twoFactorValid = this.twoFactorService.validateTwoFactorCode({
+      twoFactorCode: input.twoFactorCode,
+      userSecret: user.twoFactorSecret,
+    });
+
+    console.log({ twoFactorValid });
+
+    if (!twoFactorValid.valid)
+      throw new ForbiddenException('The two factor code is invalid!');
 
     const passwordValid = await this.passwordService.validatePassword(
       input.password,
