@@ -1,6 +1,7 @@
 import ThemeToggler from '@modules/theme/components/theme-toggler';
 import React from 'react';
 
+import SidebarAuth from './auth/sidebar-auth';
 import SidebarLink, { SidebarLinkProps } from './sidebar-link';
 import SidebarLogo from './sidebar-logo';
 import SidebarUserDetails from './user-details/sidebar-user-details';
@@ -13,8 +14,6 @@ const SIDEBAR_LINKS: SidebarLinkProps[] = [
       <svg
         className="h-5 w-5 stroke-black dark:stroke-white"
         xmlns="http://www.w3.org/2000/svg"
-        width="50px"
-        height="50px"
         viewBox="0 0 24 24"
         fill="none"
         strokeWidth="2"
@@ -33,8 +32,6 @@ const SIDEBAR_LINKS: SidebarLinkProps[] = [
       <svg
         className="h-5 w-5 stroke-black dark:stroke-white"
         xmlns="http://www.w3.org/2000/svg"
-        width="50px"
-        height="50px"
         viewBox="0 0 24 24"
         fill="none"
         strokeWidth="2"
@@ -65,6 +62,8 @@ const Sidebar: React.FC = () => {
 
       {/* User Details */}
       <SidebarUserDetails />
+      {/* Auth */}
+      <SidebarAuth />
     </div>
   );
 };

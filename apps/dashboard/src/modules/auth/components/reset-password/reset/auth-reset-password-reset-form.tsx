@@ -20,7 +20,7 @@ const AuthResetPasswordResetForm: React.FC<AuthResetPasswordResetFormProps> = (p
     resolver: yupResolver(schema),
     mode: 'all',
     defaultValues: {
-      email: 'youremail@mail.com',
+      email: '',
     },
   });
 

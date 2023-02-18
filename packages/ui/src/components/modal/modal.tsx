@@ -53,7 +53,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
               >
                 {/* Header */}
                 <div className="flex justify-between items-center">
-                  <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                  <Dialog.Title as="h3" className="text-lg font-semibold md:text-xl">
                     {title}
                   </Dialog.Title>
                   <ModalCloseButton onClick={onModalClosed} />
