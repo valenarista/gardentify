@@ -5,29 +5,30 @@ on:
     branches:
       - master
 
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   release:
     name: Release
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        node-version: [16.13.2]
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
-      - name: Install dependencies
-        run: yarn install
+          node-version: 16.x
+
+      - name: Install Dependencies
+        run: yarn
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           version: yarn changeset:pr
           title: 'chore(release): version packages'
           commit: 'chore(release): version packages'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
