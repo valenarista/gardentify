@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Gardentify is a web application that lets you manage and keep tracks of the plants in your garden.",
   "private": true,
+  "sideEffects": true,
   "author": {
     "name": "Faustino Zanetto",
     "email": "zanettofaustino@gmail.com"
@@ -30,6 +31,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky install",
+    "changeset:pr": "changeset version",
     "deps": "concurrently \"ncu -u --cwd ./apps/api\" \"ncu -u --cwd ./apps/dashboard\" \"ncu -u --cwd ./packages/database\" \"ncu -u --cwd ./packages/eslint-config-custom\" \"ncu -u --cwd ./packages/tailwind-config\" \"ncu -u --cwd ./packages/tsconfig\" \"ncu -u --cwd ./packages/ui\""
   },
   "devDependencies": {

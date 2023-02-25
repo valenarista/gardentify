@@ -1,12 +1,12 @@
 # @gardentify/dashboard
 
-## 1.0.0
+## 1.1.0
 
-### Major Changes
+### Minor Changes
 
-- First release of gardentify packages.
+- Initial release.
 
 ### Patch Changes
 
 - Updated dependencies
-  - @gardentify/ui@1.0.0
+  - @gardentify/ui@1.1.0

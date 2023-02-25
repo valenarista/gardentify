@@ -1,7 +1,7 @@
 # @gardentify/ui
 
-## 1.0.0
+## 1.1.0
 
-### Major Changes
+### Minor Changes
 
-- First release of gardentify packages.
+- Initial release.
