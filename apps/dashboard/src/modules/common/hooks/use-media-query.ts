@@ -4,15 +4,14 @@ const useMediaQuery = (query: string): boolean => {
   const [matches, setMatches] = useState<boolean>(false);
 
   useEffect(() => {
-    const matchQueryList = window.matchMedia(query);
-    function handleChange(e: MediaQueryListEvent) {
-      setMatches(e.matches);
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
     }
-    matchQueryList.addEventListener('change', handleChange);
-    return () => {
-      matchQueryList.removeEventListener('change', handleChange);
-    };
-  }, [query]);
+    const listener = () => setMatches(media.matches);
+    window.addEventListener('resize', listener);
+    return () => window.removeEventListener('resize', listener);
+  }, [matches, query]);
 
   return matches;
 };

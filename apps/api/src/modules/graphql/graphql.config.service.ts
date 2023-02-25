@@ -7,7 +7,10 @@ import path from 'path';
 @Injectable()
 export class GqlConfigService implements GqlOptionsFactory {
   createGqlOptions(): ApolloDriverConfig {
-    const schemaPath = path.join(process.cwd(), './src/schema.graphql');
+    const schemaPath = path.join(
+      process.cwd(),
+      './src/modules/graphql/schema.graphql',
+    );
     return {
       // schema options
       autoSchemaFile: schemaPath,
@@ -23,8 +26,8 @@ export class GqlConfigService implements GqlOptionsFactory {
         credentials: true,
       },
       installSubscriptionHandlers: true,
-      debug: true,
-      playground: true,
+      debug: !__PROD__,
+      playground: !__PROD__,
       context: ({ req, res }) => ({ req, res }),
     };
   }

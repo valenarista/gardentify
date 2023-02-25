@@ -5,7 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { MailerService } from '@modules/mailer/mailer.service';
-import { AuthController } from './auth.controller';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { GqlAuthGuard } from './guards/gql-auth.guard';
@@ -29,7 +28,6 @@ import { TwoFactorService } from '@modules/twofactor/twofactor.service';
       inject: [ConfigService],
     }),
   ],
-  controllers: [AuthController],
   providers: [
     PrismaService,
     AuthService,

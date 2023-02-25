@@ -1,9 +1,14 @@
-import { Button } from '@gardentify/ui';
+import { Button, IconButton } from '@gardentify/ui';
 import React from 'react';
 
 import { useThemeContext } from '../context/theme-context';
 
-const ThemeToggler: React.FC = () => {
+type ThemeTogglerProps = {
+  isCompact?: boolean;
+};
+
+const ThemeToggler: React.FC<ThemeTogglerProps> = (props) => {
+  const { isCompact = false } = props;
   const { theme, toggle } = useThemeContext();
 
   const renderLightModeIcon = (
@@ -50,6 +55,11 @@ const ThemeToggler: React.FC = () => {
     if (theme === 'dark') return renderLightModeIcon;
     return renderDarkModeIcon;
   };
+
+  if (isCompact)
+    return (
+      <IconButton variant="ghost" aria-label="Toggle Theme" onClick={() => toggle()} size="lg" icon={themeIcon()} />
+    );
 
   return (
     <Button

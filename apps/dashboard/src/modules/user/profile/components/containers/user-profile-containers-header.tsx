@@ -15,8 +15,8 @@ const UserProfileContainersHeader: React.FC = () => {
       <h2 className="text-2xl font-bold">Containers</h2>
       {/* Management */}
       {state.user && userUuid === state.user.uuid ? (
-        <Link href="/containers">
-          <Button>Manage Containers</Button>
+        <Link href="/containers" className="w-full md:w-auto">
+          <Button className="w-full md:w-auto">Manage Containers</Button>
         </Link>
       ) : null}
     </div>
