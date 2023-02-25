@@ -33,15 +33,16 @@
     "deps": "concurrently \"ncu -u --cwd ./apps/api\" \"ncu -u --cwd ./apps/dashboard\" \"ncu -u --cwd ./packages/database\" \"ncu -u --cwd ./packages/eslint-config-custom\" \"ncu -u --cwd ./packages/tailwind-config\" \"ncu -u --cwd ./packages/tsconfig\" \"ncu -u --cwd ./packages/ui\""
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.0",
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "@gardentify/eslint-config-custom": "*",
     "autoprefixer": "^10.4.13",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.1",
+    "postcss": "^8.4.21",
     "prettier": "latest",
     "tailwindcss": "^3.2.4",
-    "postcss": "^8.4.21",
     "turbo": "^1.7.4"
   },
   "lint-staged": {
