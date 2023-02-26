@@ -23,7 +23,9 @@ const Layout: React.FC<LayoutProps> = (props) => {
         <Navigation />
       </NavigationProvider>
       {/* Content */}
-      <div className="flex flex-1 flex-col items-center py-4 px-2.5 md:px-0 md:py-6 lg:py-10">{children}</div>
+      <div className="flex min-h-screen flex-1 flex-col items-center py-4 px-2.5 md:px-0 md:py-6 lg:py-10">
+        {children}
+      </div>
     </div>
   );
 };

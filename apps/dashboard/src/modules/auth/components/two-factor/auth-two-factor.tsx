@@ -3,6 +3,7 @@ import { useSetupTwoFactorCodeMutation } from '@modules/graphql/@generated/graph
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import AuthHeader from '../auth-header';
 import AuthTwoFactorForm, { AuthTwoFactorFormData } from './auth-two-factor-form';
 
 const AuthTwoFactor: React.FC = () => {
@@ -34,7 +35,7 @@ const AuthTwoFactor: React.FC = () => {
 
   return (
     <div className="flex w-[350px] flex-col rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 md:w-[450px] md:p-6">
-      <h1 className="mb-4 text-3xl font-bold md:text-4xl">Setup 2FA</h1>
+      <AuthHeader title="Setup 2FA" href="/auth" />
       <p className="mb-1.5">
         Keep in mind that if you already have 2FA enabled, your current 2FA will be replace with a new one!
       </p>

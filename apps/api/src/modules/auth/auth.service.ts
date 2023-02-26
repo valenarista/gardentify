@@ -87,8 +87,6 @@ export class AuthService {
       userSecret: user.twoFactorSecret,
     });
 
-    console.log({ twoFactorValid });
-
     if (!twoFactorValid.valid)
       throw new ForbiddenException('The two factor code is invalid!');
 

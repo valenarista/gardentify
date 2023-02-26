@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import AuthHeader from '../auth-header';
 import AuthResetPasswordReset from './reset/auth-reset-password-reset';
 import AuthResetPasswordUpdate from './update/auth-reset-password-update';
 
@@ -14,7 +15,7 @@ const AuthResetPassword: React.FC = () => {
     <div className="flex w-[350px] flex-col space-y-2 rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 md:w-[450px] md:p-6">
       {resetPasswordToken !== undefined ? (
         <>
-          <h1 className="text-3xl font-bold md:text-4xl">Update Password</h1>
+          <AuthHeader title="Update Password" href="/auth" />
           <p>
             Enter your new password and the verificatino code in your 2FA app. Keep in mind that you need 2FA. You cant
             setup yours here:{' '}
@@ -26,7 +27,7 @@ const AuthResetPassword: React.FC = () => {
         </>
       ) : (
         <>
-          <h1 className="text-3xl font-bold md:text-4xl">Reset Password</h1>
+          <AuthHeader title="Reset Password" href="/auth" />
           <p>
             Enter the email of your account and you will receive an email with the instructions to reset the password.
           </p>

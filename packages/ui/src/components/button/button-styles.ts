@@ -33,7 +33,7 @@ export const BUTTON_COLOR_SCHEMES: AvailableColorSchemes = {
 };
 
 export const BUTTON_BASE_STYLES: string =
-  'inline-flex appearance-none items-center justify-center relative whitespace-nowrap align-middle rounded-lg font-medium focus-visible:outline-none focus-visible:ring-4 transition-colors text-neutral-900 dark:text-neutral-50 disabled:cursor-not-allowed';
+  'inline-flex appearance-none items-center justify-center relative whitespace-nowrap rounded-lg font-medium focus-visible:outline-none focus-visible:ring-4 transition-colors text-neutral-900 dark:text-neutral-50 disabled:cursor-not-allowed';
 
 export const ICON_SIZE_CLASSES = {
   xs: 'h-4 w-4',

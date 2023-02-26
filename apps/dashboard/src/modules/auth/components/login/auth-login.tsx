@@ -6,6 +6,7 @@ import { useLoginMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import AuthHeader from '../auth-header';
 import AuthSigninForm, { AuthSigninFormData } from './auth-login-form';
 
 const AuthLogin: React.FC = () => {
@@ -44,7 +45,7 @@ const AuthLogin: React.FC = () => {
 
   return (
     <div className="flex w-[350px] flex-col space-y-2 rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 md:w-[450px] md:p-6">
-      <h1 className="text-3xl font-bold md:text-4xl">Login</h1>
+      <AuthHeader title="Login" href="/auth" />
       <p>Login into your Gardentify account using your email and password.</p>
 
       <AuthSigninForm onSubmitted={handleLogin} />

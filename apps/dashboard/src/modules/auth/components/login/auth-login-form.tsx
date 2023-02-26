@@ -89,7 +89,7 @@ const AuthSigninForm: React.FC<AuthSigninFormProps> = (props) => {
           );
         }}
       />
-      <div className="!mt-2 flex w-full flex-col space-y-2">
+      <div className="flex w-full flex-col space-y-2">
         <div className="flex space-x-1 text-sm">
           <p className="font-medium">Forgot your password?</p>
           <Link className="font-bold text-red-800 dark:text-red-400" href="/auth/reset-password">
