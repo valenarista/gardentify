@@ -26,6 +26,7 @@ import { LoginInput } from './dto/login.input';
 import { TwoFactorService } from '@modules/twofactor/twofactor.service';
 import { SetupTwoFactorCodeInput } from './dto/setup-two-factor-code.input';
 import { SetupTwoFactorCodeResponse } from './responses/setup-two-factor-code.response';
+import { resolve } from 'path';
 
 @Injectable()
 export class AuthService {
@@ -176,6 +177,10 @@ export class AuthService {
       this.configService.get('app', { infer: true }).clientUrl
     }/auth/reset-password?token=${passwordReset.token}`;
 
+    const logoPath = resolve(
+      `${__dirname}/../../resources/images/gardentify-logo.png`,
+    );
+
     await this.mailerService.sendEmail({
       template: 'reset-password',
       to: input.email,
@@ -186,6 +191,14 @@ export class AuthService {
         email: user.email,
         link: passwordResetLink,
       },
+
+      attachments: [
+        {
+          filename: 'gardentify-logo.png',
+          path: logoPath,
+          cid: 'logo',
+        },
+      ],
     });
 
     return { emailSent: true };

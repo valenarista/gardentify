@@ -285,6 +285,10 @@
       padding: 0 15px 0 0;
     }
 
+    .logo {
+      width:375px;
+    }
+
     body {
       background-color: #F2F4F6;
       color: #51545E;
@@ -445,9 +449,7 @@
           <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
             <tr>
               <td class="email-masthead">
-                <a href="https://gardentify-dashboard.vercel.app/" class="f-fallback email-masthead_name">
-                Gardentify
-              </a>
+                <img class="logo" src="cid:logo" alt="Gardentify Logo" />
               </td>
             </tr>
             <!-- Email Body -->
