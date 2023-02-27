@@ -20,7 +20,7 @@
     "@hookform/resolvers": "^2.9.11",
     "@next/font": "^13.1.6",
     "clsx": "^1.2.1",
-    "framer-motion": "^9.0.2",
+    "framer-motion": "^10.0.0",
     "graphql": "^16.6.0",
     "html-to-image": "^1.11.11",
     "next": "13.2.1",
