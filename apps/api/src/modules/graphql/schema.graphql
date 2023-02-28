@@ -58,7 +58,7 @@ input CreateContainerInput {
 
 input CreateHarvestInput {
   plant: FindPlantInput!
-  quantity: Int
+  quantity: Int!
   weight: Float!
 }
 
@@ -118,7 +118,7 @@ input FindUserInput {
 type Harvest {
   createdAt: DateTime!
   plant: Plant
-  quantity: Int
+  quantity: Int!
   updatedAt: DateTime!
   uuid: String!
   weight: Float!

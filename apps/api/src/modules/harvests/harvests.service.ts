@@ -104,10 +104,10 @@ export class HarvestsService {
     try {
       const harvest = await this.prismaService.harvest.create({
         data: {
-          ...input,
-          plant: { connect: { uuid: input.plant.uuid } },
+          weight: input.weight,
+          quantity: input.quantity,
+          plantUuid: input.plant.uuid,
         },
-        include: { plant: true },
       });
 
       if (!harvest) {
@@ -116,15 +116,7 @@ export class HarvestsService {
         );
       }
 
-      const parsedHarvest: Harvest = {
-        ...harvest,
-        plant: {
-          ...harvest.plant,
-          type: parsePlantType(harvest.plant.type),
-        },
-      };
-
-      return { harvest: parsedHarvest };
+      return { harvest };
     } catch (err) {
       return {
         errors: [

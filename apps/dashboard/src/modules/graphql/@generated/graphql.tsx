@@ -71,7 +71,7 @@ export type CreateContainerInput = {
 
 export type CreateHarvestInput = {
   plant: FindPlantInput;
-  quantity?: InputMaybe<Scalars['Int']>;
+  quantity: Scalars['Int'];
   weight: Scalars['Float'];
 };
 
@@ -129,7 +129,7 @@ export type Harvest = {
   __typename?: 'Harvest';
   createdAt: Scalars['DateTime'];
   plant?: Maybe<Plant>;
-  quantity?: Maybe<Scalars['Int']>;
+  quantity: Scalars['Int'];
   updatedAt: Scalars['DateTime'];
   uuid: Scalars['String'];
   weight: Scalars['Float'];
@@ -822,7 +822,7 @@ export type FindUserContainersQuery = {
 export type HarvestFragment = {
   __typename?: 'Harvest';
   uuid: string;
-  quantity?: number | null;
+  quantity: number;
   weight: number;
   createdAt: any;
   updatedAt: any;
@@ -860,7 +860,7 @@ export type HarvestResponseFragment = {
   harvest?: {
     __typename?: 'Harvest';
     uuid: string;
-    quantity?: number | null;
+    quantity: number;
     weight: number;
     createdAt: any;
     updatedAt: any;
@@ -900,7 +900,7 @@ export type HarvestsResponseFragment = {
   harvests?: Array<{
     __typename?: 'Harvest';
     uuid: string;
-    quantity?: number | null;
+    quantity: number;
     weight: number;
     createdAt: any;
     updatedAt: any;
@@ -946,7 +946,7 @@ export type CreateHarvestMutation = {
     harvest?: {
       __typename?: 'Harvest';
       uuid: string;
-      quantity?: number | null;
+      quantity: number;
       weight: number;
       createdAt: any;
       updatedAt: any;
@@ -993,7 +993,7 @@ export type FindPlantHarvestsQuery = {
     harvests?: Array<{
       __typename?: 'Harvest';
       uuid: string;
-      quantity?: number | null;
+      quantity: number;
       weight: number;
       createdAt: any;
       updatedAt: any;

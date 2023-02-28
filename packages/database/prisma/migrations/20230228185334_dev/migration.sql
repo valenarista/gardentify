@@ -68,8 +68,9 @@ CREATE TABLE "HeightRegistration" (
 -- CreateTable
 CREATE TABLE "Harvest" (
     "uuid" TEXT NOT NULL,
-    "quantity" INTEGER DEFAULT 0,
+    "quantity" INTEGER NOT NULL,
     "weight" DOUBLE PRECISION NOT NULL,
+    "plantUuid" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -93,3 +94,6 @@ CREATE INDEX "Plant_containerUuid_idx" ON "Plant"("containerUuid");
 
 -- CreateIndex
 CREATE INDEX "HeightRegistration_plantUuid_idx" ON "HeightRegistration"("plantUuid");
+
+-- CreateIndex
+CREATE INDEX "Harvest_plantUuid_idx" ON "Harvest"("plantUuid");

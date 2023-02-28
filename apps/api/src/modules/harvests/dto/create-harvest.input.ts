@@ -6,8 +6,8 @@ export class CreateHarvestInput {
   @Field(() => FindPlantInput, { nullable: false })
   plant: FindPlantInput;
 
-  @Field(() => Int, { nullable: true })
-  quantity?: number;
+  @Field(() => Int)
+  quantity: number;
 
   @Field(() => Float)
   weight: number;
