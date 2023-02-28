@@ -1,57 +1,56 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
-import { Plant } from './models/plant.model';
-import { PlantResponse } from './responses/harvest.response';
-import { FindPlantInput } from './dto/find-harvest.input';
-import { PlantsResponse } from './responses/harvests.response';
-import { CreatePlantInput } from './dto/create-plant.input';
-import { UpdatePlantInput } from './dto/update-plant.input';
 
-import { PlantsService } from './harvests.service';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
+import { CreateHarvestInput } from './dto/create-harvest.input';
+import { FindHarvestInput } from './dto/find-harvest.input';
+import { UpdateHarvestInput } from './dto/update-harvest.input';
 import { Harvest } from './models/harvests.model';
+import { HarvestResponse } from './responses/harvest.response';
+import { HarvestsResponse } from './responses/harvests.response';
+import { HarvestsService } from './harvests.service';
 
 @Resolver(() => Harvest)
 export class HarvestsResolver {
-  constructor(private plantsService: PlantsService) {}
+  constructor(private harvestsService: HarvestsService) {}
 
-  @Query(() => PlantResponse)
-  async findPlant(
-    @Args('input') input: FindPlantInput,
-  ): Promise<PlantResponse> {
-    return await this.plantsService.findPlant(input);
+  @Query(() => HarvestResponse)
+  async findHarvest(
+    @Args('input') input: FindHarvestInput,
+  ): Promise<HarvestResponse> {
+    return await this.harvestsService.findHarvest(input);
   }
 
-  @Query(() => PlantsResponse)
-  async findPlants(
-    @Args('input') input: FindPlantInput,
-  ): Promise<PlantsResponse> {
-    return await this.plantsService.findPlants(input);
+  @Query(() => HarvestsResponse)
+  async findHarvests(
+    @Args('input') input: FindHarvestInput,
+  ): Promise<HarvestsResponse> {
+    return await this.harvestsService.findHarvests(input);
   }
 
-  @Mutation(() => PlantResponse)
+  @Mutation(() => HarvestResponse)
   @UseGuards(GqlAuthGuard)
-  async createPlant(
-    @Args('input') input: CreatePlantInput,
-  ): Promise<PlantResponse> {
-    return await this.plantsService.createPlant(input);
+  async createHarvest(
+    @Args('input') input: CreateHarvestInput,
+  ): Promise<HarvestResponse> {
+    return await this.harvestsService.createHarvest(input);
   }
 
   @Mutation(() => DeleteObjectResponse)
   @UseGuards(GqlAuthGuard)
-  async deletePlant(
-    @Args('input') input: FindPlantInput,
+  async deleteHarvest(
+    @Args('input') input: FindHarvestInput,
   ): Promise<DeleteObjectResponse> {
-    return await this.plantsService.deletePlant(input);
+    return await this.harvestsService.deleteHarvest(input);
   }
 
-  @Mutation(() => PlantResponse)
+  @Mutation(() => HarvestResponse)
   @UseGuards(GqlAuthGuard)
-  async updatePlant(
-    @Args('input') input: UpdatePlantInput,
-  ): Promise<PlantResponse> {
-    return await this.plantsService.updatePlant(input);
+  async updateHarvest(
+    @Args('input') input: UpdateHarvestInput,
+  ): Promise<HarvestResponse> {
+    return await this.harvestsService.updateHarvest(input);
   }
 }

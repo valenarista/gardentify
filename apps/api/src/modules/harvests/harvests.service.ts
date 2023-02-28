@@ -1,49 +1,42 @@
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
-import { Plant } from './models/plant.model';
-import { PlantResponse } from './responses/harvest.response';
-import { FindPlantInput } from './dto/find-harvest.input';
-import { parsePlantType } from './lib/plant-utils';
-import { PlantsResponse } from './responses/harvests.response';
-import { CreatePlantInput } from './dto/create-plant.input';
-import { parseContainerType } from '@modules/container/lib/container-utils';
-import { UpdatePlantInput } from './dto/update-plant.input';
-import { Inject, Injectable } from '@nestjs/common';
+import { HarvestResponse } from './responses/harvest.response';
+import { FindHarvestInput } from './dto/find-harvest.input';
+import { HarvestsResponse } from './responses/harvests.response';
+import { CreateHarvestInput } from './dto/create-harvest.input';
+import { UpdateHarvestInput } from './dto/update-harvest.input';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@modules/prisma/prisma.service';
+import { Harvest } from './models/harvests.model';
+import { parsePlantType } from '@modules/plants/lib/plant-utils';
 
 @Injectable()
 export class HarvestsService {
   constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
-  async findHarvest(input: FindPlantInput): Promise<PlantResponse> {
+  async findHarvest(input: FindHarvestInput): Promise<HarvestResponse> {
     try {
-      const plant = await this.prismaService.plant.findUnique({
+      const harvest = await this.prismaService.harvest.findUnique({
         where: {
           uuid: input.uuid,
         },
-        include: { container: { include: { user: true } } },
+        include: { plant: true },
       });
 
-      if (!plant) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'No plant found with the given input!',
-            },
-          ],
-        };
+      if (!harvest) {
+        throw new NotFoundException(
+          'Could not find harvest with the given input!',
+        );
       }
 
-      const parsedPlant: Plant = {
-        ...plant,
-        type: parsePlantType(plant.type),
-        container: {
-          ...plant.container,
-          type: parseContainerType(plant.container.type),
+      const parsedHarvest: Harvest = {
+        ...harvest,
+        plant: {
+          ...harvest.plant,
+          type: parsePlantType(harvest.plant.type),
         },
       };
 
-      return { plant: parsedPlant };
+      return { harvest: parsedHarvest };
     } catch (err) {
       return {
         errors: [
@@ -56,31 +49,19 @@ export class HarvestsService {
     }
   }
 
-  async findPlants(input: FindPlantInput): Promise<PlantsResponse> {
+  async findHarvests(input: FindHarvestInput): Promise<HarvestsResponse> {
     try {
-      const plants = await this.prismaService.plant.findMany({
+      const harvests = await this.prismaService.harvest.findMany({
         where: { uuid: input.uuid },
       });
 
-      if (!plants.length) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'No plants found with the given input!',
-            },
-          ],
-        };
+      if (!harvests.length) {
+        throw new NotFoundException(
+          'Could not find harvests with the given input!',
+        );
       }
 
-      const parsedPlants: Plant[] = plants.map((plant) => {
-        return {
-          ...plant,
-          type: parsePlantType(plant.type),
-        };
-      });
-
-      return { plants: parsedPlants };
+      return { harvests };
     } catch (err) {
       return {
         errors: [
@@ -93,40 +74,31 @@ export class HarvestsService {
     }
   }
 
-  async createPlant(input: CreatePlantInput): Promise<PlantResponse> {
+  async createHarvest(input: CreateHarvestInput): Promise<HarvestResponse> {
     try {
-      const plant = await this.prismaService.plant.create({
+      const harvest = await this.prismaService.harvest.create({
         data: {
-          variety: input.variety,
-          type: parsePlantType(input.type),
-          seedsPlantedAt: input.seedsPlantedAt,
-          seedsSproutedAt: input.seedsSproutedAt,
-          container: { connect: { uuid: input.container.uuid } },
+          ...input,
+          plant: { connect: { uuid: input.plant.uuid } },
         },
-        include: { container: true },
+        include: { plant: true },
       });
 
-      if (!plant) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'Could not create plant with the given input!',
-            },
-          ],
-        };
+      if (!harvest) {
+        throw new NotFoundException(
+          'Could not create harvest with the given input!',
+        );
       }
 
-      const parsedPlant: Plant = {
-        ...plant,
-        type: parsePlantType(plant.type),
-        container: {
-          ...plant.container,
-          type: parseContainerType(plant.container.type),
+      const parsedHarvest: Harvest = {
+        ...harvest,
+        plant: {
+          ...harvest.plant,
+          type: parsePlantType(harvest.plant.type),
         },
       };
 
-      return { plant: parsedPlant };
+      return { harvest: parsedHarvest };
     } catch (err) {
       return {
         errors: [
@@ -139,9 +111,9 @@ export class HarvestsService {
     }
   }
 
-  async deletePlant(input: FindPlantInput): Promise<DeleteObjectResponse> {
+  async deleteHarvest(input: FindHarvestInput): Promise<DeleteObjectResponse> {
     try {
-      await this.prismaService.plant.delete({
+      await this.prismaService.harvest.delete({
         where: { uuid: input.uuid },
       });
       return { deleted: true };
@@ -157,39 +129,31 @@ export class HarvestsService {
     }
   }
 
-  async updatePlant(input: UpdatePlantInput): Promise<PlantResponse> {
+  async updateHarvest(input: UpdateHarvestInput): Promise<HarvestResponse> {
     try {
-      const updatedPlant = await this.prismaService.plant.update({
+      const updatedHarvest = await this.prismaService.harvest.update({
         where: { uuid: input.uuid },
         data: {
           ...input,
         },
-        include: { container: true },
+        include: { plant: true },
       });
 
-      if (!updatedPlant) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'Could not update plant with the given input!',
-            },
-          ],
-        };
+      if (!updatedHarvest) {
+        throw new NotFoundException(
+          'Could not update harvest with the given input!',
+        );
       }
 
-      const parsedPlant: Plant = {
-        ...updatedPlant,
-        type: parsePlantType(updatedPlant.type),
-        container: {
-          ...updatedPlant.container,
-          type: parseContainerType(updatedPlant.container.type),
+      const parsedHarvest: Harvest = {
+        ...updatedHarvest,
+        plant: {
+          ...updatedHarvest.plant,
+          type: parsePlantType(updatedHarvest.plant.type),
         },
       };
 
-      return {
-        plant: parsedPlant,
-      };
+      return { harvest: parsedHarvest };
     } catch (err) {
       console.log(err);
 

@@ -56,6 +56,12 @@ input CreateContainerInput {
   userUuid: String!
 }
 
+input CreateHarvestInput {
+  plant: FindPlantInput!
+  quantity: Int
+  weight: Float!
+}
+
 input CreateHeightRegistrationInput {
   height: Float!
   plantUuid: String!
@@ -88,6 +94,10 @@ input FindContainerInput {
   uuid: String!
 }
 
+input FindHarvestInput {
+  uuid: String!
+}
+
 input FindHeightRegistrationInput {
   height: Float
   uuid: String
@@ -103,6 +113,25 @@ input FindUserContainersInput {
 
 input FindUserInput {
   uuid: String!
+}
+
+type Harvest {
+  createdAt: DateTime!
+  plant: Plant
+  quantity: Int
+  updatedAt: DateTime!
+  uuid: String!
+  weight: Float!
+}
+
+type HarvestResponse {
+  errors: [Error!]
+  harvest: Harvest
+}
+
+type HarvestsResponse {
+  errors: [Error!]
+  harvests: [Harvest!]
 }
 
 type HeightRegistration {
@@ -132,9 +161,11 @@ input LoginInput {
 type Mutation {
   addPlantToContainer(input: AddPlantToContainerInput!): ContainerResponse!
   createContainer(input: CreateContainerInput!): ContainerResponse!
+  createHarvest(input: CreateHarvestInput!): HarvestResponse!
   createHeightRegistration(input: CreateHeightRegistrationInput!): HeightRegistrationResponse!
   createPlant(input: CreatePlantInput!): PlantResponse!
   deleteContainer(input: FindContainerInput!): DeleteObjectResponse!
+  deleteHarvest(input: FindHarvestInput!): DeleteObjectResponse!
   deleteHeightRegistration(find: FindHeightRegistrationInput!): DeleteObjectResponse!
   deletePlant(input: FindPlantInput!): DeleteObjectResponse!
   login(input: LoginInput!): Auth!
@@ -145,6 +176,7 @@ type Mutation {
   setupTwoFactorCode(input: SetupTwoFactorCodeInput!): SetupTwoFactorCodeResponse!
   signup(input: SignUpInput!): Auth!
   updateContainer(input: UpdateContainerInput!): ContainerResponse!
+  updateHarvest(input: UpdateHarvestInput!): HarvestResponse!
   updatePlant(input: UpdatePlantInput!): PlantResponse!
   updateUser(input: UpdateUserInput!): UserResponse!
 }
@@ -201,6 +233,8 @@ type Query {
   findContainer(input: FindContainerInput!): ContainerResponse!
   findContainerPlants(input: FindContainerInput!): PlantsResponse!
   findContainers(input: FindContainerInput!): ContainersResponse!
+  findHarvest(input: FindHarvestInput!): HarvestResponse!
+  findHarvests(input: FindHarvestInput!): HarvestsResponse!
   findHeightRegistration(input: FindHeightRegistrationInput!): HeightRegistrationResponse!
   findPlant(input: FindPlantInput!): PlantResponse!
   findPlantHeightRegistrations(input: FindPlantInput!): HeightRegistrationsResponse!
@@ -266,6 +300,12 @@ input UpdateContainerInput {
   """Type of the container"""
   type: ContainerType
   uuid: String!
+}
+
+input UpdateHarvestInput {
+  quantity: Int
+  uuid: String!
+  weight: Float
 }
 
 input UpdatePlantInput {

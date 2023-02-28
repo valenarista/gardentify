@@ -7,12 +7,12 @@ CREATE TYPE "PlantType" AS ENUM ('NONE', 'TOMATO', 'POTATO', 'CARROT', 'ONION', 
 -- CreateTable
 CREATE TABLE "User" (
     "uuid" TEXT NOT NULL,
-    "oauthId" TEXT,
     "username" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
-    "avatar" TEXT,
     "password" TEXT NOT NULL,
+    "twoFactorEnabled" BOOLEAN NOT NULL DEFAULT false,
+    "twoFactorSecret" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -23,7 +23,7 @@ CREATE TABLE "User" (
 CREATE TABLE "PasswordReset" (
     "token" CHAR(21) NOT NULL,
     "userId" TEXT NOT NULL,
-    "validUntil" TIMESTAMP(6) NOT NULL DEFAULT (timezone('utc'::text, now()) + '2 days'::interval),
+    "validUntil" TIMESTAMP(6) NOT NULL DEFAULT (timezone('utc'::text, now()) + '1 days'::interval),
 
     CONSTRAINT "PasswordReset_pkey" PRIMARY KEY ("token")
 );
@@ -65,8 +65,16 @@ CREATE TABLE "HeightRegistration" (
     CONSTRAINT "HeightRegistration_pkey" PRIMARY KEY ("uuid")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "User_oauthId_key" ON "User"("oauthId");
+-- CreateTable
+CREATE TABLE "Harvest" (
+    "uuid" TEXT NOT NULL,
+    "quantity" INTEGER DEFAULT 0,
+    "weight" DOUBLE PRECISION NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Harvest_pkey" PRIMARY KEY ("uuid")
+);
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");

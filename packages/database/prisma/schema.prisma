@@ -96,6 +96,8 @@ model Plant {
 
   heightRegistrations HeightRegistration[]
 
+  harvests Harvest[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -105,6 +107,21 @@ model Plant {
 model HeightRegistration {
   uuid   String @id @default(cuid())
   height Float  @default(0)
+
+  plant     Plant  @relation(fields: [plantUuid], references: [uuid])
+  plantUuid String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([plantUuid])
+}
+
+model Harvest {
+  uuid String @id @default(cuid())
+
+  quantity Int?  @default(0)
+  weight   Float
 
   plant     Plant  @relation(fields: [plantUuid], references: [uuid])
   plantUuid String

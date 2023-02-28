@@ -10,6 +10,6 @@ export class Harvest extends BaseModel {
   @Field(() => Float)
   weight: number;
 
-  @Field(() => Plant)
-  plant: Plant;
+  @Field(() => Plant, { nullable: true })
+  plant?: Plant;
 }
