@@ -1,0 +1,8 @@
+fragment HarvestResponse on HarvestResponse {
+  harvest {
+    ...Harvest
+  }
+  errors {
+    ...Error
+  }
+}

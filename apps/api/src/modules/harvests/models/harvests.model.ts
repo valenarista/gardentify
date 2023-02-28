@@ -4,8 +4,8 @@ import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Harvest extends BaseModel {
-  @Field(() => Int, { nullable: true })
-  quantity?: number;
+  @Field(() => Int)
+  quantity: number;
 
   @Field(() => Float)
   weight: number;

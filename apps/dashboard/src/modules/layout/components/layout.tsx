@@ -15,7 +15,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
   const { children, headProps } = props;
 
   return (
-    <div className="flex min-h-screen flex-row overflow-hidden bg-neutral-100 dark:bg-neutral-900">
+    <div className="flex min-h-screen flex-row bg-neutral-100 dark:bg-neutral-900">
       {/* Header */}
       <LayoutHead {...headProps} />
       {/* Navigation */}
@@ -23,7 +23,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
         <Navigation />
       </NavigationProvider>
       {/* Content */}
-      <div className="flex min-h-screen flex-1 flex-col items-center py-4 px-2.5 md:px-0 md:py-6 lg:py-10">
+      <div className="mb-[70px] flex flex-1 flex-col items-center py-4 px-2.5 md:mb-0 md:px-0 md:py-6 lg:py-10">
         {children}
       </div>
     </div>

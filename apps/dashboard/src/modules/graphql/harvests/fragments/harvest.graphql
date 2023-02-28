@@ -1,0 +1,10 @@
+fragment Harvest on Harvest {
+  uuid
+  quantity
+  weight
+  plant {
+    ...Plant
+  }
+  createdAt
+  updatedAt
+}

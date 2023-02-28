@@ -8,6 +8,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@modules/prisma/prisma.service';
 import { Harvest } from './models/harvests.model';
 import { parsePlantType } from '@modules/plants/lib/plant-utils';
+import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 
 @Injectable()
 export class HarvestsService {
@@ -53,6 +54,31 @@ export class HarvestsService {
     try {
       const harvests = await this.prismaService.harvest.findMany({
         where: { uuid: input.uuid },
+      });
+
+      if (!harvests.length) {
+        throw new NotFoundException(
+          'Could not find harvests with the given input!',
+        );
+      }
+
+      return { harvests };
+    } catch (err) {
+      return {
+        errors: [
+          {
+            field: 'input',
+            message: 'An error ocurred!',
+          },
+        ],
+      };
+    }
+  }
+
+  async findPlantHarvests(input: FindPlantInput): Promise<HarvestsResponse> {
+    try {
+      const harvests = await this.prismaService.harvest.findMany({
+        where: { plant: { uuid: input.uuid } },
       });
 
       if (!harvests.length) {

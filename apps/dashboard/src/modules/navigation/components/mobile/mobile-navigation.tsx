@@ -9,7 +9,7 @@ import NavigationUserDetails from '../user-details/navigation-user-details';
 
 const MobileNavigation: React.FC = () => {
   return (
-    <div className="bg-primary-500 dark:bg-primary-900 absolute inset-x-0 bottom-0 z-10 p-3">
+    <div className="bg-primary-500 dark:bg-primary-900 fixed inset-x-0 bottom-0 z-10 h-[70px] p-3">
       <div className="flex items-center justify-between space-x-2">
         <NavigationLogo />
 

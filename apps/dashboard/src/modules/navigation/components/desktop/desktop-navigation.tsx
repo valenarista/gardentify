@@ -9,7 +9,7 @@ import NavigationUserDetails from '../user-details/navigation-user-details';
 
 const DesktopNavigation: React.FC = () => {
   return (
-    <aside className="h-screen">
+    <aside className="sticky inset-y-0 left-0 h-screen">
       <div className="bg-primary-400 dark:bg-primary-800 float-left flex h-full flex-col space-y-4 rounded-r-lg p-4 shadow-lg">
         {/* Logo */}
         <NavigationLogo />

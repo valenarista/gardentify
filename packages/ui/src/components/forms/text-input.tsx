@@ -2,13 +2,22 @@ import clsx from 'clsx';
 import React, { InputHTMLAttributes } from 'react';
 import { InputWrapper, InputWrapperProps } from './input-wrapper';
 
-type TextInputProps = InputWrapperProps & InputHTMLAttributes<HTMLInputElement> & {};
+type TextInputProps = InputWrapperProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'value'> & {};
 
 export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
-  const { id, label, error, errorMessage, help, helpMessage, name, children, ...rest } = props;
+  const { id, label, error, errorMessage, help, helpMessage, name, children, toggleable, onToggled, ...rest } = props;
 
   return (
-    <InputWrapper id={id} label={label} error={error} errorMessage={errorMessage} help={help} helpMessage={helpMessage}>
+    <InputWrapper
+      id={id}
+      label={label}
+      error={error}
+      errorMessage={errorMessage}
+      help={help}
+      helpMessage={helpMessage}
+      toggleable={toggleable}
+      onToggled={onToggled}
+    >
       <input
         ref={ref}
         name={name}

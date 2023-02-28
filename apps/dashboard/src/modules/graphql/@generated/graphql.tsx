@@ -69,6 +69,12 @@ export type CreateContainerInput = {
   userUuid: Scalars['String'];
 };
 
+export type CreateHarvestInput = {
+  plant: FindPlantInput;
+  quantity?: InputMaybe<Scalars['Int']>;
+  weight: Scalars['Float'];
+};
+
 export type CreateHeightRegistrationInput = {
   height: Scalars['Float'];
   plantUuid: Scalars['String'];
@@ -98,6 +104,10 @@ export type FindContainerInput = {
   uuid: Scalars['String'];
 };
 
+export type FindHarvestInput = {
+  uuid: Scalars['String'];
+};
+
 export type FindHeightRegistrationInput = {
   height?: InputMaybe<Scalars['Float']>;
   uuid?: InputMaybe<Scalars['String']>;
@@ -113,6 +123,28 @@ export type FindUserContainersInput = {
 
 export type FindUserInput = {
   uuid: Scalars['String'];
+};
+
+export type Harvest = {
+  __typename?: 'Harvest';
+  createdAt: Scalars['DateTime'];
+  plant?: Maybe<Plant>;
+  quantity?: Maybe<Scalars['Int']>;
+  updatedAt: Scalars['DateTime'];
+  uuid: Scalars['String'];
+  weight: Scalars['Float'];
+};
+
+export type HarvestResponse = {
+  __typename?: 'HarvestResponse';
+  errors?: Maybe<Array<Error>>;
+  harvest?: Maybe<Harvest>;
+};
+
+export type HarvestsResponse = {
+  __typename?: 'HarvestsResponse';
+  errors?: Maybe<Array<Error>>;
+  harvests?: Maybe<Array<Harvest>>;
 };
 
 export type HeightRegistration = {
@@ -146,9 +178,11 @@ export type Mutation = {
   __typename?: 'Mutation';
   addPlantToContainer: ContainerResponse;
   createContainer: ContainerResponse;
+  createHarvest: HarvestResponse;
   createHeightRegistration: HeightRegistrationResponse;
   createPlant: PlantResponse;
   deleteContainer: DeleteObjectResponse;
+  deleteHarvest: DeleteObjectResponse;
   deleteHeightRegistration: DeleteObjectResponse;
   deletePlant: DeleteObjectResponse;
   login: Auth;
@@ -159,6 +193,7 @@ export type Mutation = {
   setupTwoFactorCode: SetupTwoFactorCodeResponse;
   signup: Auth;
   updateContainer: ContainerResponse;
+  updateHarvest: HarvestResponse;
   updatePlant: PlantResponse;
   updateUser: UserResponse;
 };
@@ -171,6 +206,10 @@ export type MutationCreateContainerArgs = {
   input: CreateContainerInput;
 };
 
+export type MutationCreateHarvestArgs = {
+  input: CreateHarvestInput;
+};
+
 export type MutationCreateHeightRegistrationArgs = {
   input: CreateHeightRegistrationInput;
 };
@@ -181,6 +220,10 @@ export type MutationCreatePlantArgs = {
 
 export type MutationDeleteContainerArgs = {
   input: FindContainerInput;
+};
+
+export type MutationDeleteHarvestArgs = {
+  input: FindHarvestInput;
 };
 
 export type MutationDeleteHeightRegistrationArgs = {
@@ -221,6 +264,10 @@ export type MutationSignupArgs = {
 
 export type MutationUpdateContainerArgs = {
   input: UpdateContainerInput;
+};
+
+export type MutationUpdateHarvestArgs = {
+  input: UpdateHarvestInput;
 };
 
 export type MutationUpdatePlantArgs = {
@@ -287,8 +334,11 @@ export type Query = {
   findContainer: ContainerResponse;
   findContainerPlants: PlantsResponse;
   findContainers: ContainersResponse;
+  findHarvest: HarvestResponse;
+  findHarvests: HarvestsResponse;
   findHeightRegistration: HeightRegistrationResponse;
   findPlant: PlantResponse;
+  findPlantHarvests: HarvestsResponse;
   findPlantHeightRegistrations: HeightRegistrationsResponse;
   findPlants: PlantsResponse;
   findUser: UserResponse;
@@ -308,11 +358,23 @@ export type QueryFindContainersArgs = {
   input: FindContainerInput;
 };
 
+export type QueryFindHarvestArgs = {
+  input: FindHarvestInput;
+};
+
+export type QueryFindHarvestsArgs = {
+  input: FindHarvestInput;
+};
+
 export type QueryFindHeightRegistrationArgs = {
   input: FindHeightRegistrationInput;
 };
 
 export type QueryFindPlantArgs = {
+  input: FindPlantInput;
+};
+
+export type QueryFindPlantHarvestsArgs = {
   input: FindPlantInput;
 };
 
@@ -390,6 +452,12 @@ export type UpdateContainerInput = {
   /** Type of the container */
   type?: InputMaybe<ContainerType>;
   uuid: Scalars['String'];
+};
+
+export type UpdateHarvestInput = {
+  quantity?: InputMaybe<Scalars['Int']>;
+  uuid: Scalars['String'];
+  weight?: InputMaybe<Scalars['Float']>;
 };
 
 export type UpdatePlantInput = {
@@ -745,6 +813,216 @@ export type FindUserContainersQuery = {
         twoFactorEnabled: boolean;
         createdAt: any;
         updatedAt: any;
+      } | null;
+    }> | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type HarvestFragment = {
+  __typename?: 'Harvest';
+  uuid: string;
+  quantity?: number | null;
+  weight: number;
+  createdAt: any;
+  updatedAt: any;
+  plant?: {
+    __typename?: 'Plant';
+    uuid: string;
+    type: PlantType;
+    variety: string;
+    seedsPlantedAt: any;
+    seedsSproutedAt: any;
+    createdAt: any;
+    updatedAt: any;
+    container?: {
+      __typename?: 'Container';
+      uuid: string;
+      type: ContainerType;
+      dirtDepth: number;
+      createdAt: any;
+      updatedAt: any;
+      user?: {
+        __typename?: 'User';
+        uuid: string;
+        username: string;
+        email: string;
+        twoFactorEnabled: boolean;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type HarvestResponseFragment = {
+  __typename?: 'HarvestResponse';
+  harvest?: {
+    __typename?: 'Harvest';
+    uuid: string;
+    quantity?: number | null;
+    weight: number;
+    createdAt: any;
+    updatedAt: any;
+    plant?: {
+      __typename?: 'Plant';
+      uuid: string;
+      type: PlantType;
+      variety: string;
+      seedsPlantedAt: any;
+      seedsSproutedAt: any;
+      createdAt: any;
+      updatedAt: any;
+      container?: {
+        __typename?: 'Container';
+        uuid: string;
+        type: ContainerType;
+        dirtDepth: number;
+        createdAt: any;
+        updatedAt: any;
+        user?: {
+          __typename?: 'User';
+          uuid: string;
+          username: string;
+          email: string;
+          twoFactorEnabled: boolean;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
+  errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+};
+
+export type HarvestsResponseFragment = {
+  __typename?: 'HarvestsResponse';
+  harvests?: Array<{
+    __typename?: 'Harvest';
+    uuid: string;
+    quantity?: number | null;
+    weight: number;
+    createdAt: any;
+    updatedAt: any;
+    plant?: {
+      __typename?: 'Plant';
+      uuid: string;
+      type: PlantType;
+      variety: string;
+      seedsPlantedAt: any;
+      seedsSproutedAt: any;
+      createdAt: any;
+      updatedAt: any;
+      container?: {
+        __typename?: 'Container';
+        uuid: string;
+        type: ContainerType;
+        dirtDepth: number;
+        createdAt: any;
+        updatedAt: any;
+        user?: {
+          __typename?: 'User';
+          uuid: string;
+          username: string;
+          email: string;
+          twoFactorEnabled: boolean;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
+      } | null;
+    } | null;
+  }> | null;
+  errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+};
+
+export type CreateHarvestMutationVariables = Exact<{
+  input: CreateHarvestInput;
+}>;
+
+export type CreateHarvestMutation = {
+  __typename?: 'Mutation';
+  createHarvest: {
+    __typename?: 'HarvestResponse';
+    harvest?: {
+      __typename?: 'Harvest';
+      uuid: string;
+      quantity?: number | null;
+      weight: number;
+      createdAt: any;
+      updatedAt: any;
+      plant?: {
+        __typename?: 'Plant';
+        uuid: string;
+        type: PlantType;
+        variety: string;
+        seedsPlantedAt: any;
+        seedsSproutedAt: any;
+        createdAt: any;
+        updatedAt: any;
+        container?: {
+          __typename?: 'Container';
+          uuid: string;
+          type: ContainerType;
+          dirtDepth: number;
+          createdAt: any;
+          updatedAt: any;
+          user?: {
+            __typename?: 'User';
+            uuid: string;
+            username: string;
+            email: string;
+            twoFactorEnabled: boolean;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
+        } | null;
+      } | null;
+    } | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type FindPlantHarvestsQueryVariables = Exact<{
+  input: FindPlantInput;
+}>;
+
+export type FindPlantHarvestsQuery = {
+  __typename?: 'Query';
+  findPlantHarvests: {
+    __typename?: 'HarvestsResponse';
+    harvests?: Array<{
+      __typename?: 'Harvest';
+      uuid: string;
+      quantity?: number | null;
+      weight: number;
+      createdAt: any;
+      updatedAt: any;
+      plant?: {
+        __typename?: 'Plant';
+        uuid: string;
+        type: PlantType;
+        variety: string;
+        seedsPlantedAt: any;
+        seedsSproutedAt: any;
+        createdAt: any;
+        updatedAt: any;
+        container?: {
+          __typename?: 'Container';
+          uuid: string;
+          type: ContainerType;
+          dirtDepth: number;
+          createdAt: any;
+          updatedAt: any;
+          user?: {
+            __typename?: 'User';
+            uuid: string;
+            username: string;
+            email: string;
+            twoFactorEnabled: boolean;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
+        } | null;
       } | null;
     }> | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -1365,6 +1643,43 @@ export const PlantFragmentDoc = gql`
   }
   ${ContainerFragmentDoc}
 `;
+export const HarvestFragmentDoc = gql`
+  fragment Harvest on Harvest {
+    uuid
+    quantity
+    weight
+    plant {
+      ...Plant
+    }
+    createdAt
+    updatedAt
+  }
+  ${PlantFragmentDoc}
+`;
+export const HarvestResponseFragmentDoc = gql`
+  fragment HarvestResponse on HarvestResponse {
+    harvest {
+      ...Harvest
+    }
+    errors {
+      ...Error
+    }
+  }
+  ${HarvestFragmentDoc}
+  ${ErrorFragmentDoc}
+`;
+export const HarvestsResponseFragmentDoc = gql`
+  fragment HarvestsResponse on HarvestsResponse {
+    harvests {
+      ...Harvest
+    }
+    errors {
+      ...Error
+    }
+  }
+  ${HarvestFragmentDoc}
+  ${ErrorFragmentDoc}
+`;
 export const HeightRegistrationFragmentDoc = gql`
   fragment HeightRegistration on HeightRegistration {
     uuid
@@ -1907,6 +2222,88 @@ export type FindUserContainersQueryResult = Apollo.QueryResult<
   FindUserContainersQuery,
   FindUserContainersQueryVariables
 >;
+export const CreateHarvestDocument = gql`
+  mutation createHarvest($input: CreateHarvestInput!) {
+    createHarvest(input: $input) {
+      ...HarvestResponse
+    }
+  }
+  ${HarvestResponseFragmentDoc}
+`;
+export type CreateHarvestMutationFn = Apollo.MutationFunction<CreateHarvestMutation, CreateHarvestMutationVariables>;
+
+/**
+ * __useCreateHarvestMutation__
+ *
+ * To run a mutation, you first call `useCreateHarvestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateHarvestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createHarvestMutation, { data, loading, error }] = useCreateHarvestMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateHarvestMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateHarvestMutation, CreateHarvestMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateHarvestMutation, CreateHarvestMutationVariables>(CreateHarvestDocument, options);
+}
+export type CreateHarvestMutationHookResult = ReturnType<typeof useCreateHarvestMutation>;
+export type CreateHarvestMutationResult = Apollo.MutationResult<CreateHarvestMutation>;
+export type CreateHarvestMutationOptions = Apollo.BaseMutationOptions<
+  CreateHarvestMutation,
+  CreateHarvestMutationVariables
+>;
+export const FindPlantHarvestsDocument = gql`
+  query findPlantHarvests($input: FindPlantInput!) {
+    findPlantHarvests(input: $input) {
+      ...HarvestsResponse
+    }
+  }
+  ${HarvestsResponseFragmentDoc}
+`;
+
+/**
+ * __useFindPlantHarvestsQuery__
+ *
+ * To run a query within a React component, call `useFindPlantHarvestsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindPlantHarvestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindPlantHarvestsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFindPlantHarvestsQuery(
+  baseOptions: Apollo.QueryHookOptions<FindPlantHarvestsQuery, FindPlantHarvestsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindPlantHarvestsQuery, FindPlantHarvestsQueryVariables>(FindPlantHarvestsDocument, options);
+}
+export function useFindPlantHarvestsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FindPlantHarvestsQuery, FindPlantHarvestsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindPlantHarvestsQuery, FindPlantHarvestsQueryVariables>(
+    FindPlantHarvestsDocument,
+    options
+  );
+}
+export type FindPlantHarvestsQueryHookResult = ReturnType<typeof useFindPlantHarvestsQuery>;
+export type FindPlantHarvestsLazyQueryHookResult = ReturnType<typeof useFindPlantHarvestsLazyQuery>;
+export type FindPlantHarvestsQueryResult = Apollo.QueryResult<FindPlantHarvestsQuery, FindPlantHarvestsQueryVariables>;
 export const CreateHeightRegistrationDocument = gql`
   mutation createHeightRegistration($input: CreateHeightRegistrationInput!) {
     createHeightRegistration(input: $input) {

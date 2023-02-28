@@ -120,7 +120,7 @@ model HeightRegistration {
 model Harvest {
   uuid String @id @default(cuid())
 
-  quantity Int?  @default(0)
+  quantity Int
   weight   Float
 
   plant     Plant  @relation(fields: [plantUuid], references: [uuid])

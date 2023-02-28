@@ -77,6 +77,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, r
       className={getButtonStyles({ size, variant, colorScheme }, className)}
       type="button"
       aria-disabled={disabled}
+      disabled={disabled}
       {...rest}
     >
       <ButtonContent {...props} />

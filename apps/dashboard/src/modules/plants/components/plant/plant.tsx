@@ -3,6 +3,7 @@ import { useContainerPlantContext } from '@modules/plants/context/container-plan
 import React, { useEffect } from 'react';
 
 import PlantDetails from './details/plant-details';
+import PlantHarvests from './harvests/plant-harvests';
 import PlantHeightRegistrations from './height-registrations/plant-height-registrations';
 
 type PlantProps = {
@@ -24,6 +25,8 @@ const Plant: React.FC<PlantProps> = (props) => {
       <PlantDetails />
       {/* Height Registrations */}
       <PlantHeightRegistrations />
+      {/* Harvests */}
+      <PlantHarvests />
     </div>
   );
 };

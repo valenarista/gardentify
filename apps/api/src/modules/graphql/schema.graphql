@@ -237,6 +237,7 @@ type Query {
   findHarvests(input: FindHarvestInput!): HarvestsResponse!
   findHeightRegistration(input: FindHeightRegistrationInput!): HeightRegistrationResponse!
   findPlant(input: FindPlantInput!): PlantResponse!
+  findPlantHarvests(input: FindPlantInput!): HarvestsResponse!
   findPlantHeightRegistrations(input: FindPlantInput!): HeightRegistrationsResponse!
   findPlants(input: FindPlantInput!): PlantsResponse!
   findUser(input: FindUserInput!): UserResponse!

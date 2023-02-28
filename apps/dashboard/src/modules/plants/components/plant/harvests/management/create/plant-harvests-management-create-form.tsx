@@ -1,7 +1,7 @@
 import { Button, TextInput, useToast } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
-import { useCreateHeightRegistrationMutation } from '@modules/graphql/@generated/graphql';
+import { useCreateHarvestMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -9,27 +9,33 @@ import * as yup from 'yup';
 
 const schema = yup
   .object({
-    height: yup
+    quantity: yup
       .number()
-      .typeError('Height registration height must be a number!')
-      .min(0.1, 'The minimum height is 0.1 cms!.')
-      .required('Height registration height is required!'),
+      .typeError('Quantity must be a number!')
+      .min(1, 'The minimum quantity is 1 unit!')
+      .required('The quantity is required!'),
+
+    weight: yup
+      .number()
+      .typeError('Weight must be a number!')
+      .min(0.1, 'The minimum weight is 0.1 kilograms!')
+      .required('The weight is required!'),
   })
   .required();
 
 type FormData = yup.InferType<typeof schema>;
 
-const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
+const PlantHarvestsManagementCreateForm: React.FC = () => {
   const router = useRouter();
   const { state } = useAuthContext();
   const { toast } = useToast();
-  const [createHeightRegistration] = useCreateHeightRegistrationMutation();
+  const [createHarvest] = useCreateHarvestMutation();
 
   const {
     handleSubmit,
     reset,
     register,
-    formState: { isValid, errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'all',
@@ -40,16 +46,16 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
 
     const plantUuid = router.query.uuid as string;
 
-    await createHeightRegistration({
+    await createHarvest({
       variables: {
         input: {
           ...data,
-          plantUuid,
+          plant: { uuid: plantUuid },
         },
       },
     })
       .then((response) => {
-        return response.data?.createHeightRegistration;
+        return response.data?.createHarvest;
       })
       .catch((err) => {
         const errorMessage = err.message;
@@ -66,15 +72,28 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
   return (
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <TextInput
-        id="height"
-        label="Height"
+        id="quantity"
+        label="Quantity"
         type="number"
-        placeholder="Plant height"
-        error={errors.height !== undefined}
-        errorMessage={errors.height?.message}
+        placeholder="Harvest units"
+        error={errors.quantity !== undefined}
+        errorMessage={errors.quantity?.message}
         help
-        helpMessage="Height in centimeters"
-        {...register('height')}
+        helpMessage="Units harvested"
+        {...register('quantity')}
+      />
+
+      <TextInput
+        id="weight"
+        label="Weight"
+        type="number"
+        step="0.01"
+        placeholder="Harvest weight"
+        error={errors.weight !== undefined}
+        errorMessage={errors.weight?.message}
+        help
+        helpMessage="Weight harvested in kilograms"
+        {...register('weight')}
       />
 
       <div className="flex w-full space-x-4 px-6">
@@ -89,4 +108,4 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
   );
 };
 
-export default PlantHeightRegistrationsManagementCreateForm;
+export default PlantHarvestsManagementCreateForm;
