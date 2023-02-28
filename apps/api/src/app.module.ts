@@ -2,6 +2,7 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { GlobalConfigModule } from '@modules/config/config.module';
 import { ContainersModule } from '@modules/container/containers.module';
 import { GqlConfigService } from '@modules/graphql/graphql.config.service';
+import { HarvestsModule } from '@modules/harvests/harvests.module';
 import { HeightRegistrationsModule } from '@modules/height-registration/height-registration.module';
 import { MailerModule } from '@modules/mailer/mailer.module';
 import { PlantsModule } from '@modules/plants/plants.module';
@@ -31,6 +32,7 @@ import { GraphQLModule } from '@nestjs/graphql';
     HeightRegistrationsModule,
     MailerModule,
     TwoFactorModule,
+    HarvestsModule,
     NestServeStaticModule,
   ],
   providers: [PrismaService],
