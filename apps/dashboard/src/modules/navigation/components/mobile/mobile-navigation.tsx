@@ -16,7 +16,7 @@ const MobileNavigation: React.FC = () => {
         {/* Links */}
         <nav className="flex grow items-center justify-center space-x-4">
           {NAVIGATION_LINKS.map((link) => {
-            return <NavigationLink key={link.label} data={link} />;
+            return <NavigationLink key={link.label} {...link} />;
           })}
           {/* Navigation Auth */}
           <NavigationAuth />

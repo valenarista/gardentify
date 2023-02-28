@@ -1,6 +1,6 @@
-import { NavigationLink } from '../components/navigation';
+import { NavigationLinkProps } from '../components/navigation-link';
 
-export const NAVIGATION_LINKS: NavigationLink[] = [
+export const NAVIGATION_LINKS: NavigationLinkProps[] = [
   {
     href: '/dashboard',
     label: 'Dashboard',

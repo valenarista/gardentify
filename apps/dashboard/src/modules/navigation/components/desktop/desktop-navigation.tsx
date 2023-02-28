@@ -16,7 +16,7 @@ const DesktopNavigation: React.FC = () => {
         {/* Links */}
         <nav className="flex grow flex-col space-y-2">
           {NAVIGATION_LINKS.map((link) => {
-            return <NavigationLink key={link.label} data={link} />;
+            return <NavigationLink key={link.label} {...link} />;
           })}
         </nav>
         {/* Theme Toggler */}

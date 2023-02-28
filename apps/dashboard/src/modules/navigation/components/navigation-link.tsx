@@ -3,15 +3,15 @@ import Link from 'next/link';
 import React from 'react';
 
 import { useNavigationContext } from '../context/navigation-context';
-import { NavigationLink as NavigationLinkData } from './navigation';
 
 export type NavigationLinkProps = {
-  data: NavigationLinkData;
+  href: string;
+  label: string;
+  icon: React.ReactElement;
 };
 
 const NavigationLink: React.FC<NavigationLinkProps> = (props) => {
-  const { data } = props;
-  const { href, label, icon } = data;
+  const { href, label, icon } = props;
 
   const { isCompact } = useNavigationContext();
 

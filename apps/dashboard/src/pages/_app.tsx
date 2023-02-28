@@ -5,8 +5,8 @@ import { ToastProvider, ToastsContainer } from '@gardentify/ui';
 import { createApolloClient } from '@modules/apollo/apollo-client';
 import AuthProvider from '@modules/auth/context/auth-context';
 import ThemeProvider from '@modules/theme/context/theme-context';
-import { Inter } from '@next/font/google';
 import type { AppProps } from 'next/app';
+import { Inter } from 'next/font/google';
 import React from 'react';
 
 const InterFont = Inter({
