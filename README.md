@@ -1,19 +1,19 @@
-<h1 align="center">Welcome to Gardentify</h1>
+<h1 align="center">🌱 Welcome to Gardentify 🌱</h1>
 
 <div align="center">
-  <img src="assets/images/iconzy-showcase.png" />
+  <img src="assets/marketing/gardentify-showcase.png" alt="Gardentify Showcase" />
   <p>
-    <a href="https://www.npmjs.com/package/iconzy" target="_blank">
+    <a href="https://www.npmjs.com/package/gardentify" target="_blank">
       <img alt="Version" src="https://img.shields.io/npm/v/portfolio.svg">
     </a>
-    <a href="https://github.com/faustinozanetto/iconzy#readme" target="_blank">
+    <a href="https://github.com/faustinozanetto/gardentify#readme" target="_blank">
       <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
     </a>
-    <a href="https://github.com/faustinozanetto/iconzy/graphs/commit-activity" target="_blank">
+    <a href="https://github.com/faustinozanetto/gardentify/graphs/commit-activity" target="_blank">
       <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
     </a>
-    <a href="https://github.com/faustinozanetto/iconzy/blob/master/LICENSE" target="_blank">
-      <img alt="License: MIT" src="https://img.shields.io/github/license/faustinozanetto/iconzy" />
+    <a href="https://github.com/faustinozanetto/gardentify/blob/master/LICENSE" target="_blank">
+      <img alt="License: MIT" src="https://img.shields.io/github/license/faustinozanetto/gardentify" />
     </a>
     <a href="https://twitter.com/faustinozanetto" target="_blank">
       <img alt="Twitter: faustinozanetto" src="https://img.shields.io/twitter/follow/faustinozanetto.svg?style=social" />
@@ -55,12 +55,13 @@ The project is being developed with the latest technlogoies used in the industry
 
 The project is a structured in a mono repo so it consists of multiple separated projects. It has two main folders called `apps` and `packages` where the core tools are built.
 
-- `apps/web`: the main [Next.js](https://nextjs.org/) app containing the frontend
-- `apps/landing`: the landing [Next.js](https://nextjs.org/) app for the iconzy landing page
+- `apps/dashboard`: the main [Next.js](https://nextjs.org/) app containing the frontend project for the dashboard app.
+- `apps/api`: the [NestJS](https://nestjs.com/) backend api for Gardentify.
 - `packages/tsconfig`: the main tsconfig has some files that describe how typescript should work for each app
 - `packages/tailwind-config`: the base config for the different uses of tailwindcss across the project
 - `packages/eslint-config-custom`: the custom eslint configuration for the project
 - `packages/ui`: a React component library containing common UI components like Buttons, Inputs and more
+- `packages/database`: a [Prisma](https://www.prisma.io/) database containing the main schema for Gardentify.
 
 ## 👤 Author
 

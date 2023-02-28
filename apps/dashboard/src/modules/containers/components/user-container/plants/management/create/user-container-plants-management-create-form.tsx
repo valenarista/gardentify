@@ -41,8 +41,8 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
     defaultValues: {
       variety: 'Grand King',
       type: PlantType.Tomato,
-      seedsPlantedAt: new Date(),
-      seedsSproutedAt: new Date(),
+      seedsPlantedAt: new Date().toISOString().substring(0, 10) as unknown as Date,
+      seedsSproutedAt: new Date().toISOString().substring(0, 10) as unknown as Date,
     },
   });
 

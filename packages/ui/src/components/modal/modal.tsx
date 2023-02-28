@@ -21,7 +21,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
 
   return (
     <Transition appear show={isModalOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10 " onClose={onModalClosed}>
+      <Dialog as="div" className="relative z-10" onClose={onModalClosed}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

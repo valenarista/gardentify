@@ -65,7 +65,7 @@ const ObjectQrCodeResult: React.FC<ObjectQrCodeResultProps> = (props) => {
             alt="QR Code"
             width={250}
             height={250}
-            className="w-[250px] rounded-md border-2 md:w-[275px]"
+            className="w-[225px] rounded-md border-2 md:w-[275px]"
           />
         ) : null}
         <p>
