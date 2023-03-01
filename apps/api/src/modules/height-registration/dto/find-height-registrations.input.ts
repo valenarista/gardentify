@@ -1,10 +1,10 @@
-import { Field, Float, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
-export class FindHeightRegistrationInput {
-  @Field(() => String, { nullable: true })
-  uuid?: string;
+export class FindHeightRegistrationsInput {
+  @Field(() => Int)
+  take: number;
 
-  @Field(() => Float, { nullable: true })
-  height?: number;
+  @Field(() => Boolean)
+  includePlant: boolean;
 }

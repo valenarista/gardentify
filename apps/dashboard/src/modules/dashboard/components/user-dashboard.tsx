@@ -20,7 +20,7 @@ const UserDashboard: React.FC<UserDashboardProps> = (props) => {
   const { user } = props;
 
   const { response, loading } = useApiQuery<FindHarvestsQuery, FindHarvestsQueryVariables>(FindHarvestsDocument, {
-    variables: { input: { take: 3, includePlant: true } },
+    variables: { input: { take: 4, includePlant: true } },
   });
 
   const harvests = response?.data?.findHarvests.harvests || [];
@@ -31,8 +31,9 @@ const UserDashboard: React.FC<UserDashboardProps> = (props) => {
       <DashboardLatest<Harvest>
         name="Latest Harvests"
         data={harvests}
+        loading={loading}
         render={(harvest, index) => {
-          return <HarvestCard key={`harvest-${index}`} harvest={harvest} showPlantIcon />;
+          return <HarvestCard key={`harvest-${index}`} harvest={harvest} includePlantDetails />;
         }}
       />
     </section>

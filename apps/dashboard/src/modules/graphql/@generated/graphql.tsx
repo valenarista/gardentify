@@ -118,6 +118,11 @@ export type FindHeightRegistrationInput = {
   uuid?: InputMaybe<Scalars['String']>;
 };
 
+export type FindHeightRegistrationsInput = {
+  includePlant: Scalars['Boolean'];
+  take: Scalars['Int'];
+};
+
 export type FindPlantInput = {
   uuid: Scalars['String'];
 };
@@ -155,7 +160,7 @@ export type HarvestsResponse = {
 export type HeightRegistration = {
   __typename?: 'HeightRegistration';
   createdAt: Scalars['DateTime'];
-  height?: Maybe<Scalars['Float']>;
+  height: Scalars['Float'];
   plant?: Maybe<Plant>;
   updatedAt: Scalars['DateTime'];
   uuid: Scalars['String'];
@@ -342,6 +347,7 @@ export type Query = {
   findHarvest: HarvestResponse;
   findHarvests: HarvestsResponse;
   findHeightRegistration: HeightRegistrationResponse;
+  findHeightRegistrations: HeightRegistrationsResponse;
   findPlant: PlantResponse;
   findPlantHarvests: HarvestsResponse;
   findPlantHeightRegistrations: HeightRegistrationsResponse;
@@ -373,6 +379,10 @@ export type QueryFindHarvestsArgs = {
 
 export type QueryFindHeightRegistrationArgs = {
   input: FindHeightRegistrationInput;
+};
+
+export type QueryFindHeightRegistrationsArgs = {
+  input: FindHeightRegistrationsInput;
 };
 
 export type QueryFindPlantArgs = {
@@ -1084,7 +1094,7 @@ export type FindPlantHarvestsQuery = {
 export type HeightRegistrationFragment = {
   __typename?: 'HeightRegistration';
   uuid: string;
-  height?: number | null;
+  height: number;
   createdAt: any;
   updatedAt: any;
   plant?: {
@@ -1121,7 +1131,7 @@ export type HeightRegistrationResponseFragment = {
   heightRegistration?: {
     __typename?: 'HeightRegistration';
     uuid: string;
-    height?: number | null;
+    height: number;
     createdAt: any;
     updatedAt: any;
     plant?: {
@@ -1160,7 +1170,7 @@ export type HeightRegistrationsResponseFragment = {
   heightRegistrations?: Array<{
     __typename?: 'HeightRegistration';
     uuid: string;
-    height?: number | null;
+    height: number;
     createdAt: any;
     updatedAt: any;
     plant?: {
@@ -1205,7 +1215,7 @@ export type CreateHeightRegistrationMutation = {
     heightRegistration?: {
       __typename?: 'HeightRegistration';
       uuid: string;
-      height?: number | null;
+      height: number;
       createdAt: any;
       updatedAt: any;
       plant?: {
@@ -1240,6 +1250,52 @@ export type CreateHeightRegistrationMutation = {
   };
 };
 
+export type FindHeightRegistrationsQueryVariables = Exact<{
+  input: FindHeightRegistrationsInput;
+}>;
+
+export type FindHeightRegistrationsQuery = {
+  __typename?: 'Query';
+  findHeightRegistrations: {
+    __typename?: 'HeightRegistrationsResponse';
+    heightRegistrations?: Array<{
+      __typename?: 'HeightRegistration';
+      uuid: string;
+      height: number;
+      createdAt: any;
+      updatedAt: any;
+      plant?: {
+        __typename?: 'Plant';
+        uuid: string;
+        type: PlantType;
+        variety: string;
+        seedsPlantedAt: any;
+        seedsSproutedAt: any;
+        createdAt: any;
+        updatedAt: any;
+        container?: {
+          __typename?: 'Container';
+          uuid: string;
+          type: ContainerType;
+          dirtDepth: number;
+          createdAt: any;
+          updatedAt: any;
+          user?: {
+            __typename?: 'User';
+            uuid: string;
+            username: string;
+            email: string;
+            twoFactorEnabled: boolean;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
+        } | null;
+      } | null;
+    }> | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
 export type FindPlantHeightRegistrationsQueryVariables = Exact<{
   input: FindPlantInput;
 }>;
@@ -1251,7 +1307,7 @@ export type FindPlantHeightRegistrationsQuery = {
     heightRegistrations?: Array<{
       __typename?: 'HeightRegistration';
       uuid: string;
-      height?: number | null;
+      height: number;
       createdAt: any;
       updatedAt: any;
       plant?: {
@@ -2440,6 +2496,55 @@ export type CreateHeightRegistrationMutationResult = Apollo.MutationResult<Creat
 export type CreateHeightRegistrationMutationOptions = Apollo.BaseMutationOptions<
   CreateHeightRegistrationMutation,
   CreateHeightRegistrationMutationVariables
+>;
+export const FindHeightRegistrationsDocument = gql`
+  query findHeightRegistrations($input: FindHeightRegistrationsInput!) {
+    findHeightRegistrations(input: $input) {
+      ...HeightRegistrationsResponse
+    }
+  }
+  ${HeightRegistrationsResponseFragmentDoc}
+`;
+
+/**
+ * __useFindHeightRegistrationsQuery__
+ *
+ * To run a query within a React component, call `useFindHeightRegistrationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindHeightRegistrationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindHeightRegistrationsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFindHeightRegistrationsQuery(
+  baseOptions: Apollo.QueryHookOptions<FindHeightRegistrationsQuery, FindHeightRegistrationsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindHeightRegistrationsQuery, FindHeightRegistrationsQueryVariables>(
+    FindHeightRegistrationsDocument,
+    options
+  );
+}
+export function useFindHeightRegistrationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FindHeightRegistrationsQuery, FindHeightRegistrationsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindHeightRegistrationsQuery, FindHeightRegistrationsQueryVariables>(
+    FindHeightRegistrationsDocument,
+    options
+  );
+}
+export type FindHeightRegistrationsQueryHookResult = ReturnType<typeof useFindHeightRegistrationsQuery>;
+export type FindHeightRegistrationsLazyQueryHookResult = ReturnType<typeof useFindHeightRegistrationsLazyQuery>;
+export type FindHeightRegistrationsQueryResult = Apollo.QueryResult<
+  FindHeightRegistrationsQuery,
+  FindHeightRegistrationsQueryVariables
 >;
 export const FindPlantHeightRegistrationsDocument = gql`
   query findPlantHeightRegistrations($input: FindPlantInput!) {

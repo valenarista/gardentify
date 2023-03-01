@@ -1,7 +1,7 @@
 import { Args, Mutation } from '@nestjs/graphql';
 
 import { HeightRegistrationResponse } from './response/height-registration.response';
-import { FindHeightRegistrationInput } from './dto/find-height-registrations.input';
+import { FindHeightRegistrationInput } from './dto/find-height-registration.input';
 import { CreateHeightRegistrationInput } from './dto/create-height-registration.input';
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 import { HeightRegistrationsResponse } from './response/height-registrations.response';
@@ -9,6 +9,10 @@ import { DeleteObjectResponse } from '@modules/common/responses/delete-object.re
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { BadRequestException } from '@nestjs/common/exceptions';
 import { PrismaService } from '@modules/prisma/prisma.service';
+import { FindHeightRegistrationsInput } from './dto/find-height-registrations.input';
+import { HeightRegistration } from './models/height-registration.model';
+import { parsePlantType } from '@modules/plants/lib/plant-utils';
+import { Plant } from '@modules/plants/models/plant.model';
 
 @Injectable()
 export class HeightRegistrationsService {
@@ -31,6 +35,48 @@ export class HeightRegistrationsService {
     }
 
     return { heightRegistration };
+  }
+
+  async findHeightRegistrations(
+    input: FindHeightRegistrationsInput,
+  ): Promise<HeightRegistrationsResponse> {
+    try {
+      const heightRegistrations =
+        await this.prismaService.heightRegistration.findMany({
+          take: input.take,
+          include: { plant: input.includePlant },
+        });
+
+      if (!heightRegistrations.length) {
+        throw new NotFoundException(
+          'Could not find height registrations with the given input!',
+        );
+      }
+
+      const mappedHeightRegistrations: HeightRegistration[] =
+        heightRegistrations.map((heightRegistration) => {
+          const parsedPlant: Plant = {
+            ...heightRegistration.plant,
+            type: parsePlantType(heightRegistration.plant.type),
+          };
+
+          return {
+            ...heightRegistration,
+            plant: parsedPlant,
+          };
+        });
+
+      return { heightRegistrations: mappedHeightRegistrations };
+    } catch (err) {
+      return {
+        errors: [
+          {
+            field: 'input',
+            message: 'An error ocurred!',
+          },
+        ],
+      };
+    }
   }
 
   async createHeightRegistration(

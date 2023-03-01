@@ -12,9 +12,9 @@ const DashboardGreeting: React.FC<DashboardGreetingProps> = (props) => {
 
   return (
     <div className="rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
-      <h1 className="text-start text-xl font-semibold md:text-2xl">Welcome Back, {username} 👋</h1>
+      <h1 className="text-start text-2xl font-semibold md:text-3xl">Welcome Back, {username}</h1>
       <h2 className="text-base md:text-lg">
-        Have a great <strong>{currentWeekDay}!</strong>
+        Have a great <strong>{currentWeekDay}! 👋</strong>
       </h2>
     </div>
   );

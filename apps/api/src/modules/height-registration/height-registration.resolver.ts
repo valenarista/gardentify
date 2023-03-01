@@ -2,12 +2,13 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { HeightRegistration } from './models/height-registration.model';
 import { HeightRegistrationResponse } from './response/height-registration.response';
-import { FindHeightRegistrationInput } from './dto/find-height-registrations.input';
+import { FindHeightRegistrationInput } from './dto/find-height-registration.input';
 import { CreateHeightRegistrationInput } from './dto/create-height-registration.input';
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 import { HeightRegistrationsResponse } from './response/height-registrations.response';
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
 import { HeightRegistrationsService } from './height-registration.service';
+import { FindHeightRegistrationsInput } from './dto/find-height-registrations.input';
 
 @Resolver(() => HeightRegistration)
 export class HeightRegistrationsResolver {
@@ -18,6 +19,13 @@ export class HeightRegistrationsResolver {
     @Args('input') input: FindHeightRegistrationInput,
   ): Promise<HeightRegistrationResponse> {
     return await this.heightRegistrationService.findHeightRegistration(input);
+  }
+
+  @Query(() => HeightRegistrationsResponse)
+  async findHeightRegistrations(
+    @Args('input') input: FindHeightRegistrationsInput,
+  ): Promise<HeightRegistrationsResponse> {
+    return await this.heightRegistrationService.findHeightRegistrations(input);
   }
 
   @Mutation(() => HeightRegistrationResponse)
