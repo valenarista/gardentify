@@ -1,8 +1,17 @@
 import { useAuthContext } from '@modules/auth/context/auth-context';
+import UserDashboard from '@modules/dashboard/components/user-dashboard';
 import Layout from '@modules/layout/components/layout';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const DashbordPage: React.FC = () => {
+  const router = useRouter();
   const { state } = useAuthContext();
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    if (!state.user) router.push('/');
+  }, [state]);
 
   return (
     <Layout
@@ -12,11 +21,7 @@ const DashbordPage: React.FC = () => {
           'Gardentify is a web application that lets you manage and keep tracks of the plants in your garden.',
       }}
     >
-      <section className="container mx-auto flex max-w-6xl flex-col space-y-4 px-2 md:px-4 lg:px-6">
-        <div className="rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
-          <h1 className="text-start text-2xl font-semibold">👋 Welcome Back, {state.user?.username}</h1>
-        </div>
-      </section>
+      {state.user ? <UserDashboard user={state.user} /> : null}
     </Layout>
   );
 };

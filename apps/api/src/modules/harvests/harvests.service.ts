@@ -9,6 +9,8 @@ import { PrismaService } from '@modules/prisma/prisma.service';
 import { Harvest } from './models/harvests.model';
 import { parsePlantType } from '@modules/plants/lib/plant-utils';
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
+import { FindHarvestsInput } from './dto/find-harvests.input';
+import { Plant } from '@modules/plants/models/plant.model';
 
 @Injectable()
 export class HarvestsService {
@@ -50,10 +52,11 @@ export class HarvestsService {
     }
   }
 
-  async findHarvests(input: FindHarvestInput): Promise<HarvestsResponse> {
+  async findHarvests(input: FindHarvestsInput): Promise<HarvestsResponse> {
     try {
       const harvests = await this.prismaService.harvest.findMany({
-        where: { uuid: input.uuid },
+        take: input.take,
+        include: { plant: input.includePlant },
       });
 
       if (!harvests.length) {
@@ -62,7 +65,19 @@ export class HarvestsService {
         );
       }
 
-      return { harvests };
+      const mappedHarvests: Harvest[] = harvests.map((harvest) => {
+        const parsedPlant: Plant = {
+          ...harvest.plant,
+          type: parsePlantType(harvest.plant.type),
+        };
+
+        return {
+          ...harvest,
+          plant: parsedPlant,
+        };
+      });
+
+      return { harvests: mappedHarvests };
     } catch (err) {
       return {
         errors: [

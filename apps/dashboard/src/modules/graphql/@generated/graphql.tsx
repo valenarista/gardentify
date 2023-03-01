@@ -108,6 +108,11 @@ export type FindHarvestInput = {
   uuid: Scalars['String'];
 };
 
+export type FindHarvestsInput = {
+  includePlant: Scalars['Boolean'];
+  take: Scalars['Int'];
+};
+
 export type FindHeightRegistrationInput = {
   height?: InputMaybe<Scalars['Float']>;
   uuid?: InputMaybe<Scalars['String']>;
@@ -363,7 +368,7 @@ export type QueryFindHarvestArgs = {
 };
 
 export type QueryFindHarvestsArgs = {
-  input: FindHarvestInput;
+  input: FindHarvestsInput;
 };
 
 export type QueryFindHeightRegistrationArgs = {
@@ -978,6 +983,53 @@ export type CreateHarvestMutation = {
         } | null;
       } | null;
     } | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type FindHarvestsQueryVariables = Exact<{
+  input: FindHarvestsInput;
+}>;
+
+export type FindHarvestsQuery = {
+  __typename?: 'Query';
+  findHarvests: {
+    __typename?: 'HarvestsResponse';
+    harvests?: Array<{
+      __typename?: 'Harvest';
+      uuid: string;
+      quantity: number;
+      weight: number;
+      createdAt: any;
+      updatedAt: any;
+      plant?: {
+        __typename?: 'Plant';
+        uuid: string;
+        type: PlantType;
+        variety: string;
+        seedsPlantedAt: any;
+        seedsSproutedAt: any;
+        createdAt: any;
+        updatedAt: any;
+        container?: {
+          __typename?: 'Container';
+          uuid: string;
+          type: ContainerType;
+          dirtDepth: number;
+          createdAt: any;
+          updatedAt: any;
+          user?: {
+            __typename?: 'User';
+            uuid: string;
+            username: string;
+            email: string;
+            twoFactorEnabled: boolean;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
+        } | null;
+      } | null;
+    }> | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
   };
 };
@@ -2261,6 +2313,46 @@ export type CreateHarvestMutationOptions = Apollo.BaseMutationOptions<
   CreateHarvestMutation,
   CreateHarvestMutationVariables
 >;
+export const FindHarvestsDocument = gql`
+  query findHarvests($input: FindHarvestsInput!) {
+    findHarvests(input: $input) {
+      ...HarvestsResponse
+    }
+  }
+  ${HarvestsResponseFragmentDoc}
+`;
+
+/**
+ * __useFindHarvestsQuery__
+ *
+ * To run a query within a React component, call `useFindHarvestsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindHarvestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindHarvestsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFindHarvestsQuery(
+  baseOptions: Apollo.QueryHookOptions<FindHarvestsQuery, FindHarvestsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindHarvestsQuery, FindHarvestsQueryVariables>(FindHarvestsDocument, options);
+}
+export function useFindHarvestsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FindHarvestsQuery, FindHarvestsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindHarvestsQuery, FindHarvestsQueryVariables>(FindHarvestsDocument, options);
+}
+export type FindHarvestsQueryHookResult = ReturnType<typeof useFindHarvestsQuery>;
+export type FindHarvestsLazyQueryHookResult = ReturnType<typeof useFindHarvestsLazyQuery>;
+export type FindHarvestsQueryResult = Apollo.QueryResult<FindHarvestsQuery, FindHarvestsQueryVariables>;
 export const FindPlantHarvestsDocument = gql`
   query findPlantHarvests($input: FindPlantInput!) {
     findPlantHarvests(input: $input) {

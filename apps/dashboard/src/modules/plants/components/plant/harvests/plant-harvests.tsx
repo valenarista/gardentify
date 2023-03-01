@@ -4,7 +4,7 @@ import {
   FindPlantHarvestsQuery,
   FindPlantHarvestsQueryVariables,
 } from '@modules/graphql/@generated/graphql';
-import HarvestsFeed from '@modules/height-registrations copy/components/feed/harvests-feed';
+import HarvestsFeed from '@modules/harvests/components/feed/harvests-feed';
 import { useContainerPlantContext } from '@modules/plants/context/container-plant-context';
 import React from 'react';
 

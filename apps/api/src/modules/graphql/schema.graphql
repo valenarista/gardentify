@@ -98,6 +98,11 @@ input FindHarvestInput {
   uuid: String!
 }
 
+input FindHarvestsInput {
+  includePlant: Boolean!
+  take: Int!
+}
+
 input FindHeightRegistrationInput {
   height: Float
   uuid: String
@@ -234,7 +239,7 @@ type Query {
   findContainerPlants(input: FindContainerInput!): PlantsResponse!
   findContainers(input: FindContainerInput!): ContainersResponse!
   findHarvest(input: FindHarvestInput!): HarvestResponse!
-  findHarvests(input: FindHarvestInput!): HarvestsResponse!
+  findHarvests(input: FindHarvestsInput!): HarvestsResponse!
   findHeightRegistration(input: FindHeightRegistrationInput!): HeightRegistrationResponse!
   findPlant(input: FindPlantInput!): PlantResponse!
   findPlantHarvests(input: FindPlantInput!): HarvestsResponse!
