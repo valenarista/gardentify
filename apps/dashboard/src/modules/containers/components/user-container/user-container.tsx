@@ -18,10 +18,10 @@ const UserContainer: React.FC<UserContainerProps> = (props) => {
   }, [container]);
 
   return (
-    <div className="container mx-auto flex max-w-6xl flex-col space-y-4 px-2 md:px-4 lg:px-6">
+    <section className="container mx-auto flex max-w-6xl flex-col space-y-4 px-2 md:px-4 lg:px-6">
       <UserContainerDetails />
       <UserContainerPlants />
-    </div>
+    </section>
   );
 };
 

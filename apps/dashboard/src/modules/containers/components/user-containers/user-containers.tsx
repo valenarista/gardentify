@@ -25,7 +25,7 @@ const UserContainers: React.FC = () => {
   const containers = response?.data?.findUserContainers.containers || [];
 
   return (
-    <div className="container mx-auto flex max-w-6xl flex-col space-y-4 px-2 md:px-4 lg:px-6">
+    <section className="container mx-auto flex max-w-6xl flex-col space-y-4 px-2 md:px-4 lg:px-6">
       <div className="flex rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 ">
         {/* Details */}
         <div className="flex w-full flex-col space-y-4">
@@ -41,7 +41,7 @@ const UserContainers: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

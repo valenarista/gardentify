@@ -18,12 +18,12 @@ const UserProfile: React.FC<UserProfileProps> = (props) => {
   }, [user]);
 
   return (
-    <div className="container mx-auto flex max-w-6xl flex-col space-y-4 px-2 md:px-4 lg:px-6">
+    <section className="container mx-auto flex max-w-6xl flex-col space-y-4 px-2 md:px-4 lg:px-6">
       {/* Details */}
       <UserProfileDetails />
       {/* Containers */}
       <UserProfileContainers />
-    </div>
+    </section>
   );
 };
 
