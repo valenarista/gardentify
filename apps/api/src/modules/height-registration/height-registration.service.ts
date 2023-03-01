@@ -21,20 +21,24 @@ export class HeightRegistrationsService {
   async findHeightRegistration(
     input: FindHeightRegistrationInput,
   ): Promise<HeightRegistrationResponse> {
-    const heightRegistration =
-      await this.prismaService.heightRegistration.findUnique({
-        where: {
-          uuid: input.uuid,
-        },
-      });
+    try {
+      const heightRegistration =
+        await this.prismaService.heightRegistration.findUnique({
+          where: {
+            uuid: input.uuid,
+          },
+        });
 
-    if (!heightRegistration) {
-      throw new NotFoundException(
-        'No height registration found with the given input!',
-      );
+      if (!heightRegistration) {
+        throw new NotFoundException(
+          'No height registration found with the given input!',
+        );
+      }
+
+      return { heightRegistration };
+    } catch (err) {
+      throw new BadRequestException('An eror ocurred!');
     }
-
-    return { heightRegistration };
   }
 
   async findHeightRegistrations(
@@ -68,50 +72,51 @@ export class HeightRegistrationsService {
 
       return { heightRegistrations: mappedHeightRegistrations };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 
   async createHeightRegistration(
     input: CreateHeightRegistrationInput,
   ): Promise<HeightRegistrationResponse> {
-    const heightRegistration =
-      await this.prismaService.heightRegistration.create({
-        data: {
-          height: input.height,
-          plant: { connect: { uuid: input.plantUuid } },
-        },
-      });
+    try {
+      const heightRegistration =
+        await this.prismaService.heightRegistration.create({
+          data: {
+            height: input.height,
+            plant: { connect: { uuid: input.plantUuid } },
+          },
+        });
 
-    if (!heightRegistration) {
-      throw new BadRequestException(
-        'Could not create height registration with the given input!',
-      );
+      if (!heightRegistration) {
+        throw new BadRequestException(
+          'Could not create height registration with the given input!',
+        );
+      }
+      return { heightRegistration };
+    } catch (err) {
+      throw new BadRequestException('An eror ocurred!');
     }
-    return { heightRegistration };
   }
 
   async findPlantHeightRegistrations(
     input: FindPlantInput,
   ): Promise<HeightRegistrationsResponse> {
-    const heightRegistrations =
-      await this.prismaService.heightRegistration.findMany({
-        where: { plantUuid: input.uuid },
-      });
+    try {
+      const heightRegistrations =
+        await this.prismaService.heightRegistration.findMany({
+          where: { plantUuid: input.uuid },
+        });
 
-    if (!heightRegistrations.length) {
-      throw new NotFoundException(
-        'No height registrations found with the given input!',
-      );
+      if (!heightRegistrations.length) {
+        throw new NotFoundException(
+          'No height registrations found with the given input!',
+        );
+      }
+      return { heightRegistrations };
+    } catch (err) {
+      throw new BadRequestException('An eror ocurred!');
     }
-    return { heightRegistrations };
   }
 
   @Mutation(() => DeleteObjectResponse)
@@ -124,14 +129,7 @@ export class HeightRegistrationsService {
       });
       return { deleted: true };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 }

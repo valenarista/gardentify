@@ -95,6 +95,7 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
             id={field.name}
             label="Dirt Depth"
             type="number"
+            inputMode="decimal"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             help

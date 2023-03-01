@@ -32,14 +32,7 @@ export class ContainersService {
       });
 
       if (!container) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'Not container found with the given input!',
-            },
-          ],
-        };
+        throw new NotFoundException('No container found with the given input!');
       }
 
       const parsedContainer: Container = {

@@ -22,7 +22,7 @@ const HarvestCard: React.FC<HarvestCardProps> = (props) => {
         ) : null}
         {/* Name*/}
         <h2 className="text-md decoration-primary-300 font-bold uppercase">Harvest</h2>
-        <ul className={clsx('mt-4 grid gap-1', includePlantDetails ? 'grid-cols-2' : '')}>
+        <ul className={clsx('mt-4 grid gap-2', includePlantDetails ? 'grid-cols-2' : '')}>
           {/* Plant Type */}
           {harvest.plant && harvest.plant.uuid !== undefined ? (
             <li>

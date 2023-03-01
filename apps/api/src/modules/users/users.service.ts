@@ -48,28 +48,12 @@ export class UsersService {
       });
 
       if (!user) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'No user found with the given input!',
-            },
-          ],
-        };
+        throw new NotFoundException('No user found with the given input!');
       }
 
       return { user };
-    } catch (err) {
-      console.log(err);
-
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+    } catch (error) {
+      throw new BadRequestException('An error ocurred!');
     }
   }
 

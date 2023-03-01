@@ -4,7 +4,13 @@ import { FindHarvestInput } from './dto/find-harvest.input';
 import { HarvestsResponse } from './responses/harvests.response';
 import { CreateHarvestInput } from './dto/create-harvest.input';
 import { UpdateHarvestInput } from './dto/update-harvest.input';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '@modules/prisma/prisma.service';
 import { Harvest } from './models/harvests.model';
 import { parsePlantType } from '@modules/plants/lib/plant-utils';
@@ -41,14 +47,7 @@ export class HarvestsService {
 
       return { harvest: parsedHarvest };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 
@@ -79,14 +78,7 @@ export class HarvestsService {
 
       return { harvests: mappedHarvests };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 
@@ -104,14 +96,7 @@ export class HarvestsService {
 
       return { harvests };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 
@@ -133,14 +118,7 @@ export class HarvestsService {
 
       return { harvest };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 
@@ -151,14 +129,7 @@ export class HarvestsService {
       });
       return { deleted: true };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 
@@ -188,16 +159,7 @@ export class HarvestsService {
 
       return { harvest: parsedHarvest };
     } catch (err) {
-      console.log(err);
-
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 }

@@ -7,7 +7,12 @@ import { PlantsResponse } from './responses/plants.response';
 import { CreatePlantInput } from './dto/create-plant.input';
 import { parseContainerType } from '@modules/container/lib/container-utils';
 import { UpdatePlantInput } from './dto/update-plant.input';
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '@modules/prisma/prisma.service';
 
 @Injectable()
@@ -24,14 +29,7 @@ export class PlantsService {
       });
 
       if (!plant) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'No plant found with the given input!',
-            },
-          ],
-        };
+        throw new NotFoundException('No plant found with the given input!');
       }
 
       const parsedPlant: Plant = {
@@ -45,14 +43,7 @@ export class PlantsService {
 
       return { plant: parsedPlant };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 
@@ -63,14 +54,7 @@ export class PlantsService {
       });
 
       if (!plants.length) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'No plants found with the given input!',
-            },
-          ],
-        };
+        throw new NotFoundException('No plants found with the given input!');
       }
 
       const parsedPlants: Plant[] = plants.map((plant) => {
@@ -82,14 +66,7 @@ export class PlantsService {
 
       return { plants: parsedPlants };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 
@@ -107,14 +84,9 @@ export class PlantsService {
       });
 
       if (!plant) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'Could not create plant with the given input!',
-            },
-          ],
-        };
+        throw new BadRequestException(
+          'Could not create plant with the given input',
+        );
       }
 
       const parsedPlant: Plant = {
@@ -128,14 +100,7 @@ export class PlantsService {
 
       return { plant: parsedPlant };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 
@@ -146,14 +111,7 @@ export class PlantsService {
       });
       return { deleted: true };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 
@@ -168,14 +126,7 @@ export class PlantsService {
       });
 
       if (!updatedPlant) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'Could not update plant with the given input!',
-            },
-          ],
-        };
+        throw new NotFoundException('No plant found with the given input!');
       }
 
       const parsedPlant: Plant = {
@@ -191,16 +142,7 @@ export class PlantsService {
         plant: parsedPlant,
       };
     } catch (err) {
-      console.log(err);
-
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      throw new BadRequestException('An eror ocurred!');
     }
   }
 }

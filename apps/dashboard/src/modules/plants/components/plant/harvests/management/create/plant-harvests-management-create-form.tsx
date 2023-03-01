@@ -76,6 +76,9 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
         label="Quantity"
         type="number"
         placeholder="Harvest units"
+        inputMode="numeric"
+        min="1"
+        step="1"
         error={errors.quantity !== undefined}
         errorMessage={errors.quantity?.message}
         help
@@ -88,6 +91,7 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
         label="Weight"
         type="number"
         step="0.01"
+        inputMode="decimal"
         placeholder="Harvest weight"
         error={errors.weight !== undefined}
         errorMessage={errors.weight?.message}
