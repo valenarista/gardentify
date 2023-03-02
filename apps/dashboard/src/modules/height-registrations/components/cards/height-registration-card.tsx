@@ -15,12 +15,12 @@ const HeightRegistrationCard: React.FC<HeightRegistrationCardProps> = (props) =>
   return (
     <div className="rounded-lg bg-neutral-100 p-4 dark:bg-neutral-900">
       {/* Data */}
-      <div className="relative flex flex-col space-y-2">
+      <div className="relative flex flex-col">
         {showPlantIcon && heightRegistration.plant && heightRegistration.plant.uuid !== undefined ? (
           <HeightRegistrationCardPlantIcon plantUuid={heightRegistration.plant.uuid} />
         ) : null}
         {/* Name*/}
-        <h2 className="text-md decoration-primary-300 !mt-0 font-bold uppercase">Height Registration</h2>
+        <h2 className="text-md mb-2 font-bold uppercase text-neutral-800 dark:text-neutral-50">Height Registration</h2>
         {/* Height */}
         <CardAttribute
           attribute={`${heightRegistration.height} cms.`}

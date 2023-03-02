@@ -1,7 +1,7 @@
 import React from 'react';
 
 type CardAttributeProps = {
-  attribute: React.ReactElement | JSX.Element | string;
+  attribute: React.ReactElement | JSX.Element | string | number;
   icon: React.ReactElement;
 };
 

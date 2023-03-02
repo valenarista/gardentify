@@ -37,7 +37,9 @@ export class HeightRegistrationsService {
 
       return { heightRegistration };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -72,7 +74,9 @@ export class HeightRegistrationsService {
 
       return { heightRegistrations: mappedHeightRegistrations };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -95,7 +99,9 @@ export class HeightRegistrationsService {
       }
       return { heightRegistration };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -115,7 +121,9 @@ export class HeightRegistrationsService {
       }
       return { heightRegistrations };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -129,7 +137,9 @@ export class HeightRegistrationsService {
       });
       return { deleted: true };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 }

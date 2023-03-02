@@ -6,7 +6,6 @@ import { CreateHarvestInput } from './dto/create-harvest.input';
 import { UpdateHarvestInput } from './dto/update-harvest.input';
 import {
   BadRequestException,
-  HttpException,
   Inject,
   Injectable,
   NotFoundException,
@@ -47,7 +46,9 @@ export class HarvestsService {
 
       return { harvest: parsedHarvest };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -78,7 +79,9 @@ export class HarvestsService {
 
       return { harvests: mappedHarvests };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -88,7 +91,7 @@ export class HarvestsService {
         where: { plant: { uuid: input.uuid } },
       });
 
-      if (!harvests.length) {
+      if (harvests.length === 0) {
         throw new NotFoundException(
           'Could not find harvests with the given input!',
         );
@@ -96,7 +99,9 @@ export class HarvestsService {
 
       return { harvests };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -118,7 +123,9 @@ export class HarvestsService {
 
       return { harvest };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -129,7 +136,9 @@ export class HarvestsService {
       });
       return { deleted: true };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -159,7 +168,9 @@ export class HarvestsService {
 
       return { harvest: parsedHarvest };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 }

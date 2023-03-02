@@ -68,6 +68,7 @@ const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps
           <TextInput
             id={field.name}
             label="Username"
+            inputMode="text"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             {...field}

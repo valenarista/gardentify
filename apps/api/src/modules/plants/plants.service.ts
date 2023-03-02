@@ -43,7 +43,9 @@ export class PlantsService {
 
       return { plant: parsedPlant };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -66,7 +68,9 @@ export class PlantsService {
 
       return { plants: parsedPlants };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -100,7 +104,9 @@ export class PlantsService {
 
       return { plant: parsedPlant };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -111,7 +117,9 @@ export class PlantsService {
       });
       return { deleted: true };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -142,7 +150,9 @@ export class PlantsService {
         plant: parsedPlant,
       };
     } catch (err) {
-      throw new BadRequestException('An eror ocurred!');
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 }

@@ -21,13 +21,13 @@ const HarvestCard: React.FC<HarvestCardProps> = (props) => {
           <HarvestCardPlantIcon plantUuid={harvest.plant.uuid} />
         ) : null}
         {/* Name*/}
-        <h2 className="text-md decoration-primary-300 font-bold uppercase">Harvest</h2>
-        <ul className={clsx('mt-4 grid gap-2', includePlantDetails ? 'grid-cols-2' : '')}>
+        <span className="text-md font-bold uppercase text-neutral-800 dark:text-neutral-50">Harvest</span>
+        <ul className={clsx('grid gap-2', includePlantDetails ? 'mt-2.5 grid-cols-2' : 'mt-2')}>
           {/* Plant Type */}
           {harvest.plant && harvest.plant.uuid !== undefined ? (
             <li>
               <CardAttribute
-                attribute={`${harvest.plant?.type.toLocaleUpperCase()}`}
+                attribute={`${harvest.plant.type.toLocaleUpperCase()}`}
                 icon={
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@ const HarvestCard: React.FC<HarvestCardProps> = (props) => {
           {/* Quantity */}
           <li>
             <CardAttribute
-              attribute={`${harvest.quantity} units.`}
+              attribute={`${harvest.quantity} units`}
               icon={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -65,18 +65,15 @@ const ObjectQrCodeResult: React.FC<ObjectQrCodeResultProps> = (props) => {
             alt="QR Code"
             width={250}
             height={250}
-            className="w-[225px] rounded-md border-2 md:w-[275px]"
+            className="w-[210px] rounded-md border-2 md:w-[275px]"
           />
         ) : null}
-        <p>
-          Scan using your phone the following QR Code to access this page easily or save the image to your device and
-          print it.
-        </p>
+        <p>Scan using your phone the following QR Code to access this page easily or save the image to your device.</p>
         <div className="flex w-full flex-col justify-center space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-2">
           <Button aria-label="Save QR Code" onClick={handleQRSave}>
             Save to Desktop
           </Button>
-          <Button aria-label="Copy QR Code" colorScheme="secondary" onClick={handleQrCopy}>
+          <Button aria-label="Copy QR Code" colorScheme="secondary" variant="ghost" onClick={handleQrCopy}>
             Copy to Clipboard
           </Button>
         </div>

@@ -91,7 +91,7 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
         label="Weight"
         type="number"
         step="0.01"
-        inputMode="decimal"
+        inputMode="numeric"
         placeholder="Harvest weight"
         error={errors.weight !== undefined}
         errorMessage={errors.weight?.message}

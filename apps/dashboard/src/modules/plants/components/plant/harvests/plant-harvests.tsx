@@ -28,7 +28,7 @@ const PlantHarvests: React.FC = () => {
       <div className="flex w-full flex-col space-y-4">
         <PlantHarvestsHeader />
 
-        {response?.error ? (
+        {response && response.error && response.error ? (
           <span className="text-neutral-800 dark:text-neutral-100">{response.error.message}</span>
         ) : null}
         {loading ? (

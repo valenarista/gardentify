@@ -70,7 +70,7 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
         label="Height"
         type="number"
         placeholder="Plant height"
-        inputMode="decimal"
+        inputMode="numeric"
         step="0.01"
         error={errors.height !== undefined}
         errorMessage={errors.height?.message}
