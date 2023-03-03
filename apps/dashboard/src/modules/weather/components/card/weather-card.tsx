@@ -21,6 +21,7 @@ const WeatherCard: React.FC<WeatherCardProps> = (props) => {
   const parsedDay = new Date(weather.time).toLocaleDateString(router.locale, {
     day: 'numeric',
     weekday: 'short',
+    timeZone: 'UTC',
   });
 
   const shouldDisplayAlert =
