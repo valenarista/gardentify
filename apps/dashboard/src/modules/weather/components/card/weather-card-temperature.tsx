@@ -1,4 +1,5 @@
 import { Weather } from '@modules/graphql/@generated/graphql';
+import { WEATHER_TEMP_ALERT_THRESHOLDS } from '@modules/weather/lib/weather-lib';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -10,11 +11,11 @@ type WeatherCardTemperatureProps = {
 const WeatherCardTemperature: React.FC<WeatherCardTemperatureProps> = (props) => {
   const { min, max } = props;
 
-  const alertMaxThreshold = max > 32;
-  const alertMinThreshold = min < 5;
+  const alertMaxThreshold = max > WEATHER_TEMP_ALERT_THRESHOLDS[1];
+  const alertMinThreshold = min < WEATHER_TEMP_ALERT_THRESHOLDS[0];
 
   return (
-    <div className="mt-auto flex space-x-2 text-sm md:text-base">
+    <div className="mt-auto flex space-x-2 text-base">
       <span
         className={clsx(
           'font-semibold',

@@ -1,5 +1,7 @@
 import { Weather } from '@modules/graphql/@generated/graphql';
 
+export const WEATHER_TEMP_ALERT_THRESHOLDS: number[] = [5, 32];
+
 export const getWeatherSkyConditionsFromCode = (weatherCode: Weather['weatherCode']) => {
   switch (weatherCode) {
     case 0:

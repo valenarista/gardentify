@@ -24,7 +24,7 @@ export class WeatherService {
     input: WeatherForecastInput,
   ): Promise<WeatherForecastResponse> {
     try {
-      const forecastDays = 7;
+      const forecastDays = 8;
       const baseApi = this.configService.get('weather', {
         infer: true,
       }).api;
@@ -36,13 +36,12 @@ export class WeatherService {
         latitude: String(input.latitude),
         longitude: String(input.longitude),
         models: 'best_match',
+        past_days: String(1),
       };
 
       const searchParams = new URLSearchParams(params).toString();
 
       const completeUrl = `${baseApi}?${searchParams}&daily=${dailyParams}&timezone=America%2FSao_Paulo`;
-
-      console.log({ completeUrl });
 
       const request = this.httpService
         .get<WeatherForecastApiResponse>(completeUrl)
