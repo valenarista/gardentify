@@ -95,7 +95,7 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
             id={field.name}
             label="Dirt Depth"
             type="number"
-            inputMode="decimal"
+            inputMode="numeric"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             help
