@@ -3,6 +3,6 @@ import { Weather } from '../models/weather.model';
 
 @ObjectType()
 export class WeatherForecastResponse {
-  @Field(() => [Weather], { nullable: true })
-  forecast?: Weather[];
+  @Field(() => [Weather])
+  forecast: Weather[];
 }
