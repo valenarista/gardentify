@@ -5,7 +5,10 @@ import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map, lastValueFrom } from 'rxjs';
 import { WeatherForecastInput } from './dto/get-weather-forecast.input';
-import { WeatherForecastApiResponse } from './lib/weather-lib';
+import {
+  WeatherForecastApiResponse,
+  WEATHER_API_TYPE_MAPPING,
+} from './lib/weather-lib';
 import { Weather } from './models/weather.model';
 import { WeatherForecastResponse } from './responses/weather-forecast.response';
 
@@ -57,18 +60,20 @@ export class WeatherService {
 
       for (let i = 0; i < forecastDays; i++) {
         const forecastEntry: Weather = {
-          precipitation_sum: 0,
-          temperature_2m_max: 0,
-          temperature_2m_min: 0,
+          precipitationSum: 0,
+          temperatureMax: 0,
+          temperatureMin: 0,
           time: '0',
-          uv_index_max: 0,
-          weathercode: 0,
-          winddirection_10m_dominant: 0,
-          windspeed_10m_max: 0,
+          uvIndexMax: 0,
+          weatherCode: 0,
+          windDirectionDominant: 0,
+          windSpeedMax: 0,
         };
+
         dataEntries.forEach((entry) => {
           const [key, data] = entry;
-          forecastEntry[key] = data[i];
+          const mappedKey = WEATHER_API_TYPE_MAPPING[key];
+          forecastEntry[mappedKey] = data[i];
         });
         weatherForecast.push(forecastEntry);
       }

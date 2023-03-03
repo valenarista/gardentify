@@ -1,3 +1,5 @@
+import { Weather } from '../models/weather.model';
+
 export type WeatherDailyUnits = {
   time: string;
   weathercode: string;
@@ -27,4 +29,18 @@ export type WeatherForecastApiResponse = {
   elevation: number;
   daily_units: WeatherDailyUnits;
   daily: WeatherForecastData;
+};
+
+export const WEATHER_API_TYPE_MAPPING: Record<
+  keyof WeatherForecastData,
+  keyof Weather
+> = {
+  time: 'time',
+  weathercode: 'weatherCode',
+  precipitation_sum: 'precipitationSum',
+  temperature_2m_max: 'temperatureMax',
+  temperature_2m_min: 'temperatureMin',
+  uv_index_max: 'uvIndexMax',
+  windspeed_10m_max: 'windSpeedMax',
+  winddirection_10m_dominant: 'windDirectionDominant',
 };

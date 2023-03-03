@@ -1,0 +1,5 @@
+query getWeatherForecast($input: WeatherForecastInput!) {
+  getWeatherForecast(input: $input) {
+    ...WeatherForecastResponse
+  }
+}

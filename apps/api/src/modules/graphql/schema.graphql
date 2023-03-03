@@ -349,14 +349,14 @@ type UserResponse {
 }
 
 type Weather {
-  precipitation_sum: Float!
-  temperature_2m_max: Float!
-  temperature_2m_min: Float!
+  precipitationSum: Float!
+  temperatureMax: Float!
+  temperatureMin: Float!
   time: String!
-  uv_index_max: Float!
-  weathercode: Int!
-  winddirection_10m_dominant: Float!
-  windspeed_10m_max: Float!
+  uvIndexMax: Float!
+  weatherCode: Int!
+  windDirectionDominant: Float!
+  windSpeedMax: Float!
 }
 
 input WeatherForecastInput {

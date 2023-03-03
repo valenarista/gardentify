@@ -11,6 +11,7 @@ import React from 'react';
 
 import DashboardGreeting from './dashboard-greeting';
 import DashboardLatest from './dashboard-latest';
+import DashboardWeather from './weather/dashboard-weather';
 
 type UserDashboardProps = {
   user: User;
@@ -36,6 +37,7 @@ const UserDashboard: React.FC<UserDashboardProps> = (props) => {
           return <HarvestCard key={`harvest-${index}`} harvest={harvest} includePlantDetails />;
         }}
       />
+      <DashboardWeather />
     </section>
   );
 };

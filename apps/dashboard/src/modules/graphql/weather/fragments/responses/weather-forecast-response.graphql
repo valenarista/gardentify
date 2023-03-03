@@ -1,0 +1,5 @@
+fragment WeatherForecastResponse on WeatherForecastResponse {
+  forecast {
+    ...Weather
+  }
+}

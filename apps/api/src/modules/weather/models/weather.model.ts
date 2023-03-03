@@ -6,23 +6,23 @@ export class Weather {
   time: string;
 
   @Field(() => Int)
-  weathercode: number;
+  weatherCode: number;
 
   @Field(() => Float)
-  temperature_2m_max: number;
+  temperatureMax: number;
 
   @Field(() => Float)
-  temperature_2m_min: number;
+  temperatureMin: number;
 
   @Field(() => Float)
-  uv_index_max: number;
+  uvIndexMax: number;
 
   @Field(() => Float)
-  precipitation_sum: number;
+  precipitationSum: number;
 
   @Field(() => Float)
-  windspeed_10m_max: number;
+  windSpeedMax: number;
 
   @Field(() => Float)
-  winddirection_10m_dominant: number;
+  windDirectionDominant: number;
 }

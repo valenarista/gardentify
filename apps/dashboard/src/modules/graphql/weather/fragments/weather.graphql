@@ -1,0 +1,10 @@
+fragment Weather on Weather {
+  time
+  weatherCode
+  temperatureMax
+  temperatureMin
+  uvIndexMax
+  precipitationSum
+  windSpeedMax
+  windDirectionDominant
+}
