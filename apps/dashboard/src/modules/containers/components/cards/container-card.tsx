@@ -1,7 +1,9 @@
-import CardAttribute from '@modules/common/components/cards/card-attribute';
 import { Container } from '@modules/graphql/@generated/graphql';
 import Link from 'next/link';
 import React from 'react';
+
+import ContainerDirtDepthAttribute from './container-dirt-depth-attribute';
+import ContainerTypeAttribute from './container-type-attribute';
 
 type ContainerCardProps = {
   container: Container;
@@ -24,51 +26,12 @@ const ContainerCard: React.FC<ContainerCardProps> = (props) => {
           >
             {/* Type */}
             <li>
-              <CardAttribute
-                attribute={container.type}
-                icon={
-                  <svg
-                    className="h-5 w-5 stroke-neutral-900 dark:stroke-neutral-100"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                    <line x1="12" y1="22.08" x2="12" y2="12" />
-                  </svg>
-                }
-              />
+              <ContainerTypeAttribute type={container.type} />
             </li>
 
             {/* Dirth Depth */}
             <li>
-              <CardAttribute
-                attribute={`${container.dirtDepth} cms depth`}
-                icon={
-                  <svg
-                    className="h-5 w-5 stroke-neutral-900 dark:stroke-neutral-100"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M5 4h14a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-7a1 1 0 0 0 -1 1v7a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1" />
-                    <line x1="4" y1="8" x2="6" y2="8" />
-                    <line x1="4" y1="12" x2="7" y2="12" />
-                    <line x1="4" y1="16" x2="6" y2="16" />
-                    <line x1="8" y1="4" x2="8" y2="6" />
-                    <polyline points="12 4 12 7 " />
-                    <polyline points="16 4 16 6 " />
-                  </svg>
-                }
-              />
+              <ContainerDirtDepthAttribute dirtDepth={container.dirtDepth} />
             </li>
           </ul>
 

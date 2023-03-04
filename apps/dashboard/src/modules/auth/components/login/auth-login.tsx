@@ -1,4 +1,3 @@
-import { ApolloError } from '@apollo/client';
 import { useToast } from '@gardentify/ui';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { AuthActionType } from '@modules/auth/context/reducer/types';
@@ -16,30 +15,33 @@ const AuthLogin: React.FC = () => {
   const [login] = useLoginMutation();
 
   const handleLogin = async (data: AuthSigninFormData) => {
-    const loginData = await login({
-      variables: {
-        input: {
-          ...data,
+    try {
+      const response = await login({
+        variables: {
+          input: {
+            ...data,
+          },
         },
-      },
-    })
-      .then((response) => {
-        return response.data?.login;
-      })
-      .catch((err: ApolloError) => {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
       });
 
-    if (loginData && loginData.user && loginData.user.uuid) {
-      dispatch({
-        type: AuthActionType.LOGIN,
-        payload: {
-          user: loginData.user,
-          accessToken: loginData.accessToken,
-        },
-      });
-      await router.push(`/users/${loginData.user.uuid}`);
+      const loginData = response.data;
+
+      if (loginData && loginData.login.user && loginData.login.user.uuid) {
+        const user = loginData.login.user;
+        dispatch({
+          type: AuthActionType.LOGIN,
+          payload: {
+            user: user,
+            accessToken: loginData.login.accessToken,
+          },
+        });
+        await router.push(`/users/${user.uuid}`);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
+      }
     }
   };
 

@@ -10,7 +10,7 @@ const WeatherCardWind: React.FC<WeatherCardWindProps> = (props) => {
   const { windSpeed, windDirection } = props;
 
   return (
-    <div className="flex items-center justify-center space-x-2">
+    <div className="flex flex-col items-end justify-center space-x-2 md:flex-row md:items-center">
       {/* Speed */}
       <div className="flex items-center justify-center">
         <svg
@@ -34,6 +34,7 @@ const WeatherCardWind: React.FC<WeatherCardWindProps> = (props) => {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6 stroke-sky-700 dark:stroke-sky-300"
+          style={{ transform: `rotate(${windDirection}deg)` }}
           viewBox="0 0 24 24"
           fill="none"
           strokeWidth="2"
@@ -45,7 +46,7 @@ const WeatherCardWind: React.FC<WeatherCardWindProps> = (props) => {
           <path d="M15 6l-3 -3l-3 3" />
           <path d="M15 21l-3 -3l-3 3" />
         </svg>
-        <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-50">{windDirection} °</span>
+        <span className="ml-1 text-sm font-semibold text-neutral-800 dark:text-neutral-50">{windDirection} °</span>
       </div>
     </div>
   );

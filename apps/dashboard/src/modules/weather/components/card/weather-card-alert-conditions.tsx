@@ -8,7 +8,7 @@ const WeatherCardAlertConditions: React.FC<WeatherCardAlertConditionsProps> = (p
   const { alertType } = props;
 
   return (
-    <div className="absolute top-0 right-0 m-2 rounded-lg bg-neutral-200 p-1 dark:bg-neutral-800">
+    <div className="absolute top-0 right-0 m-4 rounded-lg bg-neutral-200 p-1 dark:bg-neutral-800">
       {alertType === 'cold' ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"

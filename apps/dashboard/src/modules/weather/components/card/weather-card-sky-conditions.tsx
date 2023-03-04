@@ -178,7 +178,7 @@ const WeatherCardSkyConditions: React.FC<WeatherCardSkyConditionsProps> = (props
       </svg>
     );
   }
-  if (weatherCode === 95) {
+  if (weatherCode === 95 || weatherCode === 96 || weatherCode === 99) {
     icon = (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +197,7 @@ const WeatherCardSkyConditions: React.FC<WeatherCardSkyConditionsProps> = (props
   }
 
   return (
-    <div className="mb-1 flex flex-col items-center justify-center whitespace-nowrap text-center">
+    <div className="mb-1 flex flex-col items-start justify-center whitespace-nowrap text-center md:items-center">
       {icon ? icon : null}
       <p className="font-semibold text-neutral-800 dark:text-neutral-50">
         {getWeatherSkyConditionsFromCode(weatherCode)}

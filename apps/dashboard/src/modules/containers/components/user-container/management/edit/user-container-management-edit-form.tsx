@@ -43,26 +43,25 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
 
   const onSubmit = async (data: FormData) => {
     if (!state.user) return;
-
-    await updateContainer({
-      variables: {
-        input: {
-          uuid: container.uuid,
-          dirtDepth: data.dirtDepth,
-          type: data.type,
+    try {
+      await updateContainer({
+        variables: {
+          input: {
+            uuid: container.uuid,
+            dirtDepth: data.dirtDepth,
+            type: data.type,
+          },
         },
-      },
-    })
-      .then((response) => {
-        return response.data?.updateContainer;
-      })
-      .catch((err) => {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
       });
 
-    await router.push(`/containers/${container.uuid}`);
-    onSubmitted();
+      await router.push(`/containers/${container.uuid}`);
+      onSubmitted();
+    } catch (err) {
+      if (err instanceof Error) {
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
+      }
+    }
   };
 
   const handleFormReset = () => {

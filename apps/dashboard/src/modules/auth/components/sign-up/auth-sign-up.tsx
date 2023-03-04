@@ -15,30 +15,33 @@ const AuthSignUp: React.FC = () => {
   const [signup] = useSignupMutation();
 
   const handleSignUp = async (data: AuthSignupFormData) => {
-    const signupData = await signup({
-      variables: {
-        input: {
-          ...data,
+    try {
+      const response = await signup({
+        variables: {
+          input: {
+            ...data,
+          },
         },
-      },
-    })
-      .then((res) => {
-        return res.data?.signup;
-      })
-      .catch((err) => {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
       });
 
-    if (signupData && signupData.user && signupData.user.uuid) {
-      dispatch({
-        type: AuthActionType.SIGNUP,
-        payload: {
-          user: signupData.user,
-          accessToken: signupData.accessToken,
-        },
-      });
-      await router.push(`/users/${signupData.user.uuid}`);
+      const signupData = response.data;
+
+      if (signupData && signupData.signup.user && signupData.signup.user.uuid) {
+        const user = signupData.signup.user;
+        dispatch({
+          type: AuthActionType.SIGNUP,
+          payload: {
+            user: user,
+            accessToken: signupData.signup.accessToken,
+          },
+        });
+        await router.push(`/users/${user.uuid}`);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
+      }
     }
   };
 

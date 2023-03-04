@@ -49,27 +49,29 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
   const onSubmit = async (data: FormData) => {
     if (!state.user) return;
 
-    const containerUuid = router.query.uuid as string;
+    try {
+      const containerUuid = router.query.uuid as string;
 
-    const plant = await createPlant({
-      variables: {
-        input: {
-          ...data,
-          container: { uuid: containerUuid },
+      const response = await createPlant({
+        variables: {
+          input: {
+            ...data,
+            container: { uuid: containerUuid },
+          },
         },
-      },
-    })
-      .then((response) => {
-        return response.data?.createPlant;
-      })
-      .catch((err) => {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
       });
 
-    if (plant?.plant?.uuid) {
-      await router.push(`/plants/${plant.plant.uuid}`);
-      onSubmitted();
+      const createPlantData = response.data;
+
+      if (createPlantData && createPlantData.createPlant && createPlantData.createPlant.plant) {
+        await router.push(`/plants/${createPlantData.createPlant.plant.uuid}`);
+        onSubmitted();
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
+      }
     }
   };
 
