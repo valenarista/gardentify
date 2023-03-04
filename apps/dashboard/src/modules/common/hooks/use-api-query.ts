@@ -12,16 +12,21 @@ const useApiQuery = <TData, TVariables extends OperationVariables>(
 ) => {
   const { data, error, loading } = useQuery<TData, TVariables>(queryDocument, options);
   const [response, setResponse] = useState<ApiQueryResponse<TData, ApolloError>>();
+  const [responseLoading, setResponseLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (data) setResponse({ data });
+    setResponse({ data });
   }, [data]);
 
   useEffect(() => {
-    if (error) setResponse({ error });
+    setResponseLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
+    setResponse({ error });
   }, [error]);
 
-  return { response, loading };
+  return { response, loading: responseLoading };
 };
 
 export default useApiQuery;

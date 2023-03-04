@@ -16,7 +16,7 @@ const ObjectQrCodeResult: React.FC<ObjectQrCodeResultProps> = (props) => {
 
   const qrCodeRef = useRef<HTMLImageElement>(null);
   const options: Options = {
-    pixelRatio: 5,
+    pixelRatio: 2.5,
     quality: 1,
     skipFonts: true,
   };

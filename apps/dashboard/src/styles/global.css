@@ -20,3 +20,7 @@ p {
 .skeleton * {
   visibility: hidden;
 }
+
+canvas {
+  height: 100%;
+}

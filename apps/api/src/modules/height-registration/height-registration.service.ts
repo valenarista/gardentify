@@ -112,6 +112,7 @@ export class HeightRegistrationsService {
       const heightRegistrations =
         await this.prismaService.heightRegistration.findMany({
           where: { plantUuid: input.uuid },
+          orderBy: { createdAt: 'asc' },
         });
 
       if (!heightRegistrations.length) {

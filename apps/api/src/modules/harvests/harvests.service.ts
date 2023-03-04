@@ -179,6 +179,7 @@ export class HarvestsService {
     input: FindWeekHarvestsInput,
   ): Promise<HarvestsResponse> {
     try {
+      const pastWeek = 7 * 24 * 60 * 60 * 1000;
       const harvests = await this.prismaService.harvest.findMany({
         where: {
           plant: {
@@ -189,9 +190,10 @@ export class HarvestsService {
             },
           },
           createdAt: {
-            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+            gte: new Date(Date.now() - pastWeek),
           },
         },
+        orderBy: { createdAt: 'asc' },
       });
 
       if (harvests.length === 0) {

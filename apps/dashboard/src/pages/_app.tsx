@@ -9,15 +9,16 @@ import type { AppProps } from 'next/app';
 import { Inter } from 'next/font/google';
 import React from 'react';
 
-const InterFont = Inter({
+export const InterFont = Inter({
   variable: '--font-sans',
   subsets: ['latin'],
   display: 'swap',
 });
 
 const GardentifyApp: React.FC<AppProps> = ({ Component, ...rest }) => {
+  const apolloClient = createApolloClient();
   return (
-    <ApolloProvider client={createApolloClient()}>
+    <ApolloProvider client={apolloClient}>
       <ToastProvider>
         <ThemeProvider>
           <AuthProvider>
