@@ -98,9 +98,19 @@ input FindHarvestInput {
   uuid: String!
 }
 
+input FindHarvestsInput {
+  includePlant: Boolean!
+  take: Int!
+}
+
 input FindHeightRegistrationInput {
   height: Float
   uuid: String
+}
+
+input FindHeightRegistrationsInput {
+  includePlant: Boolean!
+  take: Int!
 }
 
 input FindPlantInput {
@@ -136,7 +146,7 @@ type HarvestsResponse {
 
 type HeightRegistration {
   createdAt: DateTime!
-  height: Float
+  height: Float!
   plant: Plant
   updatedAt: DateTime!
   uuid: String!
@@ -234,14 +244,16 @@ type Query {
   findContainerPlants(input: FindContainerInput!): PlantsResponse!
   findContainers(input: FindContainerInput!): ContainersResponse!
   findHarvest(input: FindHarvestInput!): HarvestResponse!
-  findHarvests(input: FindHarvestInput!): HarvestsResponse!
+  findHarvests(input: FindHarvestsInput!): HarvestsResponse!
   findHeightRegistration(input: FindHeightRegistrationInput!): HeightRegistrationResponse!
+  findHeightRegistrations(input: FindHeightRegistrationsInput!): HeightRegistrationsResponse!
   findPlant(input: FindPlantInput!): PlantResponse!
   findPlantHarvests(input: FindPlantInput!): HarvestsResponse!
   findPlantHeightRegistrations(input: FindPlantInput!): HeightRegistrationsResponse!
   findPlants(input: FindPlantInput!): PlantsResponse!
   findUser(input: FindUserInput!): UserResponse!
   findUserContainers(input: FindUserContainersInput!): ContainersResponse!
+  getWeatherForecast(input: WeatherForecastInput!): WeatherForecastResponse!
   me: UserResponse!
 }
 
@@ -334,4 +346,24 @@ type User {
 type UserResponse {
   errors: [Error!]
   user: User
+}
+
+type Weather {
+  precipitationSum: Float!
+  temperatureMax: Float!
+  temperatureMin: Float!
+  time: String!
+  uvIndexMax: Float!
+  weatherCode: Int!
+  windDirectionDominant: Float!
+  windSpeedMax: Float!
+}
+
+input WeatherForecastInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+type WeatherForecastResponse {
+  forecast: [Weather!]!
 }

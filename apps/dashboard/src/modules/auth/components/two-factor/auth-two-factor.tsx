@@ -12,24 +12,26 @@ const AuthTwoFactor: React.FC = () => {
   const [setupTwoFactorCode] = useSetupTwoFactorCodeMutation();
 
   const handleTwoFactorSetup = async (data: AuthTwoFactorFormData) => {
-    const twoFactorSetup = await setupTwoFactorCode({
-      variables: {
-        input: {
-          ...data,
+    try {
+      const response = await setupTwoFactorCode({
+        variables: {
+          input: {
+            ...data,
+          },
         },
-      },
-    })
-      .then((res) => {
-        return res.data?.setupTwoFactorCode;
-      })
-      .catch((err) => {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
       });
 
-    if (twoFactorSetup && twoFactorSetup.emailSent) {
-      toast({ variant: 'success', content: 'Two factor mail sent!' });
-      await router.push(`/auth/login`);
+      const setupTwoFactorCodeData = response.data;
+
+      if (setupTwoFactorCodeData && setupTwoFactorCodeData.setupTwoFactorCode.emailSent) {
+        toast({ variant: 'success', content: 'Two factor mail sent!' });
+        await router.push(`/auth`);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
+      }
     }
   };
 

@@ -46,6 +46,7 @@ const AuthSignupForm: React.FC<AuthSignupFormProps> = (props) => {
             id={field.name}
             label="Email"
             type="email"
+            inputMode="email"
             placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}

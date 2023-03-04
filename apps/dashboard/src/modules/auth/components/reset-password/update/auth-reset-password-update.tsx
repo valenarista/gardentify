@@ -1,4 +1,3 @@
-import { ApolloError } from '@apollo/client';
 import { useToast } from '@gardentify/ui';
 import { useResetPasswordMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
@@ -17,26 +16,28 @@ const AuthResetPasswordUpdate: React.FC<AuthResetPasswordUpdateProps> = (props) 
   const [resetPassword] = useResetPasswordMutation();
 
   const handleResetPassword = async (data: AuthResetPasswordUpdateFormData) => {
-    const reset = await resetPassword({
-      variables: {
-        input: {
-          password: data.password,
-          twoFactorCode: data.twoFactorCode,
-          token,
+    try {
+      const response = await resetPassword({
+        variables: {
+          input: {
+            password: data.password,
+            twoFactorCode: data.twoFactorCode,
+            token,
+          },
         },
-      },
-    })
-      .then((response) => {
-        return response.data?.resetPassword;
-      })
-      .catch((err: ApolloError) => {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
       });
 
-    if (reset && reset.success) {
-      toast({ variant: 'success', content: 'Password updated successfully!' });
-      await router.push('/auth/login');
+      const resetPasswordData = response.data;
+
+      if (resetPasswordData && resetPasswordData.resetPassword.success) {
+        toast({ variant: 'success', content: 'Password updated successfully!' });
+        await router.push('/auth/login');
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
+      }
     }
   };
 

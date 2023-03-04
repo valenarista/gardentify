@@ -35,24 +35,24 @@ const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps
   const onSubmit = async (data: FormData) => {
     if (!state.user) return;
 
-    await updateUser({
-      variables: {
-        input: {
-          uuid: state.user.uuid,
-          username: data.username,
+    try {
+      await updateUser({
+        variables: {
+          input: {
+            uuid: state.user.uuid,
+            username: data.username,
+          },
         },
-      },
-    })
-      .then((response) => {
-        return response.data?.updateUser;
-      })
-      .catch((err) => {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
       });
 
-    //await router.push(`/users/${user.uuid}`);
-    onSubmitted();
+      //await router.push(`/users/${user.uuid}`);
+      onSubmitted();
+    } catch (err) {
+      if (err instanceof Error) {
+        const errorMessage = err.message;
+        toast({ variant: 'error', content: errorMessage });
+      }
+    }
   };
 
   const handleFormReset = () => {
@@ -68,6 +68,7 @@ const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps
           <TextInput
             id={field.name}
             label="Username"
+            inputMode="text"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             {...field}

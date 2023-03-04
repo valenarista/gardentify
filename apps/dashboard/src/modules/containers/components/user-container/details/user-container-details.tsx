@@ -5,6 +5,8 @@ import ObjectQrCode from '@modules/qr-codes/components/object-qr-code';
 import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 
+import ContainerDirtDepthAttribute from '../../cards/container-dirt-depth-attribute';
+import ContainerTypeAttribute from '../../cards/container-type-attribute';
 import UserContainerManagement from '../management/user-container-management';
 
 const UserContainerDetails: React.FC = (props) => {
@@ -22,10 +24,12 @@ const UserContainerDetails: React.FC = (props) => {
           <h1 className="mb-1 text-3xl font-bold">Container</h1>
           <ObjectQrCode urlToEncode={`${__URL__}${router.asPath}`} />
         </div>
-        {/* Type */}
-        <h2 className="font-medium">Type: {container.type}</h2>
-        {/* Dirt depth */}
-        <h3 className="font-medium">Dirt Depth: {container.dirtDepth} cms</h3>
+        <div className="mb-1 flex space-x-4">
+          {/* Type */}
+          <ContainerTypeAttribute type={container.type} />
+          {/* Dirt depth */}
+          <ContainerDirtDepthAttribute dirtDepth={container.dirtDepth} />
+        </div>
         {/* Joined at */}
         <p className="text-sm font-medium opacity-90">Created at {new Date(container.createdAt).toDateString()}</p>
       </div>

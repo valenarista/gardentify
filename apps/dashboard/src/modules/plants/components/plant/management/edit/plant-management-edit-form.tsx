@@ -37,31 +37,33 @@ const PlantManagementEditForm: React.FC = () => {
     defaultValues: {
       variety: plant.variety,
       type: plant.type,
-      seedsPlantedAt: plant.seedsPlantedAt,
-      seedsSproutedAt: plant.seedsSproutedAt,
+      seedsPlantedAt: new Date(plant.seedsPlantedAt).toISOString().substring(0, 10) as unknown as Date,
+      seedsSproutedAt: new Date(plant.seedsSproutedAt).toISOString().substring(0, 10) as unknown as Date,
     },
   });
 
   const onSubmit = async (data: FormData) => {
     if (!state.user) return;
 
-    await updatePlant({
-      variables: {
-        input: {
-          ...data,
-          uuid: plant.uuid,
+    try {
+      const response = await updatePlant({
+        variables: {
+          input: {
+            ...data,
+            uuid: plant.uuid,
+          },
         },
-      },
-    })
-      .then((response) => {
-        return response.data?.updatePlant;
-      })
-      .catch((err) => {
+      });
+      const updatedPlant = response.data;
+      if (updatedPlant && updatedPlant.updatePlant.plant && updatedPlant.updatePlant.plant.uuid) {
+        await router.push(`/plants/${plant.uuid}`);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
         const errorMessage = err.message;
         toast({ variant: 'error', content: errorMessage });
-      });
-
-    await router.push(`/plants/${plant.uuid}`);
+      }
+    }
   };
 
   const handleFormReset = () => {

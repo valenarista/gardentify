@@ -12,6 +12,7 @@ import { HarvestResponse } from './responses/harvest.response';
 import { HarvestsResponse } from './responses/harvests.response';
 import { HarvestsService } from './harvests.service';
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
+import { FindHarvestsInput } from './dto/find-harvests.input';
 
 @Resolver(() => Harvest)
 export class HarvestsResolver {
@@ -26,7 +27,7 @@ export class HarvestsResolver {
 
   @Query(() => HarvestsResponse)
   async findHarvests(
-    @Args('input') input: FindHarvestInput,
+    @Args('input') input: FindHarvestsInput,
   ): Promise<HarvestsResponse> {
     return await this.harvestsService.findHarvests(input);
   }

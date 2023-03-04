@@ -4,11 +4,18 @@ import { FindHarvestInput } from './dto/find-harvest.input';
 import { HarvestsResponse } from './responses/harvests.response';
 import { CreateHarvestInput } from './dto/create-harvest.input';
 import { UpdateHarvestInput } from './dto/update-harvest.input';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '@modules/prisma/prisma.service';
 import { Harvest } from './models/harvests.model';
 import { parsePlantType } from '@modules/plants/lib/plant-utils';
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
+import { FindHarvestsInput } from './dto/find-harvests.input';
+import { Plant } from '@modules/plants/models/plant.model';
 
 @Injectable()
 export class HarvestsService {
@@ -39,21 +46,17 @@ export class HarvestsService {
 
       return { harvest: parsedHarvest };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
-  async findHarvests(input: FindHarvestInput): Promise<HarvestsResponse> {
+  async findHarvests(input: FindHarvestsInput): Promise<HarvestsResponse> {
     try {
       const harvests = await this.prismaService.harvest.findMany({
-        where: { uuid: input.uuid },
+        take: input.take,
+        include: { plant: input.includePlant },
       });
 
       if (!harvests.length) {
@@ -62,16 +65,23 @@ export class HarvestsService {
         );
       }
 
-      return { harvests };
+      const mappedHarvests: Harvest[] = harvests.map((harvest) => {
+        const parsedPlant: Plant = {
+          ...harvest.plant,
+          type: parsePlantType(harvest.plant.type),
+        };
+
+        return {
+          ...harvest,
+          plant: parsedPlant,
+        };
+      });
+
+      return { harvests: mappedHarvests };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -81,7 +91,7 @@ export class HarvestsService {
         where: { plant: { uuid: input.uuid } },
       });
 
-      if (!harvests.length) {
+      if (harvests.length === 0) {
         throw new NotFoundException(
           'Could not find harvests with the given input!',
         );
@@ -89,14 +99,9 @@ export class HarvestsService {
 
       return { harvests };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -118,14 +123,9 @@ export class HarvestsService {
 
       return { harvest };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -136,14 +136,9 @@ export class HarvestsService {
       });
       return { deleted: true };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -173,16 +168,9 @@ export class HarvestsService {
 
       return { harvest: parsedHarvest };
     } catch (err) {
-      console.log(err);
-
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 }

@@ -4,7 +4,7 @@ import {
   FindPlantHarvestsQuery,
   FindPlantHarvestsQueryVariables,
 } from '@modules/graphql/@generated/graphql';
-import HarvestsFeed from '@modules/height-registrations copy/components/feed/harvests-feed';
+import HarvestsFeed from '@modules/harvests/components/feed/harvests-feed';
 import { useContainerPlantContext } from '@modules/plants/context/container-plant-context';
 import React from 'react';
 
@@ -28,7 +28,7 @@ const PlantHarvests: React.FC = () => {
       <div className="flex w-full flex-col space-y-4">
         <PlantHarvestsHeader />
 
-        {response?.error ? (
+        {response && response.error && response.error ? (
           <span className="text-neutral-800 dark:text-neutral-100">{response.error.message}</span>
         ) : null}
         {loading ? (

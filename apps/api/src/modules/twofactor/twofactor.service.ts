@@ -1,9 +1,5 @@
 import QRCode from 'qrcode';
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { authenticator } from 'otplib';
 import { GenerateTwoFactorInput } from './dto/generate-two-factor.input';
 import { ValidateTwoFactorCodeInput } from './dto/validate-two-factor-code.input';
@@ -26,7 +22,7 @@ export class TwoFactorService {
 
       return { otpUrl, twoFactorSecret };
     } catch (error) {
-      throw new NotFoundException('An error ocurred!');
+      throw new BadRequestException('An error ocurred!');
     }
   }
 
@@ -41,10 +37,14 @@ export class TwoFactorService {
   validateTwoFactorCode(
     input: ValidateTwoFactorCodeInput,
   ): ValidateTwoFactorCodeResponse {
-    const valid = authenticator.verify({
-      token: input.twoFactorCode,
-      secret: input.userSecret,
-    });
-    return { valid };
+    try {
+      const valid = authenticator.verify({
+        token: input.twoFactorCode,
+        secret: input.userSecret,
+      });
+      return { valid };
+    } catch (err) {
+      throw new BadRequestException('An error ocurred!');
+    }
   }
 }

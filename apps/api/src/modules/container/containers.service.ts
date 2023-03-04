@@ -8,7 +8,12 @@ import { DeleteObjectResponse } from '@modules/common/responses/delete-object.re
 import { AddPlantToContainerInput } from './dto/add-plant-to-container.input';
 import { parseContainerType } from './lib/container-utils';
 import { RemovePlantFromContainerInput } from './dto/remove-plant-from-container.input';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { FindUserContainersInput } from './dto/find-user-containers.input';
 import { UpdateContainerInput } from './dto/update-container.input';
 import { PlantsResponse } from '@modules/plants/responses/plants.response';
@@ -32,14 +37,9 @@ export class ContainersService {
       });
 
       if (!container) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'Not container found with the given input!',
-            },
-          ],
-        };
+        throw new NotFoundException(
+          'Could not find container with the given input!',
+        );
       }
 
       const parsedContainer: Container = {
@@ -49,14 +49,9 @@ export class ContainersService {
 
       return { container: parsedContainer };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -69,14 +64,9 @@ export class ContainersService {
       });
 
       if (!containers.length) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'Not container found with the given input!',
-            },
-          ],
-        };
+        throw new NotFoundException(
+          'Could not find container with the given input!',
+        );
       }
 
       const parsedContainers: Container[] = containers.map((container) => {
@@ -89,14 +79,9 @@ export class ContainersService {
 
       return { containers: parsedContainers };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -113,14 +98,7 @@ export class ContainersService {
       });
 
       if (!container) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'Could not create container with the given input!',
-            },
-          ],
-        };
+        throw new NotFoundException('Could not create container!');
       }
 
       const parsedContainer: Container = {
@@ -130,14 +108,9 @@ export class ContainersService {
 
       return { container: parsedContainer };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -150,14 +123,9 @@ export class ContainersService {
       });
       return { deleted: true };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -173,14 +141,7 @@ export class ContainersService {
         include: { user: true },
       });
       if (!updatedContainer) {
-        return {
-          errors: [
-            {
-              field: 'input',
-              message: 'Could not add plant to container with the given input!',
-            },
-          ],
-        };
+        throw new NotFoundException('No container found with the given input!');
       }
 
       const parsedContainer: Container = {
@@ -192,14 +153,9 @@ export class ContainersService {
         container: parsedContainer,
       };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
@@ -221,86 +177,99 @@ export class ContainersService {
 
       return { deleted: true };
     } catch (err) {
-      return {
-        errors: [
-          {
-            field: 'input',
-            message: 'An error ocurred!',
-          },
-        ],
-      };
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 
   async updateContainer(
     input: UpdateContainerInput,
   ): Promise<ContainerResponse> {
-    const container = await this.prismaService.container.update({
-      where: { uuid: input.uuid },
-      data: {
-        ...input,
-      },
-      include: { user: true },
-    });
+    try {
+      const container = await this.prismaService.container.update({
+        where: { uuid: input.uuid },
+        data: {
+          ...input,
+        },
+        include: { user: true },
+      });
 
-    if (!container) {
-      throw new NotFoundException('No container found with the given input!');
+      if (!container) {
+        throw new NotFoundException('No container found with the given input!');
+      }
+      const parsedContainer: Container = {
+        ...container,
+        type: parseContainerType(container.type),
+      };
+
+      return {
+        container: parsedContainer,
+      };
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
-    const parsedContainer: Container = {
-      ...container,
-      type: parseContainerType(container.type),
-    };
-
-    return {
-      container: parsedContainer,
-    };
   }
 
   async findUserContainers(
     input: FindUserContainersInput,
   ): Promise<ContainersResponse> {
-    const containers = await this.prismaService.container.findMany({
-      where: {
-        userUuid: input.userUuid,
-      },
-    });
+    try {
+      const containers = await this.prismaService.container.findMany({
+        where: {
+          userUuid: input.userUuid,
+        },
+      });
 
-    if (!containers.length) {
-      throw new NotFoundException(
-        'No containers were found for the given user !',
-      );
+      if (!containers.length) {
+        throw new NotFoundException(
+          'No containers were found for the given user !',
+        );
+      }
+
+      const parsedContainers: Container[] = containers.map((container) => {
+        return {
+          ...container,
+          type: parseContainerType(container.type),
+        };
+      });
+
+      return { containers: parsedContainers };
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
-
-    const parsedContainers: Container[] = containers.map((container) => {
-      return {
-        ...container,
-        type: parseContainerType(container.type),
-      };
-    });
-
-    return { containers: parsedContainers };
   }
 
   async findContainerPlants(
     input: FindContainerInput,
   ): Promise<PlantsResponse> {
-    const plants = await this.prismaService.plant.findMany({
-      where: { containerUuid: input.uuid },
-    });
+    try {
+      const plants = await this.prismaService.plant.findMany({
+        where: { containerUuid: input.uuid },
+      });
 
-    if (!plants.length) {
-      throw new NotFoundException(
-        'No plants were found for the given container!',
-      );
+      if (!plants.length) {
+        throw new NotFoundException(
+          'No plants were found for the given container!',
+        );
+      }
+
+      const parsedPlants: Plant[] = plants.map((plant) => {
+        return {
+          ...plant,
+          type: parsePlantType(plant.type),
+        };
+      });
+
+      return { plants: parsedPlants };
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
-
-    const parsedPlants: Plant[] = plants.map((plant) => {
-      return {
-        ...plant,
-        type: parsePlantType(plant.type),
-      };
-    });
-
-    return { plants: parsedPlants };
   }
 }

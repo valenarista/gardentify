@@ -10,7 +10,7 @@ const ContainersPage: React.FC = () => {
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    if (!state.user) router.push('/');
+    if (!state.loading && state.user && state.user?.username === undefined) router.push('/');
   }, [state]);
 
   return (

@@ -140,8 +140,10 @@ export class AuthService {
       });
 
       return { emailSent: true };
-    } catch (error) {
-      throw new NotFoundException('An error ocurred!');
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
     }
   }
 

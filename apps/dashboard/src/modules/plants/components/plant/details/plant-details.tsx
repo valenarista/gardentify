@@ -5,6 +5,8 @@ import ObjectQrCode from '@modules/qr-codes/components/object-qr-code';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import PlantTypeAttribute from '../../cards/plant-type-attribute';
+import PlantVarietyAttribute from '../../cards/plant-variety-attribute';
 import ContainerPlantManagement from '../management/plant-management';
 
 const PlantDetails: React.FC = (props) => {
@@ -22,11 +24,12 @@ const PlantDetails: React.FC = (props) => {
           <h1 className="mb-1 text-3xl font-bold">Plant</h1>
           <ObjectQrCode urlToEncode={`${__URL__}${router.asPath}`} />
         </div>
-        {/* Type */}
-        <h2 className="font-medium">Type: {plant.type}</h2>
-        {/* Dirt depth */}
-        <h3 className="font-medium">Variety: {plant.variety}</h3>
-
+        <div className="mb-1 flex space-x-4">
+          {/* Type */}
+          <PlantTypeAttribute type={plant.type} />
+          {/* Dirt depth */}
+          <PlantVarietyAttribute variety={plant.variety} />
+        </div>
         <p className="text-sm font-medium opacity-90">
           Seeds Planted at {new Date(plant.seedsPlantedAt).toDateString()}
         </p>

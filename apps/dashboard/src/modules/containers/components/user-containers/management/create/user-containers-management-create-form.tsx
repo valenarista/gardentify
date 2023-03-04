@@ -43,25 +43,25 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
   const onSubmit = async (data: FormData) => {
     if (!state.user) return;
 
-    const container = await createContainer({
-      variables: {
-        input: {
-          ...data,
-          userUuid: state.user.uuid,
+    try {
+      const response = await createContainer({
+        variables: {
+          input: {
+            ...data,
+            userUuid: state.user.uuid,
+          },
         },
-      },
-    })
-      .then((response) => {
-        return response.data?.createContainer;
-      })
-      .catch((err) => {
+      });
+      const createContainerData = response.data;
+      if (createContainerData && createContainerData.createContainer && createContainerData.createContainer.container) {
+        await router.push(`/containers/${createContainerData.createContainer.container.uuid}`);
+        onSubmitted();
+      }
+    } catch (err) {
+      if (err instanceof Error) {
         const errorMessage = err.message;
         toast({ variant: 'error', content: errorMessage });
-      });
-
-    if (container?.container?.uuid) {
-      await router.push(`/containers/${container?.container?.uuid}`);
-      onSubmitted();
+      }
     }
   };
 
@@ -95,6 +95,7 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
             id={field.name}
             label="Dirt Depth"
             type="number"
+            inputMode="numeric"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             help

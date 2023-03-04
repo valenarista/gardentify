@@ -44,25 +44,24 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     if (!state.user) return;
 
-    const plantUuid = router.query.uuid as string;
+    try {
+      const plantUuid = router.query.uuid as string;
 
-    await createHarvest({
-      variables: {
-        input: {
-          ...data,
-          plant: { uuid: plantUuid },
+      await createHarvest({
+        variables: {
+          input: {
+            ...data,
+            plant: { uuid: plantUuid },
+          },
         },
-      },
-    })
-      .then((response) => {
-        return response.data?.createHarvest;
-      })
-      .catch((err) => {
+      });
+      await router.push(`/plants/${plantUuid}`);
+    } catch (err) {
+      if (err instanceof Error) {
         const errorMessage = err.message;
         toast({ variant: 'error', content: errorMessage });
-      });
-
-    await router.push(`/plants/${plantUuid}`);
+      }
+    }
   };
 
   const handleFormReset = () => {
@@ -76,6 +75,9 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
         label="Quantity"
         type="number"
         placeholder="Harvest units"
+        inputMode="numeric"
+        min="1"
+        step="1"
         error={errors.quantity !== undefined}
         errorMessage={errors.quantity?.message}
         help
@@ -88,6 +90,7 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
         label="Weight"
         type="number"
         step="0.01"
+        inputMode="numeric"
         placeholder="Harvest weight"
         error={errors.weight !== undefined}
         errorMessage={errors.weight?.message}
