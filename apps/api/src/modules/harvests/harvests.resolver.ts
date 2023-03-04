@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
 
@@ -13,6 +13,9 @@ import { HarvestsResponse } from './responses/harvests.response';
 import { HarvestsService } from './harvests.service';
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 import { FindHarvestsInput } from './dto/find-harvests.input';
+import { GardentifyContext } from '@modules/graphql/graphql';
+import { FindWeekHarvestsInput } from './dto/find-week-harvests.input';
+import { User } from '@modules/users/models/user.model';
 
 @Resolver(() => Harvest)
 export class HarvestsResolver {
@@ -61,5 +64,15 @@ export class HarvestsResolver {
     @Args('input') input: UpdateHarvestInput,
   ): Promise<HarvestResponse> {
     return await this.harvestsService.updateHarvest(input);
+  }
+
+  @Query(() => HarvestsResponse)
+  @UseGuards(GqlAuthGuard)
+  async findWeekHarvests(
+    @Context() context: GardentifyContext,
+  ): Promise<HarvestsResponse> {
+    const user: Partial<User> = context.req.user;
+
+    return await this.harvestsService.findWeekHarvests({ userUuid: user.uuid });
   }
 }

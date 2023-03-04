@@ -253,6 +253,7 @@ type Query {
   findPlants(input: FindPlantInput!): PlantsResponse!
   findUser(input: FindUserInput!): UserResponse!
   findUserContainers(input: FindUserContainersInput!): ContainersResponse!
+  findWeekHarvests: HarvestsResponse!
   getWeatherForecast(input: WeatherForecastInput!): WeatherForecastResponse!
   me: UserResponse!
 }

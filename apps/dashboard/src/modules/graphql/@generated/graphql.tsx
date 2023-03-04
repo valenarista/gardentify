@@ -354,6 +354,7 @@ export type Query = {
   findPlants: PlantsResponse;
   findUser: UserResponse;
   findUserContainers: ContainersResponse;
+  findWeekHarvests: HarvestsResponse;
   getWeatherForecast: WeatherForecastResponse;
   me: UserResponse;
 };
@@ -1078,6 +1079,51 @@ export type FindPlantHarvestsQueryVariables = Exact<{
 export type FindPlantHarvestsQuery = {
   __typename?: 'Query';
   findPlantHarvests: {
+    __typename?: 'HarvestsResponse';
+    harvests?: Array<{
+      __typename?: 'Harvest';
+      uuid: string;
+      quantity: number;
+      weight: number;
+      createdAt: Date;
+      updatedAt: Date;
+      plant?: {
+        __typename?: 'Plant';
+        uuid: string;
+        type: PlantType;
+        variety: string;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
+        container?: {
+          __typename?: 'Container';
+          uuid: string;
+          type: ContainerType;
+          dirtDepth: number;
+          createdAt: Date;
+          updatedAt: Date;
+          user?: {
+            __typename?: 'User';
+            uuid: string;
+            username: string;
+            email: string;
+            twoFactorEnabled: boolean;
+            createdAt: Date;
+            updatedAt: Date;
+          } | null;
+        } | null;
+      } | null;
+    }> | null;
+    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+  };
+};
+
+export type FindWeekHarvestsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type FindWeekHarvestsQuery = {
+  __typename?: 'Query';
+  findWeekHarvests: {
     __typename?: 'HarvestsResponse';
     harvests?: Array<{
       __typename?: 'Harvest';
@@ -2548,6 +2594,45 @@ export function useFindPlantHarvestsLazyQuery(
 export type FindPlantHarvestsQueryHookResult = ReturnType<typeof useFindPlantHarvestsQuery>;
 export type FindPlantHarvestsLazyQueryHookResult = ReturnType<typeof useFindPlantHarvestsLazyQuery>;
 export type FindPlantHarvestsQueryResult = Apollo.QueryResult<FindPlantHarvestsQuery, FindPlantHarvestsQueryVariables>;
+export const FindWeekHarvestsDocument = gql`
+  query findWeekHarvests {
+    findWeekHarvests {
+      ...HarvestsResponse
+    }
+  }
+  ${HarvestsResponseFragmentDoc}
+`;
+
+/**
+ * __useFindWeekHarvestsQuery__
+ *
+ * To run a query within a React component, call `useFindWeekHarvestsQuery` and pass it Date options that fit your needs.
+ * When your component renders, `useFindWeekHarvestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindWeekHarvestsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFindWeekHarvestsQuery(
+  baseOptions?: Apollo.QueryHookOptions<FindWeekHarvestsQuery, FindWeekHarvestsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindWeekHarvestsQuery, FindWeekHarvestsQueryVariables>(FindWeekHarvestsDocument, options);
+}
+export function useFindWeekHarvestsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FindWeekHarvestsQuery, FindWeekHarvestsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindWeekHarvestsQuery, FindWeekHarvestsQueryVariables>(FindWeekHarvestsDocument, options);
+}
+export type FindWeekHarvestsQueryHookResult = ReturnType<typeof useFindWeekHarvestsQuery>;
+export type FindWeekHarvestsLazyQueryHookResult = ReturnType<typeof useFindWeekHarvestsLazyQuery>;
+export type FindWeekHarvestsQueryResult = Apollo.QueryResult<FindWeekHarvestsQuery, FindWeekHarvestsQueryVariables>;
 export const CreateHeightRegistrationDocument = gql`
   mutation createHeightRegistration($input: CreateHeightRegistrationInput!) {
     createHeightRegistration(input: $input) {

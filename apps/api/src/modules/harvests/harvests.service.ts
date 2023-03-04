@@ -16,6 +16,7 @@ import { parsePlantType } from '@modules/plants/lib/plant-utils';
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 import { FindHarvestsInput } from './dto/find-harvests.input';
 import { Plant } from '@modules/plants/models/plant.model';
+import { FindWeekHarvestsInput } from './dto/find-week-harvests.input';
 
 @Injectable()
 export class HarvestsService {
@@ -167,6 +168,39 @@ export class HarvestsService {
       };
 
       return { harvest: parsedHarvest };
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
+    }
+  }
+
+  async findWeekHarvests(
+    input: FindWeekHarvestsInput,
+  ): Promise<HarvestsResponse> {
+    try {
+      const harvests = await this.prismaService.harvest.findMany({
+        where: {
+          plant: {
+            container: {
+              user: {
+                uuid: input.userUuid,
+              },
+            },
+          },
+          createdAt: {
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          },
+        },
+      });
+
+      if (harvests.length === 0) {
+        throw new NotFoundException(
+          'Could not find harvests with the given input!',
+        );
+      }
+
+      return { harvests };
     } catch (err) {
       if (err instanceof Error) {
         throw new BadRequestException(err.message);
