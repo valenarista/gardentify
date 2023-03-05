@@ -4,7 +4,7 @@ import React from 'react';
 
 import UserContainerPlantsManagementCreate from './management/create/user-container-plants-management-create';
 
-const UserContainerPlantsHeader: React.FC = () => {
+const UserContainerPlantsFeedHeader: React.FC = () => {
   const { state } = useAuthContext();
   const { container } = useUserContainerContext();
 
@@ -19,4 +19,4 @@ const UserContainerPlantsHeader: React.FC = () => {
   );
 };
 
-export default UserContainerPlantsHeader;
+export default UserContainerPlantsFeedHeader;

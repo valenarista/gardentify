@@ -1,0 +1,5 @@
+query calculateContainerStats($input: FindContainerInput!) {
+  calculateContainerStats(input: $input) {
+    ...ContainerStatsResponse
+  }
+}

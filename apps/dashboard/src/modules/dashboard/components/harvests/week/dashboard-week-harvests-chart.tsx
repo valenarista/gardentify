@@ -1,9 +1,4 @@
-import useApiQuery from '@modules/common/hooks/use-api-query';
-import {
-  FindWeekHarvestsDocument,
-  FindWeekHarvestsQuery,
-  FindWeekHarvestsQueryVariables,
-} from '@modules/graphql/@generated/graphql';
+import { Harvest } from '@modules/graphql/@generated/graphql';
 import { useThemeContext } from '@modules/theme/context/theme-context';
 import {
   CategoryScale,
@@ -20,11 +15,13 @@ import { Line } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const DashboardWeekHarvests: React.FC = () => {
-  const { theme } = useThemeContext();
-  const { response } = useApiQuery<FindWeekHarvestsQuery, FindWeekHarvestsQueryVariables>(FindWeekHarvestsDocument);
+type DashboardWeekHarvestsChartProps = {
+  weekHarvests: Harvest[];
+};
 
-  const weekHarvests = response?.data?.findWeekHarvests.harvests || [];
+const DashboardWeekHarvestsChart: React.FC<DashboardWeekHarvestsChartProps> = (props) => {
+  const { weekHarvests } = props;
+  const { theme } = useThemeContext();
 
   const totalHarvested = weekHarvests.reduce((acc, harvest) => {
     return acc + harvest.weight;
@@ -74,8 +71,7 @@ const DashboardWeekHarvests: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
-      <h3 className="text-xl font-semibold md:text-2xl">This week harvests</h3>
+    <>
       {weekHarvests.length === 1 ? (
         <p>Not enough harvests to calculate data!</p>
       ) : (
@@ -89,8 +85,8 @@ const DashboardWeekHarvests: React.FC = () => {
           </div>
         </>
       )}
-    </div>
+    </>
   );
 };
 
-export default DashboardWeekHarvests;
+export default DashboardWeekHarvestsChart;

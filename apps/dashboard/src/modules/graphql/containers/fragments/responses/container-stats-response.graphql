@@ -1,0 +1,5 @@
+fragment ContainerStatsResponse on ContainerStatsResponse {
+  plantsCount
+  harvestsCount
+  grossProduce
+}

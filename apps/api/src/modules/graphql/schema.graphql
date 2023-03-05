@@ -34,6 +34,12 @@ type ContainerResponse {
   errors: [Error!]
 }
 
+type ContainerStatsResponse {
+  grossProduce: Float
+  harvestsCount: Int
+  plantsCount: Int
+}
+
 """The type of a conatiner"""
 enum ContainerType {
   Bag
@@ -240,6 +246,7 @@ type PlantsResponse {
 }
 
 type Query {
+  calculateContainerStats(input: FindContainerInput!): ContainerStatsResponse!
   findContainer(input: FindContainerInput!): ContainerResponse!
   findContainerPlants(input: FindContainerInput!): PlantsResponse!
   findContainers(input: FindContainerInput!): ContainersResponse!

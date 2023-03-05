@@ -13,6 +13,7 @@ import { UseGuards } from '@nestjs/common';
 import { UpdateContainerInput } from './dto/update-container.input';
 import { PlantsResponse } from '@modules/plants/responses/plants.response';
 import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
+import { ContainerStatsResponse } from './responses/container-stats.response';
 
 @Resolver(() => Container)
 export class ContainersResolver {
@@ -84,5 +85,12 @@ export class ContainersResolver {
     @Args('input') input: FindUserContainersInput,
   ): Promise<ContainersResponse> {
     return await this.containersService.findUserContainers(input);
+  }
+
+  @Query(() => ContainerStatsResponse)
+  async calculateContainerStats(
+    @Args('input') input: FindContainerInput,
+  ): Promise<ContainerStatsResponse> {
+    return await this.containersService.calculateContainerStats(input);
   }
 }

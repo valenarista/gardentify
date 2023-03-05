@@ -8,7 +8,7 @@ import {
 import HarvestCard from '@modules/harvests/components/cards/harvest-card';
 import React from 'react';
 
-import DashboardLatest from '../dashboard-latest';
+import DashboardLatest from '../../dashboard-latest';
 
 const DashboardLatestHarvests: React.FC = () => {
   const { response, loading } = useApiQuery<FindHarvestsQuery, FindHarvestsQueryVariables>(FindHarvestsDocument, {

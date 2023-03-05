@@ -7,6 +7,7 @@ const useLoggedInUser = () => {
 
   const { response, loading } = useApiQuery<MeQuery, MeQueryVariables>(MeDocument, {
     skip: shouldSkipQury,
+    ssr: true,
   });
 
   const [userLoading, setUserLoading] = useState<boolean>(true);
@@ -17,8 +18,6 @@ const useLoggedInUser = () => {
   }, [loading]);
 
   useEffect(() => {
-    if (userLoading) return;
-
     if (response && response.data && response.data.me.user) {
       setLoggedInUser(response.data.me.user);
     }

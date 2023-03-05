@@ -20,6 +20,7 @@ import { PlantsResponse } from '@modules/plants/responses/plants.response';
 import { Plant } from '@modules/plants/models/plant.model';
 import { parsePlantType } from '@modules/plants/lib/plant-utils';
 import { PrismaService } from '@modules/prisma/prisma.service';
+import { ContainerStatsResponse } from './responses/container-stats.response';
 
 @Injectable()
 export class ContainersService {
@@ -266,6 +267,42 @@ export class ContainersService {
       });
 
       return { plants: parsedPlants };
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
+    }
+  }
+
+  async calculateContainerStats(
+    input: FindContainerInput,
+  ): Promise<ContainerStatsResponse> {
+    try {
+      const container = await this.prismaService.container.findUnique({
+        where: {
+          uuid: input.uuid,
+        },
+        include: {
+          plants: { include: { harvests: { select: { weight: true } } } },
+        },
+      });
+
+      if (!container) {
+        throw new NotFoundException(
+          'Could not find container with the given input!',
+        );
+      }
+
+      const plantsCount = container.plants.length;
+      const totalHarvests = container.plants
+        .map((plant) => plant.harvests)
+        .flat();
+      const grossProduce = totalHarvests.reduce(
+        (prev, curr) => prev + curr.weight,
+        0,
+      );
+
+      return { grossProduce, plantsCount, harvestsCount: totalHarvests.length };
     } catch (err) {
       if (err instanceof Error) {
         throw new BadRequestException(err.message);

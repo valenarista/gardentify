@@ -1,7 +1,7 @@
 import React from 'react';
 
-import DashboardLatestHarvests from './dashboard-latest-harvests';
-import DashboardWeekHarvests from './dashboard-week-harvests';
+import DashboardLatestHarvests from './latests/dashboard-latest-harvests';
+import DashboardWeekHarvests from './week/dashboard-week-harvests';
 
 const DashboardHarvests: React.FC = () => {
   return (
