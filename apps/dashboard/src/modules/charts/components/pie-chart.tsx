@@ -29,7 +29,7 @@ const PieChart: React.FC<PieChartProps> = (props) => {
 
   const chartOptions: React.ComponentPropsWithoutRef<typeof Pie>['options'] = {
     maintainAspectRatio: false,
-    animation: { animateRotate: animate, animateScale: animate, responsiveAnimationDuration: 0 },
+    animation: { animateRotate: animate, animateScale: animate },
     plugins: {
       tooltip: {
         callbacks: {

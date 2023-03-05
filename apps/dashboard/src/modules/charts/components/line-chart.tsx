@@ -51,9 +51,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
         display: true,
       },
     },
-    animation: {
-      responsiveAnimationDuration: 0,
-    },
+
     scales: {
       x: {
         ticks: {
