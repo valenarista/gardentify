@@ -14,6 +14,7 @@ import { UpdateContainerInput } from './dto/update-container.input';
 import { PlantsResponse } from '@modules/plants/responses/plants.response';
 import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
 import { ContainerStatsResponse } from './responses/container-stats.response';
+import { ContainerHarvestsResponse } from './responses/container-harvests.response';
 
 @Resolver(() => Container)
 export class ContainersResolver {
@@ -92,5 +93,12 @@ export class ContainersResolver {
     @Args('input') input: FindContainerInput,
   ): Promise<ContainerStatsResponse> {
     return await this.containersService.calculateContainerStats(input);
+  }
+
+  @Query(() => ContainerHarvestsResponse)
+  async findContainerHarvests(
+    @Args('input') input: FindContainerInput,
+  ): Promise<ContainerHarvestsResponse> {
+    return await this.containersService.findContainerHarvests(input);
   }
 }

@@ -1,0 +1,5 @@
+query findContainerHarvests($input: FindContainerInput!) {
+  findContainerHarvests(input: $input) {
+    ...ContainerHarvestsResponse
+  }
+}

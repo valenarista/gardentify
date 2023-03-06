@@ -18,7 +18,10 @@ const UserContainerPlants: React.FC = () => {
 
   return (
     <>
-      <UserContainerPlantsFeed response={{ data: response.data, loading: response.loading, error: response.error }} />
+      <div className="lg:col-span-2">
+        <UserContainerPlantsFeed response={{ data: response.data, loading: response.loading, error: response.error }} />
+      </div>
+
       <UserContainerPlantsTypes response={{ data: response.data, loading: response.loading, error: response.error }} />
     </>
   );

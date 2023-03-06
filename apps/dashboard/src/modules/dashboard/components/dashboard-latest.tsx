@@ -2,17 +2,19 @@ import React from 'react';
 
 type DashboardLatestProps<TData> = {
   name: string;
+  description: string;
   loading: boolean;
   data: TData[];
   render: (renderData: TData, index: number) => React.ReactElement;
 };
 
 const DashboardLatest = <TData,>(props: DashboardLatestProps<TData>) => {
-  const { name, loading, data, render } = props;
+  const { name, description, loading, data, render } = props;
 
   return (
-    <div className="flex flex-col space-y-4 rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
-      <h3 className="text-xl font-semibold md:text-2xl">{name}</h3>
+    <div className="flex flex-col rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
+      <h3 className="text-2xl font-bold">{name}</h3>
+      <p className="mb-2">{description}</p>
       {!loading ? (
         <div
           className="grid gap-4"

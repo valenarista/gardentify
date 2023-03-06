@@ -12,7 +12,7 @@ import DashboardLatest from '../../dashboard-latest';
 
 const DashboardLatestHarvests: React.FC = () => {
   const { response, loading } = useApiQuery<FindHarvestsQuery, FindHarvestsQueryVariables>(FindHarvestsDocument, {
-    variables: { input: { take: 4, includePlant: true } },
+    variables: { input: { take: 6, includePlant: true } },
   });
 
   const harvests = response?.data?.findHarvests.harvests || [];
@@ -20,6 +20,7 @@ const DashboardLatestHarvests: React.FC = () => {
   return (
     <DashboardLatest<Harvest>
       name="Latest Harvests"
+      description="These are your last six harvests in your garden."
       data={harvests}
       loading={loading}
       render={(harvest, index) => {

@@ -51,27 +51,29 @@ const UserContainerStats: React.FC = (props) => {
                 </svg>
               }
             />
-            <UserContainerStatsEntry
-              title="Gross Produce"
-              description="Total produce of the container"
-              unit="kgs"
-              value={data.calculateContainerStats.grossProduce || '0'}
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 stroke-neutral-900 dark:stroke-neutral-100"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <circle cx="12" cy="6" r="3" />
-                  <path d="M6.835 9h10.33a1 1 0 0 1 .984 .821l1.637 9a1 1 0 0 1 -.984 1.179h-13.604a1 1 0 0 1 -.984 -1.179l1.637 -9a1 1 0 0 1 .984 -.821z" />
-                </svg>
-              }
-            />
+            {data.calculateContainerStats.grossProduce ? (
+              <UserContainerStatsEntry
+                title="Gross Produce"
+                description="Total produce of the container"
+                unit="kgs"
+                value={data.calculateContainerStats.grossProduce.toFixed(2) || '0'}
+                icon={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 stroke-neutral-900 dark:stroke-neutral-100"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <circle cx="12" cy="6" r="3" />
+                    <path d="M6.835 9h10.33a1 1 0 0 1 .984 .821l1.637 9a1 1 0 0 1 -.984 1.179h-13.604a1 1 0 0 1 -.984 -1.179l1.637 -9a1 1 0 0 1 .984 -.821z" />
+                  </svg>
+                }
+              />
+            ) : null}
             <UserContainerStatsEntry
               title="Harvests Count"
               description="Total harvests of the container"

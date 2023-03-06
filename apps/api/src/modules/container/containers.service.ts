@@ -21,6 +21,8 @@ import { Plant } from '@modules/plants/models/plant.model';
 import { parsePlantType } from '@modules/plants/lib/plant-utils';
 import { PrismaService } from '@modules/prisma/prisma.service';
 import { ContainerStatsResponse } from './responses/container-stats.response';
+import { ContainerHarvestsResponse } from './responses/container-harvests.response';
+import { ContainerHarvest } from './models/container-harvest.model';
 
 @Injectable()
 export class ContainersService {
@@ -303,6 +305,48 @@ export class ContainersService {
       );
 
       return { grossProduce, plantsCount, harvestsCount: totalHarvests.length };
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
+    }
+  }
+
+  async findContainerHarvests(
+    input: FindContainerInput,
+  ): Promise<ContainerHarvestsResponse> {
+    try {
+      const container = await this.prismaService.container.findUnique({
+        where: {
+          uuid: input.uuid,
+        },
+        include: {
+          plants: {
+            include: {
+              harvests: { select: { weight: true, createdAt: true } },
+            },
+          },
+        },
+      });
+
+      if (!container) {
+        throw new NotFoundException(
+          'Could not find container with the given input!',
+        );
+      }
+
+      const containerHarvests: ContainerHarvest[] = container.plants
+        .map((plant) => {
+          return plant.harvests.map((harvest) => {
+            return { date: harvest.createdAt, weight: harvest.weight };
+          });
+        })
+        .flat()
+        .sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        );
+
+      return { harvests: containerHarvests };
     } catch (err) {
       if (err instanceof Error) {
         throw new BadRequestException(err.message);

@@ -34,8 +34,8 @@ const DashboardWeatherRain: React.FC<DashboardWeatherRainProps> = (props) => {
   }, [data]);
 
   return (
-    <div className="flex flex-col space-y-4 rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
-      <h3 className="text-xl font-semibold md:text-2xl">Weather Rain</h3>
+    <div className="flex flex-col rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
+      <h3 className="text-2xl font-bold">Week Rain</h3>
 
       {error ? <span className="text-neutral-800 dark:text-neutral-100">{error.message}</span> : null}
 

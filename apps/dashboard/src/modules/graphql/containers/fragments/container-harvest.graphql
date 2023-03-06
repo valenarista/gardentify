@@ -1,0 +1,4 @@
+fragment ContainerHarvest on ContainerHarvest {
+  date
+  weight
+}

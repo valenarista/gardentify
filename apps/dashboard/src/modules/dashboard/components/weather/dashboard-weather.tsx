@@ -11,8 +11,10 @@ const DashboardWeather: React.FC = () => {
   return (
     <div className="flex flex-col space-y-4">
       <DashboardWeatherForecast response={response} />
-      <DashboardWeatherRain response={response} />
-      <DashboardWeatherRecomendations response={response} />
+      <div className="grid gap-4 lg:grid-cols-2">
+        <DashboardWeatherRain response={response} />
+        <DashboardWeatherRecomendations response={response} />
+      </div>
     </div>
   );
 };

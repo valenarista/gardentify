@@ -20,7 +20,7 @@ const DashboardWeatherRecomendations: React.FC<DashboardWeatherRecomendationsPro
 
   return (
     <div className="flex flex-col space-y-4 rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
-      <h3 className="text-xl font-semibold md:text-2xl">Weather Recomendations</h3>
+      <h3 className="text-2xl font-bold">Weather Recomendations</h3>
 
       {error ? <span className="text-neutral-800 dark:text-neutral-100">{error.message}</span> : null}
 

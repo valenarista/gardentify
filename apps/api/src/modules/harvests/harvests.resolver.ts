@@ -14,7 +14,6 @@ import { HarvestsService } from './harvests.service';
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 import { FindHarvestsInput } from './dto/find-harvests.input';
 import { GardentifyContext } from '@modules/graphql/graphql';
-import { FindWeekHarvestsInput } from './dto/find-week-harvests.input';
 import { User } from '@modules/users/models/user.model';
 
 @Resolver(() => Harvest)

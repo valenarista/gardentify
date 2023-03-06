@@ -1,0 +1,5 @@
+fragment ContainerHarvestsResponse on ContainerHarvestsResponse {
+  harvests {
+    ...ContainerHarvest
+  }
+}
