@@ -1,14 +1,21 @@
-import { useFindContainerPlantsQuery } from '@modules/graphql/@generated/graphql';
+import { useUserContainerContext } from '@modules/containers/context/user-container-context';
+import { useFindContainerPlantsTypesQuery } from '@modules/graphql/@generated/graphql';
 import React from 'react';
 
 import UserContainerPlantsTypesChart from './user-container-plants-types-chart';
 
-type UserContainerPlantsTypesProps = {
-  response: Pick<ReturnType<typeof useFindContainerPlantsQuery>, 'data' | 'error' | 'loading'>;
-};
+const UserContainerPlantsTypes: React.FC = () => {
+  const { container } = useUserContainerContext();
 
-const UserContainerPlantsTypes: React.FC<UserContainerPlantsTypesProps> = (props) => {
-  const { response } = props;
+  const response = useFindContainerPlantsTypesQuery({
+    variables: {
+      input: {
+        where: { uuid: container.uuid },
+      },
+    },
+    skip: container?.uuid === undefined,
+  });
+
   const { data, error, loading } = response;
 
   return (

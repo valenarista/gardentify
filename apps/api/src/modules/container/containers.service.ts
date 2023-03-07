@@ -23,6 +23,7 @@ import { PrismaService } from '@modules/prisma/prisma.service';
 import { ContainerStatsResponse } from './responses/container-stats.response';
 import { ContainerHarvestsResponse } from './responses/container-harvests.response';
 import { ContainerHarvest } from './models/container-harvest.model';
+import { FindContainerPlantsInput } from './dto/find-container-plants.input';
 
 @Injectable()
 export class ContainersService {
@@ -47,7 +48,7 @@ export class ContainersService {
 
       const parsedContainer: Container = {
         ...container,
-        type: container.type === 'Bag' ? ContainerType.Bag : ContainerType.Plot,
+        type: parseContainerType(container.type),
       };
 
       return { container: parsedContainer };
@@ -75,8 +76,7 @@ export class ContainersService {
       const parsedContainers: Container[] = containers.map((container) => {
         return {
           ...container,
-          type:
-            container.type === 'Bag' ? ContainerType.Bag : ContainerType.Plot,
+          type: parseContainerType(container.type),
         };
       });
 
@@ -106,7 +106,7 @@ export class ContainersService {
 
       const parsedContainer: Container = {
         ...container,
-        type: container.type === 'Bag' ? ContainerType.Bag : ContainerType.Plot,
+        type: parseContainerType(container.type),
       };
 
       return { container: parsedContainer };
@@ -248,11 +248,22 @@ export class ContainersService {
   }
 
   async findContainerPlants(
-    input: FindContainerInput,
+    input: FindContainerPlantsInput,
   ): Promise<PlantsResponse> {
     try {
+      const cursor = input.cursor
+        ? {
+            uuid: input.cursor,
+          }
+        : undefined;
+
       const plants = await this.prismaService.plant.findMany({
-        where: { containerUuid: input.uuid },
+        where: { containerUuid: input.where.uuid },
+        take: input.take ? input.take : undefined,
+        cursor,
+        orderBy: {
+          createdAt: 'asc',
+        },
       });
 
       if (!plants.length) {
@@ -268,7 +279,16 @@ export class ContainersService {
         };
       });
 
-      return { plants: parsedPlants };
+      const nextRequestCursor = parsedPlants[parsedPlants.length - 1].uuid;
+
+      const hasMore = plants.length === (input.take ?? plants.length);
+
+      return {
+        plants: parsedPlants,
+        cursor: nextRequestCursor,
+        count: parsedPlants.length,
+        hasMore,
+      };
     } catch (err) {
       if (err instanceof Error) {
         throw new BadRequestException(err.message);

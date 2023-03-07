@@ -1,11 +1,11 @@
 import PieChart from '@modules/charts/components/pie-chart';
-import { Plant } from '@modules/graphql/@generated/graphql';
+import { PlantTypeFragment } from '@modules/graphql/@generated/graphql';
 import { generatePlantColors } from '@modules/plants/lib/plant-utils';
 import { useThemeContext } from '@modules/theme/context/theme-context';
 import React from 'react';
 
 type UserContainerPlantsTypesChartProps = {
-  containerPlants: Plant[];
+  containerPlants: PlantTypeFragment[];
 };
 
 const UserContainerPlantsTypesChart: React.FC<UserContainerPlantsTypesChartProps> = (props) => {

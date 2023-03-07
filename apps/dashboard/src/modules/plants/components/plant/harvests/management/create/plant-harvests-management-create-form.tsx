@@ -4,7 +4,7 @@ import { useAuthContext } from '@modules/auth/context/auth-context';
 import { useCreateHarvestMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 const schema = yup
@@ -34,11 +34,12 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
   const {
     handleSubmit,
     reset,
-    register,
-    formState: { errors, isValid },
+    control,
+
+    formState: { isValid },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
+    mode: 'onBlur',
   });
 
   const onSubmit = async (data: FormData) => {
@@ -70,33 +71,50 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-      <TextInput
-        id="quantity"
-        label="Quantity"
-        type="number"
-        placeholder="Harvest units"
-        inputMode="numeric"
-        min="1"
-        step="1"
-        error={errors.quantity !== undefined}
-        errorMessage={errors.quantity?.message}
-        help
-        helpMessage="Units harvested"
-        {...register('quantity')}
+      <Controller
+        name="quantity"
+        control={control}
+        render={({ field: { name, onChange, onBlur, ref }, fieldState }) => (
+          <TextInput
+            ref={ref}
+            id={name}
+            name={name}
+            label="Quantity"
+            type="number"
+            placeholder="Harvest units"
+            step="1"
+            error={fieldState.invalid}
+            errorMessage={fieldState.error?.message}
+            help
+            helpMessage="Units harvested"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+          />
+        )}
       />
 
-      <TextInput
-        id="weight"
-        label="Weight"
-        type="number"
-        step="0.01"
-        inputMode="numeric"
-        placeholder="Harvest weight"
-        error={errors.weight !== undefined}
-        errorMessage={errors.weight?.message}
-        help
-        helpMessage="Weight harvested in kilograms"
-        {...register('weight')}
+      <Controller
+        name="weight"
+        control={control}
+        render={({ field: { name, onChange, onBlur, ref }, fieldState }) => (
+          <TextInput
+            ref={ref}
+            id={name}
+            name={name}
+            label="Weight"
+            type="number"
+            placeholder="Harvest weight"
+            step="0.01"
+            error={fieldState.invalid}
+            errorMessage={fieldState.error?.message}
+            help
+            helpMessage="Weight harvested in kilograms"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+          />
+        )}
       />
 
       <div className="flex w-full space-x-4 px-6">

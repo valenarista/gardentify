@@ -69,6 +69,7 @@ export type ContainerStatsResponse = {
 /** The type of a conatiner */
 export enum ContainerType {
   Bag = 'Bag',
+  Patch = 'Patch',
   Plot = 'Plot',
 }
 
@@ -122,6 +123,12 @@ export type FindContainerInput = {
   uuid: Scalars['String'];
 };
 
+export type FindContainerPlantsInput = {
+  cursor?: InputMaybe<Scalars['String']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where: FindContainerInput;
+};
+
 export type FindHarvestInput = {
   uuid: Scalars['String'];
 };
@@ -142,7 +149,15 @@ export type FindHeightRegistrationsInput = {
 };
 
 export type FindPlantInput = {
-  uuid: Scalars['String'];
+  type?: InputMaybe<PlantType>;
+  uuid?: InputMaybe<Scalars['String']>;
+  variety?: InputMaybe<Scalars['String']>;
+};
+
+export type FindPlantsInput = {
+  cursor?: InputMaybe<Scalars['String']>;
+  take?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<FindPlantInput>;
 };
 
 export type FindUserContainersInput = {
@@ -353,7 +368,9 @@ export enum PlantType {
 
 export type PlantsResponse = {
   __typename?: 'PlantsResponse';
-  errors?: Maybe<Array<Error>>;
+  count: Scalars['Int'];
+  cursor: Scalars['String'];
+  hasMore: Scalars['Boolean'];
   plants?: Maybe<Array<Plant>>;
 };
 
@@ -392,7 +409,7 @@ export type QueryFindContainerHarvestsArgs = {
 };
 
 export type QueryFindContainerPlantsArgs = {
-  input: FindContainerInput;
+  input: FindContainerPlantsInput;
 };
 
 export type QueryFindContainersArgs = {
@@ -428,7 +445,7 @@ export type QueryFindPlantHeightRegistrationsArgs = {
 };
 
 export type QueryFindPlantsArgs = {
-  input: FindPlantInput;
+  input: FindPlantsInput;
 };
 
 export type QueryFindUserArgs = {
@@ -833,14 +850,32 @@ export type FindContainerHarvestsQuery = {
   };
 };
 
+export type FindContainerPlantsTypesQueryVariables = Exact<{
+  input: FindContainerPlantsInput;
+}>;
+
+export type FindContainerPlantsTypesQuery = {
+  __typename?: 'Query';
+  findContainerPlants: {
+    __typename?: 'PlantsResponse';
+    count: number;
+    cursor: string;
+    hasMore: boolean;
+    plants?: Array<{ __typename?: 'Plant'; uuid: string; type: PlantType }> | null;
+  };
+};
+
 export type FindContainerPlantsQueryVariables = Exact<{
-  input: FindContainerInput;
+  input: FindContainerPlantsInput;
 }>;
 
 export type FindContainerPlantsQuery = {
   __typename?: 'Query';
   findContainerPlants: {
     __typename?: 'PlantsResponse';
+    count: number;
+    cursor: string;
+    hasMore: boolean;
     plants?: Array<{
       __typename?: 'Plant';
       uuid: string;
@@ -868,7 +903,6 @@ export type FindContainerPlantsQuery = {
         } | null;
       } | null;
     }> | null;
-    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
   };
 };
 
@@ -1483,6 +1517,8 @@ export type FindPlantHeightRegistrationsQuery = {
   };
 };
 
+export type PlantTypeFragment = { __typename?: 'Plant'; uuid: string; type: PlantType };
+
 export type PlantFragment = {
   __typename?: 'Plant';
   uuid: string;
@@ -1545,6 +1581,9 @@ export type PlantResponseFragment = {
 
 export type PlantsResponseFragment = {
   __typename?: 'PlantsResponse';
+  count: number;
+  cursor: string;
+  hasMore: boolean;
   plants?: Array<{
     __typename?: 'Plant';
     uuid: string;
@@ -1572,7 +1611,14 @@ export type PlantsResponseFragment = {
       } | null;
     } | null;
   }> | null;
-  errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+};
+
+export type PlantsTypesResponseFragment = {
+  __typename?: 'PlantsResponse';
+  count: number;
+  cursor: string;
+  hasMore: boolean;
+  plants?: Array<{ __typename?: 'Plant'; uuid: string; type: PlantType }> | null;
 };
 
 export type CreatePlantMutationVariables = Exact<{
@@ -2052,12 +2098,28 @@ export const PlantsResponseFragmentDoc = gql`
     plants {
       ...Plant
     }
-    errors {
-      ...Error
-    }
+    count
+    cursor
+    hasMore
   }
   ${PlantFragmentDoc}
-  ${ErrorFragmentDoc}
+`;
+export const PlantTypeFragmentDoc = gql`
+  fragment PlantType on Plant {
+    uuid
+    type
+  }
+`;
+export const PlantsTypesResponseFragmentDoc = gql`
+  fragment PlantsTypesResponse on PlantsResponse {
+    plants {
+      ...PlantType
+    }
+    count
+    cursor
+    hasMore
+  }
+  ${PlantTypeFragmentDoc}
 `;
 export const UserResponseFragmentDoc = gql`
   fragment UserResponse on UserResponse {
@@ -2521,8 +2583,57 @@ export type FindContainerHarvestsQueryResult = Apollo.QueryResult<
   FindContainerHarvestsQuery,
   FindContainerHarvestsQueryVariables
 >;
+export const FindContainerPlantsTypesDocument = gql`
+  query findContainerPlantsTypes($input: FindContainerPlantsInput!) {
+    findContainerPlants(input: $input) {
+      ...PlantsTypesResponse
+    }
+  }
+  ${PlantsTypesResponseFragmentDoc}
+`;
+
+/**
+ * __useFindContainerPlantsTypesQuery__
+ *
+ * To run a query within a React component, call `useFindContainerPlantsTypesQuery` and pass it Date options that fit your needs.
+ * When your component renders, `useFindContainerPlantsTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindContainerPlantsTypesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFindContainerPlantsTypesQuery(
+  baseOptions: Apollo.QueryHookOptions<FindContainerPlantsTypesQuery, FindContainerPlantsTypesQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindContainerPlantsTypesQuery, FindContainerPlantsTypesQueryVariables>(
+    FindContainerPlantsTypesDocument,
+    options
+  );
+}
+export function useFindContainerPlantsTypesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FindContainerPlantsTypesQuery, FindContainerPlantsTypesQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindContainerPlantsTypesQuery, FindContainerPlantsTypesQueryVariables>(
+    FindContainerPlantsTypesDocument,
+    options
+  );
+}
+export type FindContainerPlantsTypesQueryHookResult = ReturnType<typeof useFindContainerPlantsTypesQuery>;
+export type FindContainerPlantsTypesLazyQueryHookResult = ReturnType<typeof useFindContainerPlantsTypesLazyQuery>;
+export type FindContainerPlantsTypesQueryResult = Apollo.QueryResult<
+  FindContainerPlantsTypesQuery,
+  FindContainerPlantsTypesQueryVariables
+>;
 export const FindContainerPlantsDocument = gql`
-  query findContainerPlants($input: FindContainerInput!) {
+  query findContainerPlants($input: FindContainerPlantsInput!) {
     findContainerPlants(input: $input) {
       ...PlantsResponse
     }

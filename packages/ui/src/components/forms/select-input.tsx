@@ -1,14 +1,63 @@
 import clsx from 'clsx';
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 import { InputWrapper, InputWrapperProps } from './input-wrapper';
 
-type SelectInputProps = InputWrapperProps & InputHTMLAttributes<HTMLSelectElement> & {};
+type SelectInputProps = Omit<InputWrapperProps, 'onInputReseted'> &
+  Omit<InputHTMLAttributes<HTMLSelectElement>, 'value' | 'onChange'> & {
+    /**
+     * Callback function called when the value changes.
+     * @param value New value
+     * @returns void.
+     */
+    onValueChanged: (value: string) => void;
+  };
 
 export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>((props, ref) => {
-  const { id, label, error, errorMessage, name, help, helpMessage, children, ...rest } = props;
+  const {
+    id,
+    label,
+    error,
+    errorMessage,
+    help,
+    helpMessage,
+    name,
+    children,
+    onValueChanged,
+    reseteable,
+    defaultValue,
+    ...rest
+  } = props;
+
+  const [inputValue, setInputValue] = useState<string>(typeof defaultValue === 'string' ? defaultValue : '');
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    setInputValue(value);
+  };
+
+  const handleInputReset = () => {
+    if (typeof defaultValue === 'string') {
+      setInputValue(defaultValue);
+    } else {
+      setInputValue('');
+    }
+  };
+
+  useEffect(() => {
+    onValueChanged(inputValue);
+  }, [inputValue]);
 
   return (
-    <InputWrapper id={id} label={label} error={error} errorMessage={errorMessage} help={help} helpMessage={helpMessage}>
+    <InputWrapper
+      id={id}
+      label={label}
+      error={error}
+      errorMessage={errorMessage}
+      help={help}
+      helpMessage={helpMessage}
+      onInputReseted={handleInputReset}
+      reseteable={reseteable}
+    >
       <select
         ref={ref}
         name={name}
@@ -17,6 +66,8 @@ export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>
           error ? 'border-2 !border-red-600 dark:!border-red-400' : ''
         )}
         aria-invalid={error ? 'true' : 'false'}
+        value={inputValue}
+        onChange={handleInputChange}
         {...rest}
       >
         {children}

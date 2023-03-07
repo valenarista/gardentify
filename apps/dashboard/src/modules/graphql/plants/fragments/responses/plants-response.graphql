@@ -2,7 +2,7 @@ fragment PlantsResponse on PlantsResponse {
   plants {
     ...Plant
   }
-  errors {
-    ...Error
-  }
+  count
+  cursor
+  hasMore
 }

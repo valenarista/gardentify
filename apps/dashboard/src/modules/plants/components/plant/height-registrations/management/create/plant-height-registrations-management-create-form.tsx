@@ -4,7 +4,7 @@ import { useAuthContext } from '@modules/auth/context/auth-context';
 import { useCreateHeightRegistrationMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 const schema = yup
@@ -28,11 +28,11 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
   const {
     handleSubmit,
     reset,
-    register,
-    formState: { isValid, errors },
+    control,
+    formState: { isValid },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
+    mode: 'onBlur',
   });
 
   const onSubmit = async (data: FormData) => {
@@ -65,18 +65,27 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-      <TextInput
-        id="height"
-        label="Height"
-        type="number"
-        placeholder="Plant height"
-        inputMode="numeric"
-        step="0.01"
-        error={errors.height !== undefined}
-        errorMessage={errors.height?.message}
-        help
-        helpMessage="Height in centimeters"
-        {...register('height')}
+      <Controller
+        name="height"
+        control={control}
+        render={({ field: { name, onChange, onBlur, ref }, fieldState }) => (
+          <TextInput
+            ref={ref}
+            id={name}
+            name={name}
+            label="Height"
+            type="number"
+            placeholder="Plant height"
+            step="0.01"
+            error={fieldState.invalid}
+            errorMessage={fieldState.error?.message}
+            help
+            helpMessage="Height in centimeters"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+          />
+        )}
       />
 
       <div className="flex w-full space-x-4 px-6">

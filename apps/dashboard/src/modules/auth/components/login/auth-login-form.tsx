@@ -29,10 +29,8 @@ const AuthSigninForm: React.FC<AuthSigninFormProps> = (props) => {
   const { onSubmitted } = props;
   const { control, handleSubmit } = useForm<AuthSigninFormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
+    mode: 'onBlur',
     defaultValues: {
-      email: '',
-      password: '',
       twoFactorCode: '',
     },
   });
@@ -42,50 +40,57 @@ const AuthSigninForm: React.FC<AuthSigninFormProps> = (props) => {
       <Controller
         name="email"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, ref, onBlur, onChange }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Email"
             type="email"
             inputMode="email"
             placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />
       <Controller
         name="password"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, ref, onBlur, onChange }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Password"
             type="password"
             placeholder="Secure Password"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />
       <Controller
         name="twoFactorCode"
         control={control}
-        render={({ field, fieldState }) => {
-          const { onChange, value, ...rest } = field;
-
+        render={({ field: { name, ref, onChange, value }, fieldState }) => {
           return (
             <OtpInput
-              id={field.name}
+              ref={ref}
+              id={name}
               label="Confirmation Code"
               valueLength={6}
               error={fieldState.invalid}
               errorMessage={fieldState.error?.message}
-              value={value}
+              reseteable={false}
               onChange={onChange}
-              {...rest}
+              value={value}
             />
           );
         }}

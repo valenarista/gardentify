@@ -18,7 +18,6 @@ const AuthResetPasswordResetForm: React.FC<AuthResetPasswordResetFormProps> = (p
   const { onSubmitted } = props;
   const { control, handleSubmit } = useForm<AuthResetPasswordResetFormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
     defaultValues: {
       email: '',
     },
@@ -29,16 +28,20 @@ const AuthResetPasswordResetForm: React.FC<AuthResetPasswordResetFormProps> = (p
       <Controller
         name="email"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, ref, onBlur, onChange }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Email"
             type="email"
             inputMode="email"
             placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />

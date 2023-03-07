@@ -33,7 +33,7 @@ const PlantManagementEditForm: React.FC = () => {
   const { plant } = useContainerPlantContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
+    mode: 'onBlur',
     defaultValues: {
       variety: plant.variety,
       type: plant.type,
@@ -75,13 +75,19 @@ const PlantManagementEditForm: React.FC = () => {
       <Controller
         name="type"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, ref, onBlur, onChange, value }, fieldState }) => (
           <SelectInput
-            id={field.name}
-            label="Type"
+            ref={ref}
+            id={name}
+            name={name}
+            label="Variety"
+            placeholder="Plant Variety"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+            defaultValue={value}
           >
             {Object.values(PlantType).map((type) => {
               return (
@@ -96,45 +102,59 @@ const PlantManagementEditForm: React.FC = () => {
       <Controller
         name="variety"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, ref, onBlur, onChange, value }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Variety"
+            placeholder="Plant Variety"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+            defaultValue={value}
           />
         )}
       />
       <Controller
         name="seedsPlantedAt"
         control={control}
-        render={({ field, fieldState }) => (
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        render={({ field: { name, ref, onBlur, onChange, value }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Seeds Planted At"
+            placeholder="Date"
             type="date"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+            defaultValue={new Date(value).toISOString().substring(0, 10)}
           />
         )}
       />
       <Controller
         name="seedsSproutedAt"
         control={control}
-        render={({ field, fieldState }) => (
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        render={({ field: { name, ref, onBlur, onChange, value }, fieldState }) => (
           <TextInput
-            id={field.name}
-            label="Seeds Sprouted At"
+            ref={ref}
+            id={name}
+            name={name}
+            label="Seeds Planted At"
             type="date"
+            placeholder="Date"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+            defaultValue={new Date(value).toISOString().substring(0, 10)}
           />
         )}
       />

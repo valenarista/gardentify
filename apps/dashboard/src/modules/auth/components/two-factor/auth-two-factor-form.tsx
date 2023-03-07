@@ -18,10 +18,7 @@ const AuthTwoFactorForm: React.FC<AuthTwoFactorFormProps> = (props) => {
   const { onSubmitted } = props;
   const { control, handleSubmit } = useForm<AuthTwoFactorFormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
-    defaultValues: {
-      email: '',
-    },
+    mode: 'onBlur',
   });
 
   return (
@@ -29,16 +26,20 @@ const AuthTwoFactorForm: React.FC<AuthTwoFactorFormProps> = (props) => {
       <Controller
         name="email"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, ref, onBlur, onChange }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Email"
             type="email"
             inputMode="email"
             placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />

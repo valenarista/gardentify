@@ -15,6 +15,7 @@ import { PlantsResponse } from '@modules/plants/responses/plants.response';
 import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
 import { ContainerStatsResponse } from './responses/container-stats.response';
 import { ContainerHarvestsResponse } from './responses/container-harvests.response';
+import { FindContainerPlantsInput } from './dto/find-container-plants.input';
 
 @Resolver(() => Container)
 export class ContainersResolver {
@@ -76,7 +77,7 @@ export class ContainersResolver {
 
   @Query(() => PlantsResponse)
   async findContainerPlants(
-    @Args('input') input: FindContainerInput,
+    @Args('input') input: FindContainerPlantsInput,
   ): Promise<PlantsResponse> {
     return await this.containersService.findContainerPlants(input);
   }

@@ -14,11 +14,13 @@ const schema = yup
     seedsPlantedAt: yup
       .date()
       .max(yup.ref('seedsSproutedAt'), 'Seeds planted at date must come before the seeds sprouted at date!')
-      .required('Seeds planted at is required!'),
+      .required('Seeds planted at is required!')
+      .typeError('Seeds planted at must be a date!'),
     seedsSproutedAt: yup
       .date()
       .min(yup.ref('seedsPlantedAt'), 'Seeds sprouted at date must come after the seeds planted at date!')
-      .required('Seeds sprouted at is requireD!'),
+      .required('Seeds sprouted at is requireD!')
+      .typeError('Seeds sprouted at must be a date!'),
   })
   .required();
 
@@ -37,13 +39,7 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
 
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
-    defaultValues: {
-      variety: 'Grand King',
-      type: PlantType.Tomato,
-      seedsPlantedAt: new Date().toISOString().substring(0, 10) as unknown as Date,
-      seedsSproutedAt: new Date().toISOString().substring(0, 10) as unknown as Date,
-    },
+    mode: 'onBlur',
   });
 
   const onSubmit = async (data: FormData) => {
@@ -84,13 +80,20 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
       <Controller
         name="type"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, onBlur, onChange, ref }, fieldState }) => (
           <SelectInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Type"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            help
+            helpMessage="Type of the plant"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+            defaultValue="BEAN"
           >
             {Object.values(PlantType).map((type) => {
               return (
@@ -105,45 +108,62 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
       <Controller
         name="variety"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { ref, name, onBlur, onChange }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Variety"
+            placeholder="Grand King"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            help
+            helpMessage="Variety of the plant"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />
       <Controller
         name="seedsPlantedAt"
         control={control}
-        render={({ field, fieldState }) => (
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        render={({ field: { ref, name, onBlur, onChange }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Seeds Planted At"
             type="date"
+            placeholder="10/02/2023"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            help
+            helpMessage="Date when seeds were planted"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />
       <Controller
         name="seedsSproutedAt"
         control={control}
-        render={({ field, fieldState }) => (
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        render={({ field: { ref, name, onBlur, onChange }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Seeds Sprouted At"
             type="date"
+            placeholder="15/02/2023"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            help
+            helpMessage="Date when seeds were sprouted"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />

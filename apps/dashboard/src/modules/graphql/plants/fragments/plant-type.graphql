@@ -1,0 +1,4 @@
+fragment PlantType on Plant {
+  uuid
+  type
+}

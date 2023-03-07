@@ -28,12 +28,7 @@ const AuthSignupForm: React.FC<AuthSignupFormProps> = (props) => {
   const { onSubmitted } = props;
   const { control, handleSubmit } = useForm<AuthSignupFormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
-    defaultValues: {
-      email: '',
-      username: '',
-      password: '',
-    },
+    mode: 'onBlur',
   });
 
   return (
@@ -41,45 +36,57 @@ const AuthSignupForm: React.FC<AuthSignupFormProps> = (props) => {
       <Controller
         name="email"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { ref, onChange, onBlur, name }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Email"
             type="email"
             inputMode="email"
             placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />
       <Controller
         name="username"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { ref, onChange, onBlur, name }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Username"
-            placeholder="Awesome User"
+            placeholder="Cool Username"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />
       <Controller
         name="password"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, ref, onBlur, onChange }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Password"
             type="password"
             placeholder="Secure Password"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />

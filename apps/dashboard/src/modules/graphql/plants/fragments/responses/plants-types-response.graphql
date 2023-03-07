@@ -1,0 +1,8 @@
+fragment PlantsTypesResponse on PlantsResponse {
+  plants {
+    ...PlantType
+  }
+  count
+  cursor
+  hasMore
+}

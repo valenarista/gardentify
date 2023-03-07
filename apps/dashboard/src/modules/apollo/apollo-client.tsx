@@ -1,5 +1,6 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { PlantsResponse } from '@modules/graphql/@generated/graphql';
 
 export const createApolloClient = () => {
   // Declare variable to store authToken
@@ -30,7 +31,23 @@ export const createApolloClient = () => {
   const client = new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            findContainerPlants: {
+              keyArgs: [],
+              merge(existing: PlantsResponse | undefined, incoming: PlantsResponse): PlantsResponse {
+                return {
+                  ...incoming,
+                  plants: [...(existing?.plants || []), ...(incoming.plants || [])],
+                };
+              },
+            },
+          },
+        },
+      },
+    }),
   });
 
   return client;

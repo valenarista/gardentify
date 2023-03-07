@@ -11,6 +11,7 @@ import { UpdatePlantInput } from './dto/update-plant.input';
 import { PlantsService } from './plants.service';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
+import { FindPlantsInput } from './dto/find-plants.input';
 
 @Resolver(() => Plant)
 export class PlantsResolver {
@@ -25,7 +26,7 @@ export class PlantsResolver {
 
   @Query(() => PlantsResponse)
   async findPlants(
-    @Args('input') input: FindPlantInput,
+    @Args('input') input: FindPlantsInput,
   ): Promise<PlantsResponse> {
     return await this.plantsService.findPlants(input);
   }

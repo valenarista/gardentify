@@ -1,11 +1,55 @@
 import clsx from 'clsx';
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 import { InputWrapper, InputWrapperProps } from './input-wrapper';
 
-type TextInputProps = InputWrapperProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'value'> & {};
+type TextInputProps = Omit<InputWrapperProps, 'onInputReseted'> &
+  Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> & {
+    /**
+     * Callback function called when the value changes.
+     * @param value New value
+     * @returns void.
+     */
+    onValueChanged: (value: string) => void;
+  };
 
 export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
-  const { id, label, error, errorMessage, help, helpMessage, name, children, toggleable, onToggled, ...rest } = props;
+  const {
+    id,
+    label,
+    error,
+    errorMessage,
+    help,
+    helpMessage,
+    name,
+    children,
+    onValueChanged,
+    reseteable,
+    defaultValue,
+    onReset,
+    ...rest
+  } = props;
+
+  const getConvertedValue = (value: string | number) => {
+    if (typeof value === 'string') return value;
+    if (typeof value === 'number') return String(value);
+    return '';
+  };
+
+  const [inputValue, setInputValue] = useState<string>(getConvertedValue(defaultValue as string | number));
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    setInputValue(value);
+  };
+
+  const handleInputReset = () => {
+    setInputValue(getConvertedValue(defaultValue as string | number));
+  };
+
+  useEffect(() => {
+    onValueChanged(getConvertedValue(inputValue));
+  }, [inputValue]);
 
   return (
     <InputWrapper
@@ -15,8 +59,8 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
       errorMessage={errorMessage}
       help={help}
       helpMessage={helpMessage}
-      toggleable={toggleable}
-      onToggled={onToggled}
+      onInputReseted={handleInputReset}
+      reseteable={reseteable}
     >
       <input
         ref={ref}
@@ -26,6 +70,9 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
           error ? 'border-2 !border-red-600 dark:!border-red-400' : ''
         )}
         aria-invalid={error ? 'true' : 'false'}
+        value={inputValue}
+        onChange={handleInputChange}
+        onReset={handleInputReset}
         {...rest}
       />
     </InputWrapper>

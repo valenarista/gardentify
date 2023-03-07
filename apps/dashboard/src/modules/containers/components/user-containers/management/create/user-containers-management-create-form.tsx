@@ -31,11 +31,7 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
   const { state } = useAuthContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
-    defaultValues: {
-      type: ContainerType.Bag,
-      dirtDepth: 10,
-    },
+    mode: 'onBlur',
   });
 
   const [createContainer] = useCreateContainerMutation();
@@ -74,33 +70,48 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
       <Controller
         name="type"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { ref, onChange, onBlur, name }, fieldState }) => (
           <SelectInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Type"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            help
+            helpMessage="Type of the container"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           >
-            <option value={ContainerType.Bag}>Bag</option>
-            <option value={ContainerType.Plot}>Plot</option>
+            {Object.values(ContainerType).map((type) => {
+              return (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              );
+            })}
           </SelectInput>
         )}
       />
       <Controller
         name="dirtDepth"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, onBlur, onChange, ref }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Dirt Depth"
-            type="number"
             inputMode="numeric"
+            placeholder="45 cms"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             help
-            helpMessage="Dirth depth in centimeters"
-            {...field}
+            helpMessage="Depth in centimeters of the dirt"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
           />
         )}
       />

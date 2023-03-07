@@ -26,7 +26,7 @@ const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps
 
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
+    mode: 'onBlur',
     defaultValues: {
       username: state?.user?.username,
     },
@@ -64,14 +64,20 @@ const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps
       <Controller
         name="username"
         control={control}
-        render={({ field, fieldState }) => (
+        defaultValue=""
+        render={({ field: { name, onBlur, onChange, ref, value }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Username"
-            inputMode="text"
+            placeholder="Cool Username"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+            defaultValue={value}
           />
         )}
       />

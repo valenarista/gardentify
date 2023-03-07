@@ -52,6 +52,7 @@ type ContainerStatsResponse {
 """The type of a conatiner"""
 enum ContainerType {
   Bag
+  Patch
   Plot
 }
 
@@ -109,6 +110,12 @@ input FindContainerInput {
   uuid: String!
 }
 
+input FindContainerPlantsInput {
+  cursor: String
+  take: Int
+  where: FindContainerInput!
+}
+
 input FindHarvestInput {
   uuid: String!
 }
@@ -129,7 +136,15 @@ input FindHeightRegistrationsInput {
 }
 
 input FindPlantInput {
-  uuid: String!
+  type: PlantType
+  uuid: String
+  variety: String
+}
+
+input FindPlantsInput {
+  cursor: String
+  take: Int
+  where: FindPlantInput
 }
 
 input FindUserContainersInput {
@@ -250,7 +265,9 @@ enum PlantType {
 }
 
 type PlantsResponse {
-  errors: [Error!]
+  count: Int!
+  cursor: String!
+  hasMore: Boolean!
   plants: [Plant!]
 }
 
@@ -258,7 +275,7 @@ type Query {
   calculateContainerStats(input: FindContainerInput!): ContainerStatsResponse!
   findContainer(input: FindContainerInput!): ContainerResponse!
   findContainerHarvests(input: FindContainerInput!): ContainerHarvestsResponse!
-  findContainerPlants(input: FindContainerInput!): PlantsResponse!
+  findContainerPlants(input: FindContainerPlantsInput!): PlantsResponse!
   findContainers(input: FindContainerInput!): ContainersResponse!
   findHarvest(input: FindHarvestInput!): HarvestResponse!
   findHarvests(input: FindHarvestsInput!): HarvestsResponse!
@@ -267,7 +284,7 @@ type Query {
   findPlant(input: FindPlantInput!): PlantResponse!
   findPlantHarvests(input: FindPlantInput!): HarvestsResponse!
   findPlantHeightRegistrations(input: FindPlantInput!): HeightRegistrationsResponse!
-  findPlants(input: FindPlantInput!): PlantsResponse!
+  findPlants(input: FindPlantsInput!): PlantsResponse!
   findUser(input: FindUserInput!): UserResponse!
   findUserContainers(input: FindUserContainersInput!): ContainersResponse!
   findWeekHarvests: HarvestsResponse!

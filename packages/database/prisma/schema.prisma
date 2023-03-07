@@ -39,6 +39,7 @@ model PasswordReset {
 enum ContainerType {
   Plot
   Bag
+  Patch
 }
 
 model Container {

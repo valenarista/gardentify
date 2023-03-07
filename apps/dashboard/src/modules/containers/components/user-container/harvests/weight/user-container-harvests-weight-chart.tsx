@@ -27,7 +27,7 @@ const UserContainerHarvestsWeightChart: React.FC<UserContainerHarvestsWeightChar
 
   return (
     <>
-      {harvests.length === 1 ? (
+      {harvests.length <= 1 ? (
         <p>Not enough harvests to calculate data!</p>
       ) : (
         <>

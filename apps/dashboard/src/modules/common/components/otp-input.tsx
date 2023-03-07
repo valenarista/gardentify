@@ -2,7 +2,7 @@ import { InputWrapperProps } from '@gardentify/ui';
 import { InputWrapper } from '@gardentify/ui';
 import React, { useMemo } from 'react';
 
-type OtpInputProps = InputWrapperProps & {
+type OtpInputProps = Omit<InputWrapperProps, 'onInputReseted'> & {
   value: string;
   valueLength: number;
   onChange: (value: string) => void;
@@ -122,8 +122,10 @@ export const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>((props, 
     target.setSelectionRange(0, target.value.length);
   };
 
+  const handleInputReset = () => {};
+
   return (
-    <InputWrapper {...rest} ref={ref}>
+    <InputWrapper {...rest} onInputReseted={handleInputReset} ref={ref}>
       <div className="flex w-full space-x-2">
         {items.map((digit, idx) => (
           <input

@@ -14,6 +14,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '@modules/prisma/prisma.service';
+import { FindPlantsInput } from './dto/find-plants.input';
 
 @Injectable()
 export class PlantsService {
@@ -49,14 +50,25 @@ export class PlantsService {
     }
   }
 
-  async findPlants(input: FindPlantInput): Promise<PlantsResponse> {
+  async findPlants(input: FindPlantsInput): Promise<PlantsResponse> {
     try {
+      const cursor = input.cursor
+        ? {
+            uuid: input.cursor,
+          }
+        : undefined;
+
       const plants = await this.prismaService.plant.findMany({
-        where: { uuid: input.uuid },
+        where: input.where,
+        take: input.take ? input.take : undefined,
+        cursor,
+        orderBy: {
+          createdAt: 'asc',
+        },
       });
 
       if (!plants.length) {
-        throw new NotFoundException('No plants found with the given input!');
+        throw new NotFoundException('No plants were found!');
       }
 
       const parsedPlants: Plant[] = plants.map((plant) => {
@@ -66,7 +78,16 @@ export class PlantsService {
         };
       });
 
-      return { plants: parsedPlants };
+      const nextRequestCursor = parsedPlants[parsedPlants.length - 1].uuid;
+
+      const hasMore = plants.length === (input.take ?? plants.length);
+
+      return {
+        plants: parsedPlants,
+        cursor: nextRequestCursor,
+        count: parsedPlants.length,
+        hasMore,
+      };
     } catch (err) {
       if (err instanceof Error) {
         throw new BadRequestException(err.message);

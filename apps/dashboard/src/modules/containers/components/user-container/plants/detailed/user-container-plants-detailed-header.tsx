@@ -2,13 +2,13 @@ import { useAuthContext } from '@modules/auth/context/auth-context';
 import { Container } from '@modules/graphql/@generated/graphql';
 import React from 'react';
 
-import UserContainerPlantsManagementCreate from './management/create/user-container-plants-management-create';
+import UserContainerPlantsManagementCreate from '../feed/management/create/user-container-plants-management-create';
 
-type UserContainerPlantsFeedHeaderProps = {
+type UserContainerPlantsDetailedHeaderProps = {
   container: Container;
 };
 
-const UserContainerPlantsFeedHeader: React.FC<UserContainerPlantsFeedHeaderProps> = (props) => {
+const UserContainerPlantsDetailedHeader: React.FC<UserContainerPlantsDetailedHeaderProps> = (props) => {
   const { container } = props;
   const { state } = useAuthContext();
 
@@ -23,4 +23,4 @@ const UserContainerPlantsFeedHeader: React.FC<UserContainerPlantsFeedHeaderProps
   );
 };
 
-export default UserContainerPlantsFeedHeader;
+export default UserContainerPlantsDetailedHeader;

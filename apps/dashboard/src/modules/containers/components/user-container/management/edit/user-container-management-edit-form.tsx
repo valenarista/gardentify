@@ -33,7 +33,7 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
   const { container } = useUserContainerContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
-    mode: 'all',
+    mode: 'onBlur',
     defaultValues: {
       ...container,
     },
@@ -73,33 +73,48 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
       <Controller
         name="type"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, onBlur, onChange, ref, value }, fieldState }) => (
           <SelectInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Type"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            {...field}
+            help
+            helpMessage="Type of the container"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+            defaultValue={value}
           >
-            <option value={ContainerType.Bag}>Bag</option>
-            <option value={ContainerType.Plot}>Plot</option>
+            {Object.values(ContainerType).map((type) => {
+              return (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              );
+            })}
           </SelectInput>
         )}
       />
       <Controller
         name="dirtDepth"
         control={control}
-        render={({ field, fieldState }) => (
+        render={({ field: { name, onBlur, onChange, ref, value }, fieldState }) => (
           <TextInput
-            id={field.name}
+            ref={ref}
+            id={name}
+            name={name}
             label="Dirt Depth"
-            type="number"
-            inputMode="numeric"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             help
-            helpMessage="Dirth depth in centimeters"
-            {...field}
+            helpMessage="Depth in centimeters of the dirt"
+            reseteable={false}
+            onValueChanged={onChange}
+            onBlur={onBlur}
+            defaultValue={value}
           />
         )}
       />

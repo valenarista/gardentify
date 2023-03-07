@@ -6,8 +6,8 @@ import DashboardWeatherRain from './rain/dashboard-weather-rain';
 import DashboardWeatherRecomendations from './recomendations/dashboard-weather-recomendations';
 
 const DashboardWeather: React.FC = () => {
-  const response = useGetWeatherForecastQuery({ variables: { input: { latitude: 52.55, longitude: -1.66 } } });
-  // 52.554528232854445, -1.6640812521368695
+  const response = useGetWeatherForecastQuery({ variables: { input: { latitude: -38.7, longitude: -62.24 } } });
+
   return (
     <div className="flex flex-col space-y-4">
       <DashboardWeatherForecast response={response} />
