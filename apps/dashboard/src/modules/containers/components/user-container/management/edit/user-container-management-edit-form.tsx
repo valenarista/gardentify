@@ -54,6 +54,7 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
         },
       });
 
+      toast({ variant: 'success', content: 'Container updated successfully!' });
       await router.push(`/containers/${container.uuid}`);
       onSubmitted();
     } catch (err) {

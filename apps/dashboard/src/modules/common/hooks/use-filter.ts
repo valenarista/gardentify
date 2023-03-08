@@ -40,7 +40,8 @@ const useFilter = <TData>(data: TData[], initialFilters: Filter<TData>[], initia
   const [sort, setSort] = useState<Sort<TData>>(initialSort);
 
   const filteredData = useMemo(() => {
-    let resultData = data;
+    let resultData: TData[] = data ?? [];
+
     for (const filter of filters) {
       if (filter.enabled) {
         resultData = resultData.filter((item) => {
@@ -53,7 +54,8 @@ const useFilter = <TData>(data: TData[], initialFilters: Filter<TData>[], initia
         });
       }
     }
-    resultData.sort((a, b) => {
+
+    const sortedData = [...resultData].sort((a, b) => {
       if (a[sort.property] < b[sort.property]) {
         return sort.ascending ? -1 : 1;
       }
@@ -62,7 +64,7 @@ const useFilter = <TData>(data: TData[], initialFilters: Filter<TData>[], initia
       }
       return 0;
     });
-    return resultData;
+    return sortedData;
   }, [data, filters, sort]);
 
   const updateSort = useCallback((newSort: Sort<TData>) => {

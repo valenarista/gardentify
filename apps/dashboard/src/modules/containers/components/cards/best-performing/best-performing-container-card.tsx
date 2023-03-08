@@ -29,7 +29,7 @@ const BestPerformingContainerCard: React.FC<BestPerformingContainerCardProps> = 
           </div>
           <ul className="grid gap-2 md:grid-cols-2">
             {/* Total Harvests Weight */}
-            <li>
+            <li className="col-span-2">
               <ContainerHarvestTotalWeightAttribute totalHarvestsWeight={container.totalHarvestsWeight} />
             </li>
             {/* Type */}

@@ -9,7 +9,7 @@ const DashboardBestPerformingContainers: React.FC = () => {
     variables: {
       input: {
         userUuid: state.user?.uuid!,
-        take: 4,
+        take: 3,
       },
     },
     skip: state.user === null,

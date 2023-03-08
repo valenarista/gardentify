@@ -13,7 +13,6 @@ import {
 import { PrismaService } from '@modules/prisma/prisma.service';
 import { Harvest } from './models/harvests.model';
 import { parsePlantType } from '@modules/plants/lib/plant-utils';
-import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 import { FindHarvestsInput } from './dto/find-harvests.input';
 import { FindWeekHarvestsInput } from './dto/find-week-harvests.input';
 import { FindPlantHarvestsInput } from './dto/find-plant-harvests.input';
@@ -281,7 +280,7 @@ export class HarvestsService {
           },
         },
 
-        orderBy: { createdAt: 'asc' },
+        orderBy: { createdAt: 'desc' },
       });
 
       if (harvests.length === 0) {

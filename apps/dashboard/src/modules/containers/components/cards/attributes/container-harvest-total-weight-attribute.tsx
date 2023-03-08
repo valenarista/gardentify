@@ -11,7 +11,7 @@ const ContainerHarvestTotalWeightAttribute: React.FC<ContainerHarvestTotalWeight
 
   return (
     <CardAttribute
-      attribute={`${totalHarvestsWeight} kgrms`}
+      attribute={`${totalHarvestsWeight} kgrms total harvests`}
       icon={
         <svg
           className="h-5 w-5 stroke-cyan-700 dark:stroke-cyan-300"

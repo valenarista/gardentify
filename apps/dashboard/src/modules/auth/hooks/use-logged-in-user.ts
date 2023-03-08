@@ -1,14 +1,14 @@
-import useApiQuery from '@modules/common/hooks/use-api-query';
-import { MeDocument, MeQuery, MeQueryVariables, User } from '@modules/graphql/@generated/graphql';
+import { useMeQuery, User } from '@modules/graphql/@generated/graphql';
 import { useEffect, useState } from 'react';
 
 const useLoggedInUser = () => {
   const shouldSkipQury = typeof window !== 'undefined' && localStorage.getItem('token') === '';
-
-  const { response, loading } = useApiQuery<MeQuery, MeQueryVariables>(MeDocument, {
+  const response = useMeQuery({
     skip: shouldSkipQury,
     ssr: true,
   });
+
+  const { data, loading } = response;
 
   const [userLoading, setUserLoading] = useState<boolean>(true);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
@@ -18,10 +18,10 @@ const useLoggedInUser = () => {
   }, [loading]);
 
   useEffect(() => {
-    if (response && response.data && response.data.me.user) {
-      setLoggedInUser(response.data.me.user);
+    if (data && data.me && data.me.user) {
+      setLoggedInUser(data.me.user);
     }
-  }, [response]);
+  }, [data]);
 
   return { loggedInUser, userLoading };
 };

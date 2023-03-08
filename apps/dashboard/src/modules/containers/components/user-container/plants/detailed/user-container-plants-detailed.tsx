@@ -37,7 +37,7 @@ const UserContainerPlantsDetailed: React.FC<UserContainerPlantsDetailedProps> = 
     ascending: true,
   };
 
-  const { filteredData, updateFilter, updateSort } = useFilter<Plant>(plants, initialFilters, initialSort);
+  const { filteredData, updateFilter } = useFilter<Plant>(plants, initialFilters, initialSort);
 
   useEffect(() => {
     if (data && data.findContainerPlants.plants) {
@@ -62,7 +62,7 @@ const UserContainerPlantsDetailed: React.FC<UserContainerPlantsDetailedProps> = 
   };
 
   const handleFilterVarietyChanged = (value: string) => {
-    updateFilter({ property: 'variety', value, enabled: true });
+    updateFilter({ property: 'variety', value, enabled: value !== '' });
   };
 
   return (
