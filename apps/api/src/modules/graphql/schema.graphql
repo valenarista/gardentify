@@ -16,6 +16,24 @@ type Auth {
   user: User!
 }
 
+type BestPerformingContainer {
+  createdAt: DateTime!
+
+  """Dirth depth of the container"""
+  dirtDepth: Float!
+  totalHarvestsWeight: Float!
+
+  """Type of the container"""
+  type: ContainerType!
+  updatedAt: DateTime!
+  user: User
+  uuid: String!
+}
+
+type BestPerformingContainersResponse {
+  containers: [BestPerformingContainer!]
+}
+
 type Container {
   createdAt: DateTime!
 
@@ -106,6 +124,11 @@ type Error {
   message: String!
 }
 
+input FindBestPerformingContainersInput {
+  take: Int!
+  userUuid: String!
+}
+
 input FindContainerInput {
   uuid: String!
 }
@@ -121,8 +144,10 @@ input FindHarvestInput {
 }
 
 input FindHarvestsInput {
+  cursor: String
   includePlant: Boolean!
-  take: Int!
+  take: Int
+  where: FindHarvestInput
 }
 
 input FindHeightRegistrationInput {
@@ -133,6 +158,18 @@ input FindHeightRegistrationInput {
 input FindHeightRegistrationsInput {
   includePlant: Boolean!
   take: Int!
+}
+
+input FindLatestsHarvestsInput {
+  includePlant: Boolean!
+  take: Int
+  userUuid: String!
+}
+
+input FindPlantHarvestsInput {
+  cursor: String
+  take: Int
+  where: FindPlantInput
 }
 
 input FindPlantInput {
@@ -155,6 +192,10 @@ input FindUserInput {
   uuid: String!
 }
 
+input FindWeekHarvestsInput {
+  userUuid: String!
+}
+
 type Harvest {
   createdAt: DateTime!
   plant: Plant
@@ -170,8 +211,10 @@ type HarvestResponse {
 }
 
 type HarvestsResponse {
-  errors: [Error!]
+  count: Int!
+  cursor: String!
   harvests: [Harvest!]
+  hasMore: Boolean!
 }
 
 type HeightRegistration {
@@ -273,6 +316,7 @@ type PlantsResponse {
 
 type Query {
   calculateContainerStats(input: FindContainerInput!): ContainerStatsResponse!
+  findBestPerformingContainers(input: FindBestPerformingContainersInput!): BestPerformingContainersResponse!
   findContainer(input: FindContainerInput!): ContainerResponse!
   findContainerHarvests(input: FindContainerInput!): ContainerHarvestsResponse!
   findContainerPlants(input: FindContainerPlantsInput!): PlantsResponse!
@@ -281,13 +325,14 @@ type Query {
   findHarvests(input: FindHarvestsInput!): HarvestsResponse!
   findHeightRegistration(input: FindHeightRegistrationInput!): HeightRegistrationResponse!
   findHeightRegistrations(input: FindHeightRegistrationsInput!): HeightRegistrationsResponse!
+  findLatestsHarvests(input: FindLatestsHarvestsInput!): HarvestsResponse!
   findPlant(input: FindPlantInput!): PlantResponse!
-  findPlantHarvests(input: FindPlantInput!): HarvestsResponse!
+  findPlantHarvests(input: FindPlantHarvestsInput!): HarvestsResponse!
   findPlantHeightRegistrations(input: FindPlantInput!): HeightRegistrationsResponse!
   findPlants(input: FindPlantsInput!): PlantsResponse!
   findUser(input: FindUserInput!): UserResponse!
   findUserContainers(input: FindUserContainersInput!): ContainersResponse!
-  findWeekHarvests: HarvestsResponse!
+  findWeekHarvests(input: FindWeekHarvestsInput!): HarvestsResponse!
   getWeatherForecast(input: WeatherForecastInput!): WeatherForecastResponse!
   me: UserResponse!
 }

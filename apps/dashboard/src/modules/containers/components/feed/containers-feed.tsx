@@ -1,4 +1,4 @@
-import ContainerCard from '@modules/containers/components/cards/container-card';
+import ContainerCard from '@modules/containers/components/cards/basic/container-card';
 import { Container } from '@modules/graphql/@generated/graphql';
 import React from 'react';
 

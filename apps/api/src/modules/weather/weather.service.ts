@@ -29,8 +29,15 @@ export class WeatherService {
         infer: true,
       }).api;
 
-      const dailyParams =
-        'weathercode,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,windspeed_10m_max,winddirection_10m_dominant';
+      const dailyParams = [
+        'weathercode',
+        'temperature_2m_max',
+        'temperature_2m_min',
+        'uv_index_max',
+        'precipitation_sum',
+        'windspeed_10m_max',
+        'winddirection_10m_dominant',
+      ];
 
       const params = {
         latitude: String(input.latitude),
@@ -41,7 +48,9 @@ export class WeatherService {
 
       const searchParams = new URLSearchParams(params).toString();
 
-      const completeUrl = `${baseApi}?${searchParams}&daily=${dailyParams}&timezone=America%2FSao_Paulo`;
+      const completeUrl = `${baseApi}?${searchParams}&daily=${dailyParams.join(
+        ',',
+      )}&timezone=America%2FSao_Paulo`;
 
       const request = this.httpService
         .get<WeatherForecastApiResponse>(completeUrl)

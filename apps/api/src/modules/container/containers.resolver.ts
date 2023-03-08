@@ -16,6 +16,8 @@ import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
 import { ContainerStatsResponse } from './responses/container-stats.response';
 import { ContainerHarvestsResponse } from './responses/container-harvests.response';
 import { FindContainerPlantsInput } from './dto/find-container-plants.input';
+import { FindBestPerformingContainersInput } from './dto/find-best-performing-containers.input';
+import { BestPerformingContainersResponse } from './responses/best-performing-containers.response';
 
 @Resolver(() => Container)
 export class ContainersResolver {
@@ -101,5 +103,12 @@ export class ContainersResolver {
     @Args('input') input: FindContainerInput,
   ): Promise<ContainerHarvestsResponse> {
     return await this.containersService.findContainerHarvests(input);
+  }
+
+  @Query(() => BestPerformingContainersResponse)
+  async findBestPerformingContainers(
+    @Args('input') input: FindBestPerformingContainersInput,
+  ): Promise<BestPerformingContainersResponse> {
+    return await this.containersService.findBestPerformingContainers(input);
   }
 }

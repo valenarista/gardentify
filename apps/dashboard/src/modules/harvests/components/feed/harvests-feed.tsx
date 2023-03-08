@@ -5,10 +5,11 @@ import HarvestCard from '../cards/harvest-card';
 
 type HarvestsFeedProps = {
   harvests: Harvest[];
+  includePlantDetails: boolean;
 };
 
 const HarvestsFeed: React.FC<HarvestsFeedProps> = (props) => {
-  const { harvests } = props;
+  const { harvests, includePlantDetails } = props;
 
   return (
     <div
@@ -18,7 +19,7 @@ const HarvestsFeed: React.FC<HarvestsFeedProps> = (props) => {
       }}
     >
       {harvests.map((harvest, index) => {
-        return <HarvestCard key={`harvest-${index}`} harvest={harvest} />;
+        return <HarvestCard key={`harvest-${index}`} harvest={harvest} includePlantDetails={includePlantDetails} />;
       })}
     </div>
   );

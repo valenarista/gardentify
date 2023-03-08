@@ -10,8 +10,8 @@ const CardAttribute: React.FC<CardAttributeProps> = (props) => {
 
   return (
     <div className="flex items-center space-x-2">
-      <span className="rounded-md bg-neutral-300 p-1 shadow-md dark:bg-neutral-700">{icon}</span>
-      <h3 className="text-sm font-semibold">{attribute}</h3>
+      <div className="rounded-md bg-neutral-300 p-1 shadow-md dark:bg-neutral-700">{icon}</div>
+      <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-50">{attribute}</span>
     </div>
   );
 };

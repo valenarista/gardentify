@@ -1,5 +1,5 @@
-query findWeekHarvests {
-  findWeekHarvests {
+query findWeekHarvests($input: FindWeekHarvestsInput!) {
+  findWeekHarvests(input: $input) {
     ...HarvestsResponse
   }
 }

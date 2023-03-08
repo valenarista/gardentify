@@ -14,6 +14,7 @@ const HarvestCardPlantIcon: React.FC<HarvestCardPlantIconProps> = (props) => {
     <div className="absolute right-0 top-0">
       <Link href={`/plants/${plantUuid}`}>
         <IconButton
+          aria-label="Harvest Plant"
           size="sm"
           icon={
             <svg

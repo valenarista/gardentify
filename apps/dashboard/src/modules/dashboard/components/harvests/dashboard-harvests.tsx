@@ -1,12 +1,12 @@
 import React from 'react';
 
-import DashboardLatestHarvests from './latests/dashboard-latest-harvests';
+import DashboardLatestsHarvests from './latests/dashboard-latests-harvests';
 import DashboardWeekHarvests from './week/dashboard-week-harvests';
 
 const DashboardHarvests: React.FC = () => {
   return (
     <>
-      <DashboardLatestHarvests />
+      <DashboardLatestsHarvests />
       <DashboardWeekHarvests />
     </>
   );

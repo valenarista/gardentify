@@ -2,8 +2,8 @@ import { Container } from '@modules/graphql/@generated/graphql';
 import Link from 'next/link';
 import React from 'react';
 
-import ContainerDirtDepthAttribute from './container-dirt-depth-attribute';
-import ContainerTypeAttribute from './container-type-attribute';
+import ContainerDirtDepthAttribute from '../attributes/container-dirt-depth-attribute';
+import ContainerTypeAttribute from '../attributes/container-type-attribute';
 
 type ContainerCardProps = {
   container: Container;

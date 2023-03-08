@@ -15,8 +15,9 @@ import { Harvest } from './models/harvests.model';
 import { parsePlantType } from '@modules/plants/lib/plant-utils';
 import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 import { FindHarvestsInput } from './dto/find-harvests.input';
-import { Plant } from '@modules/plants/models/plant.model';
 import { FindWeekHarvestsInput } from './dto/find-week-harvests.input';
+import { FindPlantHarvestsInput } from './dto/find-plant-harvests.input';
+import { FindLatestsHarvestsInput } from './dto/find-latests-harvests.input';
 
 @Injectable()
 export class HarvestsService {
@@ -55,30 +56,46 @@ export class HarvestsService {
 
   async findHarvests(input: FindHarvestsInput): Promise<HarvestsResponse> {
     try {
+      const cursor = input.cursor
+        ? {
+            uuid: input.cursor,
+          }
+        : undefined;
+
       const harvests = await this.prismaService.harvest.findMany({
-        take: input.take,
+        where: input.where,
+        take: input.take ? input.take : undefined,
+        cursor,
+        orderBy: {
+          createdAt: 'asc',
+        },
         include: { plant: input.includePlant },
       });
 
       if (!harvests.length) {
-        throw new NotFoundException(
-          'Could not find harvests with the given input!',
-        );
+        throw new NotFoundException('No harvests were found!');
       }
 
-      const mappedHarvests: Harvest[] = harvests.map((harvest) => {
-        const parsedPlant: Plant = {
-          ...harvest.plant,
-          type: parsePlantType(harvest.plant.type),
-        };
-
+      const parsedHarvets: Harvest[] = harvests.map((harvest) => {
         return {
           ...harvest,
-          plant: parsedPlant,
+          plant: {
+            ...harvest.plant,
+            type: parsePlantType(harvest.plant.type),
+          },
         };
       });
 
-      return { harvests: mappedHarvests };
+      const nextRequestCursor = parsedHarvets[parsedHarvets.length - 1].uuid;
+
+      const hasMore = harvests.length === (input.take ?? harvests.length);
+
+      return {
+        harvests: parsedHarvets,
+        cursor: nextRequestCursor,
+        count: parsedHarvets.length,
+        hasMore,
+      };
     } catch (err) {
       if (err instanceof Error) {
         throw new BadRequestException(err.message);
@@ -86,19 +103,41 @@ export class HarvestsService {
     }
   }
 
-  async findPlantHarvests(input: FindPlantInput): Promise<HarvestsResponse> {
+  async findPlantHarvests(
+    input: FindPlantHarvestsInput,
+  ): Promise<HarvestsResponse> {
     try {
+      const cursor = input.cursor
+        ? {
+            uuid: input.cursor,
+          }
+        : undefined;
+
       const harvests = await this.prismaService.harvest.findMany({
-        where: { plant: { uuid: input.uuid } },
+        where: {
+          plant: { ...input.where },
+        },
+        take: input.take ? input.take : undefined,
+        cursor,
+        orderBy: {
+          createdAt: 'asc',
+        },
       });
 
-      if (harvests.length === 0) {
-        throw new NotFoundException(
-          'Could not find harvests with the given input!',
-        );
+      if (!harvests.length) {
+        throw new NotFoundException('No harvests were found!');
       }
 
-      return { harvests };
+      const nextRequestCursor = harvests[harvests.length - 1].uuid;
+
+      const hasMore = harvests.length === (input.take ?? harvests.length);
+
+      return {
+        harvests,
+        cursor: nextRequestCursor,
+        count: harvests.length,
+        hasMore,
+      };
     } catch (err) {
       if (err instanceof Error) {
         throw new BadRequestException(err.message);
@@ -175,6 +214,54 @@ export class HarvestsService {
     }
   }
 
+  async findLatestsHarvests(
+    input: FindLatestsHarvestsInput,
+  ): Promise<HarvestsResponse> {
+    try {
+      const harvests = await this.prismaService.harvest.findMany({
+        where: {
+          plant: {
+            container: {
+              user: {
+                uuid: input.userUuid,
+              },
+            },
+          },
+        },
+        include: { plant: input.includePlant },
+        orderBy: { createdAt: 'desc' },
+        take: input.take ?? undefined,
+      });
+
+      if (harvests.length === 0) {
+        throw new NotFoundException(
+          'Could not find harvests with the given input!',
+        );
+      }
+
+      const parsedHarvets: Harvest[] = harvests.map((harvest) => {
+        return {
+          ...harvest,
+          plant: {
+            ...harvest.plant,
+            type: parsePlantType(harvest.plant.type),
+          },
+        };
+      });
+
+      return {
+        harvests: parsedHarvets,
+        count: harvests.length,
+        cursor: '',
+        hasMore: false,
+      };
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
+    }
+  }
+
   async findWeekHarvests(
     input: FindWeekHarvestsInput,
   ): Promise<HarvestsResponse> {
@@ -193,6 +280,7 @@ export class HarvestsService {
             gte: new Date(Date.now() - pastWeek),
           },
         },
+
         orderBy: { createdAt: 'asc' },
       });
 
@@ -202,7 +290,7 @@ export class HarvestsService {
         );
       }
 
-      return { harvests };
+      return { harvests, count: harvests.length, cursor: '', hasMore: false };
     } catch (err) {
       if (err instanceof Error) {
         throw new BadRequestException(err.message);

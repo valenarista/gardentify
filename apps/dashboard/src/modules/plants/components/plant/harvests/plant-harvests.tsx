@@ -15,7 +15,7 @@ const PlantHarvests: React.FC = () => {
   const { response, loading } = useApiQuery<FindPlantHarvestsQuery, FindPlantHarvestsQueryVariables>(
     FindPlantHarvestsDocument,
     {
-      variables: { input: { uuid: plant.uuid } },
+      variables: { input: { where: { uuid: plant.uuid }, take: 6 } },
       skip: plant.uuid === undefined,
     }
   );
@@ -34,7 +34,7 @@ const PlantHarvests: React.FC = () => {
         {loading ? (
           <span className="text-lg font-semibold text-neutral-800 dark:text-neutral-100">Loading...</span>
         ) : harvests.length ? (
-          <HarvestsFeed harvests={harvests} />
+          <HarvestsFeed harvests={harvests} includePlantDetails />
         ) : null}
       </div>
     </div>

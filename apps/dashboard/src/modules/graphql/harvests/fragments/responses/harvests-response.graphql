@@ -2,7 +2,7 @@ fragment HarvestsResponse on HarvestsResponse {
   harvests {
     ...Harvest
   }
-  errors {
-    ...Error
-  }
+  count
+  cursor
+  hasMore
 }

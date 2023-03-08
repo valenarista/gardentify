@@ -11,10 +11,12 @@ import { Harvest } from './models/harvests.model';
 import { HarvestResponse } from './responses/harvest.response';
 import { HarvestsResponse } from './responses/harvests.response';
 import { HarvestsService } from './harvests.service';
-import { FindPlantInput } from '@modules/plants/dto/find-plant.input';
 import { FindHarvestsInput } from './dto/find-harvests.input';
 import { GardentifyContext } from '@modules/graphql/graphql';
 import { User } from '@modules/users/models/user.model';
+import { FindPlantHarvestsInput } from './dto/find-plant-harvests.input';
+import { FindWeekHarvestsInput } from './dto/find-week-harvests.input';
+import { FindLatestsHarvestsInput } from './dto/find-latests-harvests.input';
 
 @Resolver(() => Harvest)
 export class HarvestsResolver {
@@ -36,7 +38,7 @@ export class HarvestsResolver {
 
   @Query(() => HarvestsResponse)
   async findPlantHarvests(
-    @Args('input') input: FindPlantInput,
+    @Args('input') input: FindPlantHarvestsInput,
   ): Promise<HarvestsResponse> {
     return await this.harvestsService.findPlantHarvests(input);
   }
@@ -67,11 +69,17 @@ export class HarvestsResolver {
 
   @Query(() => HarvestsResponse)
   @UseGuards(GqlAuthGuard)
-  async findWeekHarvests(
-    @Context() context: GardentifyContext,
+  async findLatestsHarvests(
+    @Args('input') input: FindLatestsHarvestsInput,
   ): Promise<HarvestsResponse> {
-    const user: Partial<User> = context.req.user;
+    return await this.harvestsService.findLatestsHarvests(input);
+  }
 
-    return await this.harvestsService.findWeekHarvests({ userUuid: user.uuid });
+  @Query(() => HarvestsResponse)
+  @UseGuards(GqlAuthGuard)
+  async findWeekHarvests(
+    @Args('input') input: FindWeekHarvestsInput,
+  ): Promise<HarvestsResponse> {
+    return await this.harvestsService.findWeekHarvests(input);
   }
 }

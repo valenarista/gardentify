@@ -1,4 +1,4 @@
-query findPlantHarvests($input: FindPlantInput!) {
+query findPlantHarvests($input: FindPlantHarvestsInput!) {
   findPlantHarvests(input: $input) {
     ...HarvestsResponse
   }

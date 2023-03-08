@@ -1,7 +1,7 @@
 import { Args } from '@nestjs/graphql';
 import { CreateContainerInput } from './dto/create-container.input';
 import { FindContainerInput } from './dto/find-container.input';
-import { Container, ContainerType } from './models/container.model';
+import { Container } from './models/container.model';
 import { ContainerResponse } from './responses/container.response';
 import { ContainersResponse } from './responses/containers.response';
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
@@ -24,6 +24,9 @@ import { ContainerStatsResponse } from './responses/container-stats.response';
 import { ContainerHarvestsResponse } from './responses/container-harvests.response';
 import { ContainerHarvest } from './models/container-harvest.model';
 import { FindContainerPlantsInput } from './dto/find-container-plants.input';
+import { FindBestPerformingContainersInput } from './dto/find-best-performing-containers.input';
+import { PriorityQueue } from '@modules/common/lib/priority-queue';
+import { BestPerformingContainersResponse } from './responses/best-performing-containers.response';
 
 @Injectable()
 export class ContainersService {
@@ -367,6 +370,79 @@ export class ContainersService {
         );
 
       return { harvests: containerHarvests };
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new BadRequestException(err.message);
+      }
+    }
+  }
+
+  async findBestPerformingContainers(
+    input: FindBestPerformingContainersInput,
+  ): Promise<BestPerformingContainersResponse> {
+    try {
+      const containers = await this.prismaService.container.findMany({
+        where: { userUuid: input.userUuid },
+        include: {
+          plants: { include: { harvests: { select: { weight: true } } } },
+        },
+      });
+
+      if (containers.length === 0) {
+        throw new NotFoundException(
+          'Could not find containers with the given input!',
+        );
+      }
+
+      // Extract type of the query return
+      type ContainersQueryResult = (typeof containers)[0];
+      const containersMap = new Map<string, ContainersQueryResult>();
+
+      type ComputedHarvest = {
+        uuid: string;
+        totalHarvestsWeight: number;
+      };
+
+      // Store the containers uuid and computed harvests weight and set the container in the map.
+      const computedHarvests: ComputedHarvest[] = [];
+      for (const container of containers) {
+        const totalHarvestsWeight = container.plants.reduce(
+          (total, plant) =>
+            total +
+            plant.harvests.reduce(
+              (total, harvest) => total + harvest.weight,
+              0,
+            ),
+          0,
+        );
+        computedHarvests.push({
+          uuid: container.uuid,
+          totalHarvestsWeight,
+        });
+        containersMap.set(container.uuid, container);
+      }
+
+      // Use a priority queue to efficiently find the top 3 containers
+      const queue = new PriorityQueue<ComputedHarvest>(
+        (a, b) => b.totalHarvestsWeight - a.totalHarvestsWeight,
+      );
+      for (const computedHarvest of computedHarvests) {
+        queue.enqueue(computedHarvest);
+      }
+      // Take the first take containers from the priority queue and parse them
+      type TopContainers = Container & { totalHarvestsWeight: number };
+      const topContainers: TopContainers[] = [];
+      for (let i = 0; i < input.take && !queue.isEmpty(); i++) {
+        const { uuid, totalHarvestsWeight } = queue.dequeue();
+        const { plants, ...container } = containersMap.get(uuid);
+        const parsedContainer: Container = {
+          ...container,
+          type: parseContainerType(container.type),
+        };
+        topContainers.push({ ...parsedContainer, totalHarvestsWeight });
+      }
+
+      return { containers: topContainers };
     } catch (err) {
       if (err instanceof Error) {
         throw new BadRequestException(err.message);

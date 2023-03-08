@@ -1,0 +1,5 @@
+query findLatestsHarvests($input: FindLatestsHarvestsInput!) {
+  findLatestsHarvests(input: $input) {
+    ...HarvestsResponse
+  }
+}

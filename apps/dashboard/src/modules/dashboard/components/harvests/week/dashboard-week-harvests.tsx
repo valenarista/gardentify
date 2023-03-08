@@ -1,10 +1,19 @@
+import { useAuthContext } from '@modules/auth/context/auth-context';
 import { useFindWeekHarvestsQuery } from '@modules/graphql/@generated/graphql';
 import React from 'react';
 
 import DashboardWeekHarvestsChart from './dashboard-week-harvests-chart';
 
 const DashboardWeekHarvests: React.FC = () => {
-  const { data, error, loading } = useFindWeekHarvestsQuery();
+  const { state } = useAuthContext();
+  const { data, error, loading } = useFindWeekHarvestsQuery({
+    variables: {
+      input: {
+        userUuid: state.user?.uuid!,
+      },
+    },
+    skip: state.user === null,
+  });
 
   return (
     <div className="flex flex-col rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">

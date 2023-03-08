@@ -1,0 +1,5 @@
+query findBestPerformingContainers($input: FindBestPerformingContainersInput!) {
+  findBestPerformingContainers(input: $input) {
+    ...BestPerformingContainersResponse
+  }
+}

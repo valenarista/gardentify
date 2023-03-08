@@ -1,0 +1,11 @@
+fragment BestPerformingContainer on BestPerformingContainer {
+  uuid
+  type
+  dirtDepth
+  totalHarvestsWeight
+  user {
+    ...User
+  }
+  createdAt
+  updatedAt
+}

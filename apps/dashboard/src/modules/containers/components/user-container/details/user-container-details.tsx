@@ -5,8 +5,8 @@ import ObjectQrCode from '@modules/qr-codes/components/object-qr-code';
 import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 
-import ContainerDirtDepthAttribute from '../../cards/container-dirt-depth-attribute';
-import ContainerTypeAttribute from '../../cards/container-type-attribute';
+import ContainerDirtDepthAttribute from '../../cards/attributes/container-dirt-depth-attribute';
+import ContainerTypeAttribute from '../../cards/attributes/container-type-attribute';
 import UserContainerManagement from '../management/user-container-management';
 
 const UserContainerDetails: React.FC = (props) => {
