@@ -18,7 +18,8 @@ const UserContainersFiltering: React.FC<UserContainersFilteringProps> = (props) 
         reseteable
         error={false}
         onValueChanged={onFilterTypeChanged}
-        defaultValue="all"
+        name="Type"
+        value="all"
       >
         <option value="all">All</option>
         {Object.values(ContainerType).map((type) => {
@@ -33,6 +34,8 @@ const UserContainersFiltering: React.FC<UserContainersFilteringProps> = (props) 
         id="filter-dirt-depth"
         label="Dirt Depth"
         placeholder="Dirt Depth"
+        name="Dirt Depth"
+        value=""
         type="number"
         error={false}
         reseteable

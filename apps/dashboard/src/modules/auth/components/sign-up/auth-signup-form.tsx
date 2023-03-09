@@ -36,11 +36,12 @@ const AuthSignupForm: React.FC<AuthSignupFormProps> = (props) => {
       <Controller
         name="email"
         control={control}
-        render={({ field: { ref, onChange, onBlur, name }, fieldState }) => (
+        render={({ field: { ref, value, onChange, onBlur, name }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
             name={name}
+            value={value}
             label="Email"
             type="email"
             inputMode="email"
@@ -56,11 +57,12 @@ const AuthSignupForm: React.FC<AuthSignupFormProps> = (props) => {
       <Controller
         name="username"
         control={control}
-        render={({ field: { ref, onChange, onBlur, name }, fieldState }) => (
+        render={({ field: { ref, value, onChange, onBlur, name }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
             name={name}
+            value={value}
             label="Username"
             placeholder="Cool Username"
             error={fieldState.invalid}
@@ -74,11 +76,12 @@ const AuthSignupForm: React.FC<AuthSignupFormProps> = (props) => {
       <Controller
         name="password"
         control={control}
-        render={({ field: { name, ref, onBlur, onChange }, fieldState }) => (
+        render={({ field: { name, value, ref, onBlur, onChange }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
             name={name}
+            value={value}
             label="Password"
             type="password"
             placeholder="Secure Password"
