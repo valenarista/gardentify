@@ -1,9 +1,10 @@
+import { capitalize } from '@gardentify/utils';
 import { createApolloClient } from '@modules/apollo/apollo-client';
 import {
   FindPlantDocument,
   FindPlantQuery,
   FindPlantQueryVariables,
-  Plant as PlantType,
+  Plant as GQLPlant,
 } from '@modules/graphql/@generated/graphql';
 import Layout from '@modules/layout/components/layout';
 import Plant from '@modules/plants/components/plant/plant';
@@ -11,7 +12,7 @@ import ContainerPlantProvider from '@modules/plants/context/container-plant-cont
 import { GetServerSideProps } from 'next';
 
 type PlantPageProps = {
-  plant: PlantType;
+  plant: GQLPlant;
 };
 
 const PlantPage: React.FC<PlantPageProps> = (props) => {
@@ -20,7 +21,7 @@ const PlantPage: React.FC<PlantPageProps> = (props) => {
   return (
     <Layout
       headProps={{
-        title: `Plant Page | Gardentify`,
+        title: `${capitalize(plant.type)} Plant | Gardentify`,
         description:
           'Gardentify is a web application that lets you manage and keep tracks of the plants in your garden.',
       }}

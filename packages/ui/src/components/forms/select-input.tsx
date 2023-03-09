@@ -2,15 +2,23 @@ import clsx from 'clsx';
 import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 import { InputWrapper, InputWrapperProps } from './input-wrapper';
 
-type SelectInputProps = Omit<InputWrapperProps, 'onInputReseted'> &
-  Omit<InputHTMLAttributes<HTMLSelectElement>, 'value' | 'onChange'> & {
-    /**
-     * Callback function called when the value changes.
-     * @param value New value
-     * @returns void.
-     */
-    onValueChanged: (value: string) => void;
-  };
+type SelectInputProps = Omit<InputWrapperProps, 'onInputReseted'> & {
+  value: InputHTMLAttributes<HTMLSelectElement>['value'];
+  /** Name of the input */
+  name: string;
+  /** Input placeholder */
+  placeholder?: InputHTMLAttributes<HTMLSelectElement>['placeholder'];
+  /** Input type */
+  type?: InputHTMLAttributes<HTMLSelectElement>['type'];
+  /** Input onBlur handler */
+  onBlur?: InputHTMLAttributes<HTMLSelectElement>['onBlur'];
+  /**
+   * Callback function called when the value changes.
+   * @param value New value
+   * @returns void.
+   */
+  onValueChanged: (value: string) => void;
+};
 
 export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>((props, ref) => {
   const {
@@ -21,14 +29,21 @@ export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>
     help,
     helpMessage,
     name,
+    placeholder,
     children,
+    onBlur,
     onValueChanged,
     reseteable,
-    defaultValue,
-    ...rest
+    value,
   } = props;
 
-  const [inputValue, setInputValue] = useState<string>(typeof defaultValue === 'string' ? defaultValue : '');
+  const getConvertedValue = (value: string | number) => {
+    if (typeof value === 'string') return value;
+    if (typeof value === 'number') return String(value);
+    return '';
+  };
+
+  const [inputValue, setInputValue] = useState<string>(getConvertedValue(value as string | number));
 
   const handleInputChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
@@ -36,11 +51,7 @@ export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>
   };
 
   const handleInputReset = () => {
-    if (typeof defaultValue === 'string') {
-      setInputValue(defaultValue);
-    } else {
-      setInputValue('');
-    }
+    setInputValue(getConvertedValue('' as string | number));
   };
 
   useEffect(() => {
@@ -55,20 +66,21 @@ export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>
       errorMessage={errorMessage}
       help={help}
       helpMessage={helpMessage}
-      onInputReseted={handleInputReset}
       reseteable={reseteable}
+      onInputReseted={handleInputReset}
     >
       <select
         ref={ref}
         name={name}
+        value={inputValue}
+        placeholder={placeholder}
         className={clsx(
           'shadow-sm bg-neutral-50 border-2 border-neutral-300 text-neutral-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-neutral-700 dark:border-neutral-600 dark:placeholder-neutral-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light',
           error ? 'border-2 !border-red-600 dark:!border-red-400' : ''
         )}
         aria-invalid={error ? 'true' : 'false'}
-        value={inputValue}
         onChange={handleInputChange}
-        {...rest}
+        onBlur={onBlur}
       >
         {children}
       </select>

@@ -46,14 +46,10 @@ export class PriorityQueue<T> {
       const leftChildIndex = this.getLeftChildIndex(index);
       const rightChildIndex = this.getRightChildIndex(index);
       const smallerChildIndex =
-        rightChildIndex < this.heap.length &&
-        this.comparator(this.heap[rightChildIndex], this.heap[leftChildIndex]) <
-          0
+        rightChildIndex < this.heap.length && this.comparator(this.heap[rightChildIndex], this.heap[leftChildIndex]) < 0
           ? rightChildIndex
           : leftChildIndex;
-      if (
-        this.comparator(this.heap[smallerChildIndex], this.heap[index]) >= 0
-      ) {
+      if (this.comparator(this.heap[smallerChildIndex], this.heap[index]) >= 0) {
         break;
       }
       this.swap(smallerChildIndex, index);
@@ -82,7 +78,7 @@ export class PriorityQueue<T> {
       return this.heap.pop();
     }
     const item = this.heap[0];
-    this.heap[0] = this.heap.pop();
+    this.heap[0] = this.heap.pop()!;
     this.heapifyDown();
     return item;
   }

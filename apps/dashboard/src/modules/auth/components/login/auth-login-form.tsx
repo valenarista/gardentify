@@ -40,10 +40,11 @@ const AuthSigninForm: React.FC<AuthSigninFormProps> = (props) => {
       <Controller
         name="email"
         control={control}
-        render={({ field: { name, ref, onBlur, onChange }, fieldState }) => (
+        render={({ field: { name, ref, onBlur, value, onChange }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Email"
             type="email"
@@ -60,10 +61,11 @@ const AuthSigninForm: React.FC<AuthSigninFormProps> = (props) => {
       <Controller
         name="password"
         control={control}
-        render={({ field: { name, ref, onBlur, onChange }, fieldState }) => (
+        render={({ field: { name, ref, onBlur, value, onChange }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Password"
             type="password"

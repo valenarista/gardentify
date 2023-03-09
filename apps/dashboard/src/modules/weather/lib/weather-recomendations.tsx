@@ -9,7 +9,8 @@ export const getWeatherRecomendations = (
   {
     title: 'Extreme Heat',
     content: 'Remember to water your plants this week due to major heat.',
-    renderCondition: weatherForecast.some((forecast) => forecast.temperatureMax >= WEATHER_TEMP_ALERT_THRESHOLDS[1]),
+    renderCondition:
+      weatherForecast.filter((forecast) => forecast.temperatureMax >= WEATHER_TEMP_ALERT_THRESHOLDS[1]).length >= 2,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +55,8 @@ export const getWeatherRecomendations = (
   {
     title: 'High Winds',
     content: 'Protect your tall plants due to high winds expected this week.',
-    renderCondition: weatherForecast.some((forecast) => forecast.windSpeedMax >= WEATHER_WIND_ALERT_THRESHOLD),
+    renderCondition:
+      weatherForecast.filter((forecast) => forecast.windSpeedMax >= WEATHER_WIND_ALERT_THRESHOLD).length >= 2,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

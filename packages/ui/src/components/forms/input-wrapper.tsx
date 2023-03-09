@@ -25,10 +25,10 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, InputWrapperProps>(
   const {
     id,
     label,
-    error,
-    errorMessage = '',
+    error = false,
+    errorMessage,
     help = false,
-    helpMessage = '',
+    helpMessage,
     reseteable,
     onInputReseted,
     children,

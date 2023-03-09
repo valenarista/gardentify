@@ -1,4 +1,5 @@
 import { Button, SelectInput, TextInput, useToast } from '@gardentify/ui';
+import { capitalize } from '@gardentify/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { PlantType, useCreatePlantMutation } from '@modules/graphql/@generated/graphql';
@@ -39,7 +40,13 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
 
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
-    mode: 'onBlur',
+    mode: 'all',
+    defaultValues: {
+      type: PlantType.Bean,
+      variety: 'Grand King',
+      seedsPlantedAt: new Date(),
+      seedsSproutedAt: new Date(),
+    },
   });
 
   const onSubmit = async (data: FormData) => {
@@ -80,10 +87,11 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
       <Controller
         name="type"
         control={control}
-        render={({ field: { name, onBlur, onChange, ref }, fieldState }) => (
+        render={({ field: { name, onBlur, onChange, ref, value }, fieldState }) => (
           <SelectInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Type"
             error={fieldState.invalid}
@@ -93,12 +101,11 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
             reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
-            defaultValue="BEAN"
           >
             {Object.values(PlantType).map((type) => {
               return (
                 <option key={type} value={type}>
-                  {type}
+                  {capitalize(type)}
                 </option>
               );
             })}
@@ -108,10 +115,11 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
       <Controller
         name="variety"
         control={control}
-        render={({ field: { ref, name, onBlur, onChange }, fieldState }) => (
+        render={({ field: { ref, name, onBlur, onChange, value }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Variety"
             placeholder="Grand King"
@@ -128,10 +136,11 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
       <Controller
         name="seedsPlantedAt"
         control={control}
-        render={({ field: { ref, name, onBlur, onChange }, fieldState }) => (
+        render={({ field: { ref, name, onBlur, onChange, value }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
+            value={new Date(value).toISOString().substring(0, 10)}
             name={name}
             label="Seeds Planted At"
             type="date"
@@ -149,10 +158,11 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
       <Controller
         name="seedsSproutedAt"
         control={control}
-        render={({ field: { ref, name, onBlur, onChange }, fieldState }) => (
+        render={({ field: { ref, name, onBlur, onChange, value }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
+            value={new Date(value).toISOString().substring(0, 10)}
             name={name}
             label="Seeds Sprouted At"
             type="date"

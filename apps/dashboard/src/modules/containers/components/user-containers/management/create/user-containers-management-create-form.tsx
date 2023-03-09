@@ -70,10 +70,11 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
       <Controller
         name="type"
         control={control}
-        render={({ field: { ref, onChange, onBlur, name }, fieldState }) => (
+        render={({ field: { ref, onChange, value, onBlur, name }, fieldState }) => (
           <SelectInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Type"
             error={fieldState.invalid}
@@ -97,13 +98,15 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
       <Controller
         name="dirtDepth"
         control={control}
-        render={({ field: { name, onBlur, onChange, ref }, fieldState }) => (
+        render={({ field: { name, onBlur, value, onChange, ref }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
             name={name}
+            value={value}
             label="Dirt Depth"
             inputMode="numeric"
+            type="number"
             placeholder="45 cms"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}

@@ -15,12 +15,14 @@
     "graphql-gen": "graphql-codegen --config graphql-codegen.ts --verbose"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.9",
+    "@apollo/client": "^3.7.10",
     "@gardentify/ui": "*",
+    "@gardentify/utils":"*",
     "@hookform/resolvers": "^2.9.11",
+    "@next/bundle-analyzer": "^13.2.3",
     "chart.js": "^4.2.1",
     "clsx": "^1.2.1",
-    "framer-motion": "^10.0.1",
+    "framer-motion": "^10.2.3",
     "graphql": "^16.6.0",
     "html-to-image": "^1.11.11",
     "next": "13.2.3",
@@ -29,7 +31,7 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.43.4",
+    "react-hook-form": "^7.43.5",
     "yup": "^1.0.2"
   },
   "devDependencies": {
@@ -40,7 +42,6 @@
     "@graphql-codegen/typescript": "3.0.2",
     "@graphql-codegen/typescript-operations": "3.0.2",
     "@graphql-codegen/typescript-react-apollo": "3.3.7",
-    "@types/node": "18.14.6",
     "@types/qrcode": "^1.5.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",

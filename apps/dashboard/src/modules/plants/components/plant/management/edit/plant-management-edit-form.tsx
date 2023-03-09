@@ -1,4 +1,5 @@
 import { Button, SelectInput, TextInput, useToast } from '@gardentify/ui';
+import { capitalize } from '@gardentify/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { PlantType, useUpdatePlantMutation } from '@modules/graphql/@generated/graphql';
@@ -79,6 +80,7 @@ const PlantManagementEditForm: React.FC = () => {
           <SelectInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Variety"
             placeholder="Plant Variety"
@@ -87,12 +89,11 @@ const PlantManagementEditForm: React.FC = () => {
             reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
-            defaultValue={value}
           >
             {Object.values(PlantType).map((type) => {
               return (
                 <option key={type} value={type}>
-                  {type}
+                  {capitalize(type)}
                 </option>
               );
             })}
@@ -105,6 +106,7 @@ const PlantManagementEditForm: React.FC = () => {
         render={({ field: { name, ref, onBlur, onChange, value }, fieldState }) => (
           <TextInput
             ref={ref}
+            value={value}
             id={name}
             name={name}
             label="Variety"
@@ -114,7 +116,6 @@ const PlantManagementEditForm: React.FC = () => {
             reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
-            defaultValue={value}
           />
         )}
       />
@@ -124,6 +125,7 @@ const PlantManagementEditForm: React.FC = () => {
         render={({ field: { name, ref, onBlur, onChange, value }, fieldState }) => (
           <TextInput
             ref={ref}
+            value={new Date(value).toISOString().substring(0, 10)}
             id={name}
             name={name}
             label="Seeds Planted At"
@@ -134,7 +136,6 @@ const PlantManagementEditForm: React.FC = () => {
             reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
-            defaultValue={new Date(value).toISOString().substring(0, 10)}
           />
         )}
       />
@@ -144,6 +145,7 @@ const PlantManagementEditForm: React.FC = () => {
         render={({ field: { name, ref, onBlur, onChange, value }, fieldState }) => (
           <TextInput
             ref={ref}
+            value={new Date(value).toISOString().substring(0, 10)}
             id={name}
             name={name}
             label="Seeds Planted At"
@@ -154,7 +156,6 @@ const PlantManagementEditForm: React.FC = () => {
             reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
-            defaultValue={new Date(value).toISOString().substring(0, 10)}
           />
         )}
       />

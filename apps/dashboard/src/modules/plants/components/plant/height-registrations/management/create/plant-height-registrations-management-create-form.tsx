@@ -68,11 +68,12 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
       <Controller
         name="height"
         control={control}
-        render={({ field: { name, onChange, onBlur, ref }, fieldState }) => (
+        render={({ field: { name, onChange, onBlur, ref, value }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
             name={name}
+            value={value}
             label="Height"
             type="number"
             placeholder="Plant height"

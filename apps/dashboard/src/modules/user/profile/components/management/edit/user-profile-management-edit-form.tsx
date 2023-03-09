@@ -69,6 +69,7 @@ const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps
           <TextInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Username"
             placeholder="Cool Username"
@@ -77,7 +78,6 @@ const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps
             reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
-            defaultValue={value}
           />
         )}
       />

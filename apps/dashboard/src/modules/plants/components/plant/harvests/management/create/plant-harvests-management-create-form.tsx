@@ -74,10 +74,11 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
       <Controller
         name="quantity"
         control={control}
-        render={({ field: { name, onChange, onBlur, ref }, fieldState }) => (
+        render={({ field: { name, value, onChange, onBlur, ref }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Quantity"
             type="number"
@@ -97,10 +98,11 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
       <Controller
         name="weight"
         control={control}
-        render={({ field: { name, onChange, onBlur, ref }, fieldState }) => (
+        render={({ field: { name, value, onChange, onBlur, ref }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Weight"
             type="number"

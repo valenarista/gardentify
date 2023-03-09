@@ -19,7 +19,8 @@ const ContainerPlantsPage: React.FC<ContainerPlantsPageProps> = (props) => {
   return (
     <Layout
       headProps={{
-        title: `Container Page | Gardentify`,
+        title: `Container Plants Page | Gardentify`,
+        description: 'Plants page for the user container',
       }}
     >
       <section className="container mx-auto flex max-w-6xl flex-col space-y-4 md:px-4 lg:px-6">

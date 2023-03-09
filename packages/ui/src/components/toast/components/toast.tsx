@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { m } from 'framer-motion';
+// import { m } from 'framer-motion';
 import React from 'react';
 import { Toast as ToastData } from '../context/reducer/types';
 
@@ -71,24 +71,25 @@ export const Toast: React.FC<ToastProps> = (props) => {
   };
 
   return (
-    <m.li
-      initial={{ height: 0, opacity: 0 }}
-      animate={{
-        height: 'auto',
-        opacity: 1,
-        transition: {
-          type: 'spring',
-          bounce: 0.3,
-        },
-      }}
-      exit={{ height: 0, opacity: 0 }}
-      transition={{
-        duration: 0.6,
-        type: 'spring',
-        bounce: 0,
-      }}
-      className="flex flex-col items-center m-2"
-    >
+    // <m.li
+    //   initial={{ height: 0, opacity: 0 }}
+    //   animate={{
+    //     height: 'auto',
+    //     opacity: 1,
+    //     transition: {
+    //       type: 'spring',
+    //       bounce: 0.3,
+    //     },
+    //   }}
+    //   exit={{ height: 0, opacity: 0 }}
+    //   transition={{
+    //     duration: 0.6,
+    //     type: 'spring',
+    //     bounce: 0,
+    //   }}
+    //   className="flex flex-col items-center m-2"
+    // >
+    <li>
       <div
         className={clsx(
           'flex p-4 rounded-md items-start overflow-hidden shadow-md text-neutral-800 dark:text-neutral-50',
@@ -102,6 +103,7 @@ export const Toast: React.FC<ToastProps> = (props) => {
           <p className="text-sm font-medium">{toast.content}</p>
         </div>
       </div>
-    </m.li>
+    </li>
+    // </m.li>
   );
 };

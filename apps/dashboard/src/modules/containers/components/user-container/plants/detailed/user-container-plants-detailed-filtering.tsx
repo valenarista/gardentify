@@ -1,4 +1,5 @@
 import { SelectInput, TextInput } from '@gardentify/ui';
+import { capitalize } from '@gardentify/utils';
 import { PlantType } from '@modules/graphql/@generated/graphql';
 import React from 'react';
 
@@ -22,23 +23,26 @@ const UserContainerPlantsDetailedFiltering: React.FC<UserContainerPlantsDetailed
     <div className="grid gap-4 rounded-lg bg-neutral-100 p-4 dark:bg-neutral-900 md:grid-cols-2">
       <SelectInput
         id="filter-type"
-        label="Filter Type"
+        value={PlantType.Bean}
+        label="Type"
+        name="Type"
         reseteable
         error={false}
         onValueChanged={handleTypeChange}
-        defaultValue="NONE"
       >
         {Object.values(PlantType).map((type) => {
           return (
             <option key={type} value={type}>
-              {type}
+              {capitalize(type)}
             </option>
           );
         })}
       </SelectInput>
       <TextInput
         id="filter-variety"
-        label="Filter Variety"
+        value={''}
+        label="Variety"
+        name="Variety"
         placeholder="Plant Variety"
         error={false}
         reseteable

@@ -1,0 +1,29 @@
+{
+  "name": "@gardentify/utils",
+  "version": "0.0.1",
+  "private": true,
+  "license": "GPL-3.0",
+  "author": {
+    "name": "Faustino Zanetto",
+    "email": "zanettofaustino@gmail.com"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --format esm,cjs --dts  --watch",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@gardentify/eslint-config-custom": "*",
+    "@gardentify/tsconfig": "*",
+    "eslint": "^8.35.0",
+    "tsup": "^6.6.3",
+    "typescript": "^4.9.5"
+  }
+}

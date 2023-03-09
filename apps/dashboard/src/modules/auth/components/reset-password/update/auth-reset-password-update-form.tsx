@@ -35,10 +35,11 @@ const AuthResetPasswordUpdateForm: React.FC<AuthResetPasswordUpdateFormProps> = 
       <Controller
         name="password"
         control={control}
-        render={({ field: { name, ref, onBlur, onChange }, fieldState }) => (
+        render={({ field: { name, ref, value, onBlur, onChange }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Password"
             type="password"

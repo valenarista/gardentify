@@ -6,7 +6,7 @@ const AuthResetPasswordPage: React.FC = () => {
     <Layout
       headProps={{
         title: 'Reset Password | Gardentify',
-        description: 'Login to Gardentify to unlock all the features in just a couple of clicks.',
+        description: 'Reset your password to your Gardentify account if you lost it',
       }}
     >
       <AuthResetPassword />

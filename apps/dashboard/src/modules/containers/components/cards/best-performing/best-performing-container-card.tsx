@@ -16,14 +16,14 @@ const BestPerformingContainerCard: React.FC<BestPerformingContainerCardProps> = 
 
   return (
     <Link href={`/containers/${container.uuid}`}>
-      <div className="rounded-lg bg-neutral-100 p-4 dark:bg-neutral-900">
+      <div className="group rounded-lg bg-neutral-100 p-4 transition-transform hover:scale-[103%] dark:bg-neutral-900">
         {/* Data */}
         <div className="relative flex flex-col">
           <div className="flex justify-between">
             <span className="text-md mb-2 font-bold uppercase text-neutral-800 dark:text-neutral-50">
               {index === 1 ? 'Best Container' : ' Container'}
             </span>
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-neutral-300 text-xl font-bold text-orange-600 shadow-md dark:bg-neutral-700 dark:text-orange-300">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-neutral-300 text-xl font-bold text-orange-600 shadow-md transition-all group-hover:text-2xl dark:bg-neutral-700 dark:text-orange-300">
               {index}
             </div>
           </div>

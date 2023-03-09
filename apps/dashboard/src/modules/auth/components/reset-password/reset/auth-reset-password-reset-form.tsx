@@ -18,9 +18,7 @@ const AuthResetPasswordResetForm: React.FC<AuthResetPasswordResetFormProps> = (p
   const { onSubmitted } = props;
   const { control, handleSubmit } = useForm<AuthResetPasswordResetFormData>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      email: '',
-    },
+    mode: 'onBlur',
   });
 
   return (
@@ -28,10 +26,11 @@ const AuthResetPasswordResetForm: React.FC<AuthResetPasswordResetFormProps> = (p
       <Controller
         name="email"
         control={control}
-        render={({ field: { name, ref, onBlur, onChange }, fieldState }) => (
+        render={({ field: { name, ref, value, onBlur, onChange }, fieldState }) => (
           <TextInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Email"
             type="email"

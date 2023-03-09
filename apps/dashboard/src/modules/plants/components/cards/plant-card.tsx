@@ -16,7 +16,7 @@ const PlantCard: React.FC<PlantCardProps> = (props) => {
 
   return (
     <Link href={`/plants/${plant.uuid}`}>
-      <div className="rounded-lg bg-neutral-100 p-4 dark:bg-neutral-900">
+      <div className="rounded-lg bg-neutral-100 p-4 transition-transform hover:scale-[103%] dark:bg-neutral-900">
         {/* Data */}
         <div className="relative flex flex-col">
           {includeContainerDetails && plant.container && plant.container.uuid !== undefined ? (

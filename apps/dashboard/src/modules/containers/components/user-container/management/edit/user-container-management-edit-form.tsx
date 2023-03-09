@@ -78,6 +78,7 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
           <SelectInput
             ref={ref}
             id={name}
+            value={value}
             name={name}
             label="Type"
             error={fieldState.invalid}
@@ -87,7 +88,6 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
             reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
-            defaultValue={value}
           >
             {Object.values(ContainerType).map((type) => {
               return (
@@ -107,7 +107,9 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
             ref={ref}
             id={name}
             name={name}
+            value={value}
             label="Dirt Depth"
+            type="number"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
             help
@@ -115,7 +117,6 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
             reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
-            defaultValue={value}
           />
         )}
       />

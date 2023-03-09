@@ -17,6 +17,7 @@ const ContainersPage: React.FC = () => {
     <Layout
       headProps={{
         title: `Containers Page | Gardentify`,
+        description: 'User containers page where you can search and filter your gardentify containers',
       }}
     >
       <UserContainers />

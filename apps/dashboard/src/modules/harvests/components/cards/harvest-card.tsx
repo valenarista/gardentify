@@ -14,7 +14,7 @@ const HarvestCard: React.FC<HarvestCardProps> = (props) => {
   const { harvest, includePlantDetails = false } = props;
 
   return (
-    <div className="rounded-lg bg-neutral-100 p-4 dark:bg-neutral-900">
+    <div className="rounded-lg bg-neutral-100 p-4 transition-transform hover:scale-[103%] dark:bg-neutral-900">
       {/* Data */}
       <div className="relative flex flex-col">
         {includePlantDetails && harvest.plant && harvest.plant.uuid !== undefined ? (

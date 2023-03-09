@@ -21,6 +21,7 @@ const ContainerPage: React.FC<ContainerPageProps> = (props) => {
     <Layout
       headProps={{
         title: `Container Page | Gardentify`,
+        description: 'Page of a users container',
       }}
     >
       <UserContainerProvider>
