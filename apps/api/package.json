@@ -27,7 +27,7 @@
   "dependencies": {
     "@apollo/server": "^4.4.1",
     "@gardentify/utils": "*",
-    "@nestjs/apollo": "11.0.0",
+    "@nestjs/apollo": "11.0.2",
     "@nestjs/axios": "^2.0.0",
     "@nestjs/common": "9.3.9",
     "@nestjs/config": "2.3.1",
