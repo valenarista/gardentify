@@ -26,7 +26,7 @@ import { ContainerHarvest } from './models/container-harvest.model';
 import { FindContainerPlantsInput } from './dto/find-container-plants.input';
 import { FindBestPerformingContainersInput } from './dto/find-best-performing-containers.input';
 import { BestPerformingContainersResponse } from './responses/best-performing-containers.response';
-import { PriorityQueue } from '@gardentify/utils';
+import { PriorityQueue } from '@modules/common/lib/priority-queue';
 
 @Injectable()
 export class ContainersService {

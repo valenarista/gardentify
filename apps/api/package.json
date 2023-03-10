@@ -11,7 +11,7 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "build": "yarn workspace @gardentify/utils build && nest build",
+    "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@apollo/server": "^4.4.1",
-    "@gardentify/utils": "*",
     "@nestjs/apollo": "11.0.2",
     "@nestjs/axios": "^2.0.0",
     "@nestjs/common": "9.3.9",
