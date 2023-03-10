@@ -1,11 +1,12 @@
 import { Weather } from '@modules/graphql/@generated/graphql';
 
-import WeatherRecomendation from '../components/recomendation/weather-recomendation';
-import { WEATHER_TEMP_ALERT_THRESHOLDS, WEATHER_WIND_ALERT_THRESHOLD } from './weather-lib';
+import {
+  WEATHER_TEMP_ALERT_THRESHOLDS,
+  WEATHER_WIND_ALERT_THRESHOLD,
+  WeatherRecomendationWithCondition,
+} from './weather-lib';
 
-export const getWeatherRecomendations = (
-  weatherForecast: Weather[]
-): React.ComponentProps<typeof WeatherRecomendation>[] => [
+export const getWeatherRecomendations = (weatherForecast: Weather[]): WeatherRecomendationWithCondition[] => [
   {
     title: 'Extreme Heat',
     content: 'Remember to water your plants this week due to major heat.',

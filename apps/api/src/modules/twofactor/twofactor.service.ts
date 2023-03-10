@@ -34,11 +34,11 @@ export class TwoFactorService {
     }
   }
 
-  validateTwoFactorCode(
+  async validateTwoFactorCode(
     input: ValidateTwoFactorCodeInput,
-  ): ValidateTwoFactorCodeResponse {
+  ): Promise<ValidateTwoFactorCodeResponse> {
     try {
-      const valid = authenticator.verify({
+      const valid = await authenticator.verify({
         token: input.twoFactorCode,
         secret: input.userSecret,
       });

@@ -1,8 +1,15 @@
-import { createContext, useContext, useEffect, useReducer } from 'react';
+import { useReactiveVar } from '@apollo/client';
+import { isUserLoadingVar, isUserLoggedInVar } from '@modules/apollo/apollo-client';
+import { useAuthCheckQuery, useMeQuery, User } from '@modules/graphql/@generated/graphql';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-import useLoggedInUser from '../hooks/use-logged-in-user';
-import { reducer } from './reducer';
-import { AuthActionType, AuthContextState } from './reducer/types';
+type AuthContextState = {
+  user: User | null;
+  userLoading: boolean;
+  userLoggedIn: boolean;
+  setUserLoading: (loading: boolean) => void;
+  setUserLoggedIn: (loggedIn: boolean) => void;
+};
 
 const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 
@@ -22,31 +29,42 @@ type AuthProviderProps = {
 
 const AuthProvider: React.FC<AuthProviderProps> = (props) => {
   const { children } = props;
-  const [state, dispatch] = useReducer(reducer, {
-    user: null,
-    loading: false,
+  const userLoading = useReactiveVar(isUserLoadingVar);
+  const userLoggedIn = useReactiveVar(isUserLoggedInVar);
+
+  const [user, setUser] = useState<User | null>(null);
+
+  const { data: meData } = useMeQuery({ skip: !userLoggedIn });
+
+  const setUserLoading = (loading: boolean) => {
+    isUserLoadingVar(loading);
+  };
+
+  const setUserLoggedIn = (loggedIn: boolean) => {
+    isUserLoggedInVar(loggedIn);
+  };
+
+  const { loading } = useAuthCheckQuery({
+    onCompleted({ authCheck }) {
+      setUserLoggedIn(authCheck);
+    },
   });
 
-  const { loggedInUser } = useLoggedInUser();
+  useEffect(() => {
+    setUserLoading(loading);
+  }, [loading]);
 
   useEffect(() => {
-    if (!loggedInUser) return;
-
-    if (localStorage) {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-
-      dispatch({
-        type: AuthActionType.LOGIN,
-        payload: {
-          accessToken: token,
-          user: loggedInUser,
-        },
-      });
+    if (meData && meData.me) {
+      setUser(meData.me);
     }
-  }, [loggedInUser]);
+  }, [meData]);
 
-  return <AuthContext.Provider value={{ state, dispatch }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ setUserLoading, setUserLoggedIn, userLoading, userLoggedIn: user !== null, user }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

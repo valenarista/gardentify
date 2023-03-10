@@ -7,6 +7,7 @@ import { AppModule } from './app.module';
 
 import { __PROD__ } from '@modules/common/lib/constants';
 import { PrismaService } from '@modules/prisma/prisma.service';
+import cookieParser from 'cookie-parser';
 
 const bootstrap = async () => {
   /*==================Initialization================*/
@@ -28,6 +29,10 @@ const bootstrap = async () => {
   app.enableVersioning({
     type: VersioningType.URI,
   });
+
+  app.use(cookieParser());
+
+  app.useBodyParser('json', { limit: '50mb' });
 
   app.enableCors({
     origin: __PROD__ ? process.env.CLIENT_URL_DEPLOY : process.env.CLIENT_URL,

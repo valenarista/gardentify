@@ -1,6 +1,10 @@
-import { Request, Response } from 'express';
+import { User } from '@modules/users/models/user.model';
+import { JwtPayload } from 'jsonwebtoken';
 
 export type GardentifyContext = {
-  req: Request;
-  res: Response;
+  authTokens: {
+    accessToken: JwtPayload | null;
+    refreshToken: JwtPayload | null;
+  };
+  user: User | null;
 };

@@ -19,7 +19,7 @@ const DashboardWeatherRecomendations: React.FC<DashboardWeatherRecomendationsPro
   }, [data]);
 
   return (
-    <div className="flex flex-col space-y-4 rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
+    <div className="flex h-fit flex-col rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
       <h3 className="text-2xl font-bold">Weather Recomendations</h3>
 
       {error ? <span className="text-neutral-800 dark:text-neutral-100">{error.message}</span> : null}
@@ -28,7 +28,7 @@ const DashboardWeatherRecomendations: React.FC<DashboardWeatherRecomendationsPro
         <span className="text-lg font-semibold text-neutral-800 dark:text-neutral-100">Loading...</span>
       ) : null}
 
-      {data && data.getWeatherForecast.forecast ? (
+      {data && data.getWeatherForecast.forecast && recomendations.length > 0 ? (
         <div className="flex flex-col gap-4">
           {recomendations.map((recomendation, index) => {
             return (
@@ -36,13 +36,16 @@ const DashboardWeatherRecomendations: React.FC<DashboardWeatherRecomendationsPro
                 key={`recomendation-${String(index)}`}
                 title={recomendation.title}
                 content={recomendation.content}
-                renderCondition={recomendation.renderCondition}
                 icon={recomendation.icon}
               />
             );
           })}
         </div>
-      ) : null}
+      ) : (
+        <span className="text-neutral-800 dark:text-neutral-100">
+          No weather recomendations available at the moment!
+        </span>
+      )}
     </div>
   );
 };

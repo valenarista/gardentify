@@ -32,9 +32,9 @@ type UserContainerPlantsManagementCreateFormProps = {
 };
 
 const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManagementCreateFormProps> = (props) => {
-  const { onSubmitted } = props;
   const router = useRouter();
-  const { state } = useAuthContext();
+  const { onSubmitted } = props;
+  const { user } = useAuthContext();
   const { toast } = useToast();
   const [createPlant] = useCreatePlantMutation();
 
@@ -50,7 +50,7 @@ const UserContainerPlantsManagementCreateForm: React.FC<UserContainerPlantsManag
   });
 
   const onSubmit = async (data: FormData) => {
-    if (!state.user) return;
+    if (!user) return;
 
     try {
       const containerUuid = router.query.uuid as string;

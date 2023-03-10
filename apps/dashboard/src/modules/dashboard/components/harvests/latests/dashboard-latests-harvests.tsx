@@ -4,16 +4,16 @@ import HarvestsFeed from '@modules/harvests/components/feed/harvests-feed';
 import React from 'react';
 
 const DashboardLatestsHarvests: React.FC = () => {
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
   const { data, error, loading } = useFindLatestsHarvestsQuery({
     variables: {
       input: {
-        userUuid: state.user?.uuid!,
+        userUuid: user?.uuid!,
         take: 6,
         includePlant: true,
       },
     },
-    skip: state.user === null,
+    skip: user === null,
   });
 
   return (

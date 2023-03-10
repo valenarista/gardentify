@@ -20,7 +20,7 @@ type UserProfileManagementEditFormProps = {
 
 const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps> = (props) => {
   const { onSubmitted } = props;
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
   const { toast } = useToast();
   const [updateUser] = useUpdateUserMutation();
 
@@ -28,18 +28,18 @@ const UserProfileManagementEditForm: React.FC<UserProfileManagementEditFormProps
     resolver: yupResolver(schema),
     mode: 'onBlur',
     defaultValues: {
-      username: state?.user?.username,
+      username: user?.username,
     },
   });
 
   const onSubmit = async (data: FormData) => {
-    if (!state.user) return;
+    if (!user) return;
 
     try {
       await updateUser({
         variables: {
           input: {
-            uuid: state.user.uuid,
+            uuid: user.uuid,
             username: data.username,
           },
         },

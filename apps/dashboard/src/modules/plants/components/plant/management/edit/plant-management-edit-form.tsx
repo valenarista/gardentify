@@ -30,7 +30,7 @@ const PlantManagementEditForm: React.FC = () => {
   const router = useRouter();
   const [updatePlant] = useUpdatePlantMutation();
   const { toast } = useToast();
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
   const { plant } = useContainerPlantContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -44,7 +44,7 @@ const PlantManagementEditForm: React.FC = () => {
   });
 
   const onSubmit = async (data: FormData) => {
-    if (!state.user) return;
+    if (!user) return;
 
     try {
       const response = await updatePlant({

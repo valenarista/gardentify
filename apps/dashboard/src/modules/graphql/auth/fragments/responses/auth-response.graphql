@@ -1,0 +1,9 @@
+fragment AuthResponse on AuthResponse {
+  user {
+    ...User
+  }
+  authTokens {
+    accessToken
+    refreshToken
+  }
+}

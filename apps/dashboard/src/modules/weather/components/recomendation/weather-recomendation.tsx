@@ -3,14 +3,11 @@ import React from 'react';
 type WeatherRecomendationProps = {
   title: string;
   content: string;
-  renderCondition: boolean;
   icon: React.ReactElement;
 };
 
 const WeatherRecomendation: React.FC<WeatherRecomendationProps> = (props) => {
-  const { title, content, renderCondition, icon } = props;
-
-  if (!renderCondition) return null;
+  const { title, content, icon } = props;
 
   return (
     <div className="flex items-center space-x-2 rounded-lg bg-neutral-100 p-4 dark:bg-neutral-900">

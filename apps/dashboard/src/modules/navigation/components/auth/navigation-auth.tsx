@@ -4,9 +4,9 @@ import React from 'react';
 import DesktopNavigationLink from '../navigation-link';
 
 const NavigationAuth: React.FC = () => {
-  const { state } = useAuthContext();
+  const { userLoggedIn } = useAuthContext();
 
-  if (state.user) return null;
+  if (userLoggedIn) return null;
 
   return (
     <div className="flex flex-col space-y-2">

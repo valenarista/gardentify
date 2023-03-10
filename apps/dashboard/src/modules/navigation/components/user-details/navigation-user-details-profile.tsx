@@ -4,14 +4,12 @@ import React from 'react';
 import NavigationLink from '../navigation-link';
 
 const NavigationUserDetailsProfile: React.FC = () => {
-  const { state } = useAuthContext();
-
-  if (!state.user) return null;
+  const { userLoading, user } = useAuthContext();
 
   return (
     <NavigationLink
-      href={`/users/${state.user.uuid}`}
-      label={state.user.username}
+      href={user ? `/users/${user.uuid}` : '/'}
+      label={!userLoading && user ? user.username : 'Loading'}
       icon={
         <svg
           className="h-5 w-5 stroke-black dark:stroke-white"

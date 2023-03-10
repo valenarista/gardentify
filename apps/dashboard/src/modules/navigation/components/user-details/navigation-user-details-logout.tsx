@@ -1,21 +1,30 @@
 import { Button, IconButton } from '@gardentify/ui';
 import { useAuthContext } from '@modules/auth/context/auth-context';
-import { AuthActionType } from '@modules/auth/context/reducer/types';
+import { MeDocument, useLogOutMutation } from '@modules/graphql/@generated/graphql';
 import { useNavigationContext } from '@modules/navigation/context/navigation-context';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 const NavigationUserDetailsLogout: React.FC = () => {
   const router = useRouter();
+  const { setUserLoading, setUserLoggedIn } = useAuthContext();
   const { isCompact } = useNavigationContext();
-  const { dispatch } = useAuthContext();
+  const [logout] = useLogOutMutation();
 
   const handleLogout = async () => {
-    dispatch({
-      type: AuthActionType.LOGOUT,
-      payload: {},
+    await logout({
+      async onCompleted() {
+        setUserLoading(false);
+        setUserLoggedIn(false);
+        await router.push('/');
+      },
+      update(cache) {
+        cache.writeQuery({
+          query: MeDocument,
+          data: { me: null },
+        });
+      },
     });
-    await router.push('/');
   };
 
   const logoutIcon = (

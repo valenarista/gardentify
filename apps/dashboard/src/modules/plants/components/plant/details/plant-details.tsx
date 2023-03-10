@@ -12,7 +12,7 @@ import ContainerPlantManagement from '../management/plant-management';
 const PlantDetails: React.FC = (props) => {
   const {} = props;
   const router = useRouter();
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
   const { plant } = useContainerPlantContext();
 
   return (
@@ -38,7 +38,7 @@ const PlantDetails: React.FC = (props) => {
         </p>
         <p className="text-sm font-medium opacity-90">Created at {new Date(plant.createdAt).toDateString()}</p>
       </div>
-      {plant?.container?.user?.uuid && state.user && state.user.uuid === plant.container.user.uuid ? (
+      {user && plant.container && plant.container.user && plant.container.user.uuid === user.uuid ? (
         <ContainerPlantManagement />
       ) : null}
     </div>

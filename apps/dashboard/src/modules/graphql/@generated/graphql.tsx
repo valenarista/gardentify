@@ -13,7 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  DateTime: any;
+  DateTime: Date;
 };
 
 export type AddPlantToContainerInput = {
@@ -21,13 +21,18 @@ export type AddPlantToContainerInput = {
   plantUuid: Scalars['String'];
 };
 
-export type Auth = {
-  __typename?: 'Auth';
+export type AuthResponse = {
+  __typename?: 'AuthResponse';
+  authTokens?: Maybe<AuthTokens>;
+  user: User;
+};
+
+export type AuthTokens = {
+  __typename?: 'AuthTokens';
   /** JWT access token */
   accessToken: Scalars['String'];
   /** JWT refresh token */
   refreshToken: Scalars['String'];
-  user: User;
 };
 
 export type BestPerformingContainer = {
@@ -271,13 +276,14 @@ export type Mutation = {
   deleteHarvest: DeleteObjectResponse;
   deleteHeightRegistration: DeleteObjectResponse;
   deletePlant: DeleteObjectResponse;
-  login: Auth;
-  refreshToken: Token;
+  logOut: Scalars['Boolean'];
+  login: AuthResponse;
+  refreshToken: AuthTokens;
   removePlantFromContainer: DeleteObjectResponse;
   requestResetPassword: RequestResetPasswordResponse;
   resetPassword: ResetPasswordResponse;
   setupTwoFactorCode: SetupTwoFactorCodeResponse;
-  signup: Auth;
+  signUp: AuthResponse;
   updateContainer: ContainerResponse;
   updateHarvest: HarvestResponse;
   updatePlant: PlantResponse;
@@ -344,7 +350,7 @@ export type MutationSetupTwoFactorCodeArgs = {
   input: SetupTwoFactorCodeInput;
 };
 
-export type MutationSignupArgs = {
+export type MutationSignUpArgs = {
   input: SignUpInput;
 };
 
@@ -419,6 +425,7 @@ export type PlantsResponse = {
 
 export type Query = {
   __typename?: 'Query';
+  authCheck: Scalars['Boolean'];
   calculateContainerStats: ContainerStatsResponse;
   findBestPerformingContainers: BestPerformingContainersResponse;
   findContainer: ContainerResponse;
@@ -438,7 +445,7 @@ export type Query = {
   findUserContainers: ContainersResponse;
   findWeekHarvests: HarvestsResponse;
   getWeatherForecast: WeatherForecastResponse;
-  me: UserResponse;
+  me: User;
 };
 
 export type QueryCalculateContainerStatsArgs = {
@@ -561,14 +568,6 @@ export type SignUpInput = {
   username: Scalars['String'];
 };
 
-export type Token = {
-  __typename?: 'Token';
-  /** JWT access token */
-  accessToken: Scalars['String'];
-  /** JWT refresh token */
-  refreshToken: Scalars['String'];
-};
-
 export type UpdateContainerInput = {
   /** Dirth depth of the container */
   dirtDepth?: InputMaybe<Scalars['Float']>;
@@ -608,8 +607,7 @@ export type User = {
 
 export type UserResponse = {
   __typename?: 'UserResponse';
-  errors?: Maybe<Array<Error>>;
-  user?: Maybe<User>;
+  user: User;
 };
 
 export type Weather = {
@@ -634,19 +632,18 @@ export type WeatherForecastResponse = {
   forecast: Array<Weather>;
 };
 
-export type AuthFragment = {
-  __typename?: 'Auth';
-  accessToken: string;
-  refreshToken: string;
+export type AuthResponseFragment = {
+  __typename?: 'AuthResponse';
   user: {
     __typename?: 'User';
     uuid: string;
     username: string;
     email: string;
     twoFactorEnabled: boolean;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
   };
+  authTokens?: { __typename?: 'AuthTokens'; accessToken: string; refreshToken: string } | null;
 };
 
 export type RequestResetPasswordResponseFragment = { __typename?: 'RequestResetPasswordResponse'; emailSent: boolean };
@@ -662,20 +659,23 @@ export type LoginMutationVariables = Exact<{
 export type LoginMutation = {
   __typename?: 'Mutation';
   login: {
-    __typename?: 'Auth';
-    accessToken: string;
-    refreshToken: string;
+    __typename?: 'AuthResponse';
     user: {
       __typename?: 'User';
       uuid: string;
       username: string;
       email: string;
       twoFactorEnabled: boolean;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     };
+    authTokens?: { __typename?: 'AuthTokens'; accessToken: string; refreshToken: string } | null;
   };
 };
+
+export type LogOutMutationVariables = Exact<{ [key: string]: never }>;
+
+export type LogOutMutation = { __typename?: 'Mutation'; logOut: boolean };
 
 export type RequestResetPasswordMutationVariables = Exact<{
   input: RequestResetPasswordInput;
@@ -704,27 +704,30 @@ export type SetupTwoFactorCodeMutation = {
   setupTwoFactorCode: { __typename?: 'SetupTwoFactorCodeResponse'; emailSent: boolean };
 };
 
-export type SignupMutationVariables = Exact<{
+export type SignUpMutationVariables = Exact<{
   input: SignUpInput;
 }>;
 
-export type SignupMutation = {
+export type SignUpMutation = {
   __typename?: 'Mutation';
-  signup: {
-    __typename?: 'Auth';
-    accessToken: string;
-    refreshToken: string;
+  signUp: {
+    __typename?: 'AuthResponse';
     user: {
       __typename?: 'User';
       uuid: string;
       username: string;
       email: string;
       twoFactorEnabled: boolean;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     };
+    authTokens?: { __typename?: 'AuthTokens'; accessToken: string; refreshToken: string } | null;
   };
 };
+
+export type AuthCheckQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AuthCheckQuery = { __typename?: 'Query'; authCheck: boolean };
 
 export type ErrorFragment = { __typename?: 'Error'; field: string; message: string };
 
@@ -740,36 +743,36 @@ export type BestPerformingContainerFragment = {
   type: ContainerType;
   dirtDepth: number;
   totalHarvestsWeight: number;
-  createdAt: any;
-  updatedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
   user?: {
     __typename?: 'User';
     uuid: string;
     username: string;
     email: string;
     twoFactorEnabled: boolean;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
   } | null;
 };
 
-export type ContainerHarvestFragment = { __typename?: 'ContainerHarvest'; date: any; weight: number };
+export type ContainerHarvestFragment = { __typename?: 'ContainerHarvest'; date: Date; weight: number };
 
 export type ContainerFragment = {
   __typename?: 'Container';
   uuid: string;
   type: ContainerType;
   dirtDepth: number;
-  createdAt: any;
-  updatedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
   user?: {
     __typename?: 'User';
     uuid: string;
     username: string;
     email: string;
     twoFactorEnabled: boolean;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
   } | null;
 };
 
@@ -781,23 +784,23 @@ export type BestPerformingContainersResponseFragment = {
     type: ContainerType;
     dirtDepth: number;
     totalHarvestsWeight: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     user?: {
       __typename?: 'User';
       uuid: string;
       username: string;
       email: string;
       twoFactorEnabled: boolean;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     } | null;
   }> | null;
 };
 
 export type ContainerHarvestsResponseFragment = {
   __typename?: 'ContainerHarvestsResponse';
-  harvests: Array<{ __typename?: 'ContainerHarvest'; date: any; weight: number }>;
+  harvests: Array<{ __typename?: 'ContainerHarvest'; date: Date; weight: number }>;
 };
 
 export type ContainerResponseFragment = {
@@ -807,16 +810,16 @@ export type ContainerResponseFragment = {
     uuid: string;
     type: ContainerType;
     dirtDepth: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     user?: {
       __typename?: 'User';
       uuid: string;
       username: string;
       email: string;
       twoFactorEnabled: boolean;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     } | null;
   } | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -836,16 +839,16 @@ export type ContainersResponseFragment = {
     uuid: string;
     type: ContainerType;
     dirtDepth: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     user?: {
       __typename?: 'User';
       uuid: string;
       username: string;
       email: string;
       twoFactorEnabled: boolean;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     } | null;
   }> | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -864,16 +867,16 @@ export type CreateContainerMutation = {
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         email: string;
         twoFactorEnabled: boolean;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -906,16 +909,16 @@ export type UpdateContainerMutation = {
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         email: string;
         twoFactorEnabled: boolean;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -950,16 +953,16 @@ export type FindBestPerformingContainersQuery = {
       type: ContainerType;
       dirtDepth: number;
       totalHarvestsWeight: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         email: string;
         twoFactorEnabled: boolean;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     }> | null;
   };
@@ -973,7 +976,7 @@ export type FindContainerHarvestsQuery = {
   __typename?: 'Query';
   findContainerHarvests: {
     __typename?: 'ContainerHarvestsResponse';
-    harvests: Array<{ __typename?: 'ContainerHarvest'; date: any; weight: number }>;
+    harvests: Array<{ __typename?: 'ContainerHarvest'; date: Date; weight: number }>;
   };
 };
 
@@ -1008,25 +1011,25 @@ export type FindContainerPlantsQuery = {
       uuid: string;
       type: PlantType;
       variety: string;
-      seedsPlantedAt: any;
-      seedsSproutedAt: any;
-      createdAt: any;
-      updatedAt: any;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
       container?: {
         __typename?: 'Container';
         uuid: string;
         type: ContainerType;
         dirtDepth: number;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
         user?: {
           __typename?: 'User';
           uuid: string;
           username: string;
           email: string;
           twoFactorEnabled: boolean;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
         } | null;
       } | null;
     }> | null;
@@ -1046,16 +1049,16 @@ export type FindContainerQuery = {
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         email: string;
         twoFactorEnabled: boolean;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -1075,16 +1078,16 @@ export type FindUserContainersQuery = {
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         email: string;
         twoFactorEnabled: boolean;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     }> | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -1096,32 +1099,32 @@ export type HarvestFragment = {
   uuid: string;
   quantity: number;
   weight: number;
-  createdAt: any;
-  updatedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
   plant?: {
     __typename?: 'Plant';
     uuid: string;
     type: PlantType;
     variety: string;
-    seedsPlantedAt: any;
-    seedsSproutedAt: any;
-    createdAt: any;
-    updatedAt: any;
+    seedsPlantedAt: Date;
+    seedsSproutedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
     container?: {
       __typename?: 'Container';
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         email: string;
         twoFactorEnabled: boolean;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
   } | null;
@@ -1134,32 +1137,32 @@ export type HarvestResponseFragment = {
     uuid: string;
     quantity: number;
     weight: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     plant?: {
       __typename?: 'Plant';
       uuid: string;
       type: PlantType;
       variety: string;
-      seedsPlantedAt: any;
-      seedsSproutedAt: any;
-      createdAt: any;
-      updatedAt: any;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
       container?: {
         __typename?: 'Container';
         uuid: string;
         type: ContainerType;
         dirtDepth: number;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
         user?: {
           __typename?: 'User';
           uuid: string;
           username: string;
           email: string;
           twoFactorEnabled: boolean;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
         } | null;
       } | null;
     } | null;
@@ -1177,32 +1180,32 @@ export type HarvestsResponseFragment = {
     uuid: string;
     quantity: number;
     weight: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     plant?: {
       __typename?: 'Plant';
       uuid: string;
       type: PlantType;
       variety: string;
-      seedsPlantedAt: any;
-      seedsSproutedAt: any;
-      createdAt: any;
-      updatedAt: any;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
       container?: {
         __typename?: 'Container';
         uuid: string;
         type: ContainerType;
         dirtDepth: number;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
         user?: {
           __typename?: 'User';
           uuid: string;
           username: string;
           email: string;
           twoFactorEnabled: boolean;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
         } | null;
       } | null;
     } | null;
@@ -1222,32 +1225,32 @@ export type CreateHarvestMutation = {
       uuid: string;
       quantity: number;
       weight: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       plant?: {
         __typename?: 'Plant';
         uuid: string;
         type: PlantType;
         variety: string;
-        seedsPlantedAt: any;
-        seedsSproutedAt: any;
-        createdAt: any;
-        updatedAt: any;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
         container?: {
           __typename?: 'Container';
           uuid: string;
           type: ContainerType;
           dirtDepth: number;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
           user?: {
             __typename?: 'User';
             uuid: string;
             username: string;
             email: string;
             twoFactorEnabled: boolean;
-            createdAt: any;
-            updatedAt: any;
+            createdAt: Date;
+            updatedAt: Date;
           } | null;
         } | null;
       } | null;
@@ -1272,32 +1275,32 @@ export type FindHarvestsQuery = {
       uuid: string;
       quantity: number;
       weight: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       plant?: {
         __typename?: 'Plant';
         uuid: string;
         type: PlantType;
         variety: string;
-        seedsPlantedAt: any;
-        seedsSproutedAt: any;
-        createdAt: any;
-        updatedAt: any;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
         container?: {
           __typename?: 'Container';
           uuid: string;
           type: ContainerType;
           dirtDepth: number;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
           user?: {
             __typename?: 'User';
             uuid: string;
             username: string;
             email: string;
             twoFactorEnabled: boolean;
-            createdAt: any;
-            updatedAt: any;
+            createdAt: Date;
+            updatedAt: Date;
           } | null;
         } | null;
       } | null;
@@ -1321,32 +1324,32 @@ export type FindLatestsHarvestsQuery = {
       uuid: string;
       quantity: number;
       weight: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       plant?: {
         __typename?: 'Plant';
         uuid: string;
         type: PlantType;
         variety: string;
-        seedsPlantedAt: any;
-        seedsSproutedAt: any;
-        createdAt: any;
-        updatedAt: any;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
         container?: {
           __typename?: 'Container';
           uuid: string;
           type: ContainerType;
           dirtDepth: number;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
           user?: {
             __typename?: 'User';
             uuid: string;
             username: string;
             email: string;
             twoFactorEnabled: boolean;
-            createdAt: any;
-            updatedAt: any;
+            createdAt: Date;
+            updatedAt: Date;
           } | null;
         } | null;
       } | null;
@@ -1370,32 +1373,32 @@ export type FindPlantHarvestsQuery = {
       uuid: string;
       quantity: number;
       weight: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       plant?: {
         __typename?: 'Plant';
         uuid: string;
         type: PlantType;
         variety: string;
-        seedsPlantedAt: any;
-        seedsSproutedAt: any;
-        createdAt: any;
-        updatedAt: any;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
         container?: {
           __typename?: 'Container';
           uuid: string;
           type: ContainerType;
           dirtDepth: number;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
           user?: {
             __typename?: 'User';
             uuid: string;
             username: string;
             email: string;
             twoFactorEnabled: boolean;
-            createdAt: any;
-            updatedAt: any;
+            createdAt: Date;
+            updatedAt: Date;
           } | null;
         } | null;
       } | null;
@@ -1419,32 +1422,32 @@ export type FindWeekHarvestsQuery = {
       uuid: string;
       quantity: number;
       weight: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       plant?: {
         __typename?: 'Plant';
         uuid: string;
         type: PlantType;
         variety: string;
-        seedsPlantedAt: any;
-        seedsSproutedAt: any;
-        createdAt: any;
-        updatedAt: any;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
         container?: {
           __typename?: 'Container';
           uuid: string;
           type: ContainerType;
           dirtDepth: number;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
           user?: {
             __typename?: 'User';
             uuid: string;
             username: string;
             email: string;
             twoFactorEnabled: boolean;
-            createdAt: any;
-            updatedAt: any;
+            createdAt: Date;
+            updatedAt: Date;
           } | null;
         } | null;
       } | null;
@@ -1456,32 +1459,32 @@ export type HeightRegistrationFragment = {
   __typename?: 'HeightRegistration';
   uuid: string;
   height: number;
-  createdAt: any;
-  updatedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
   plant?: {
     __typename?: 'Plant';
     uuid: string;
     type: PlantType;
     variety: string;
-    seedsPlantedAt: any;
-    seedsSproutedAt: any;
-    createdAt: any;
-    updatedAt: any;
+    seedsPlantedAt: Date;
+    seedsSproutedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
     container?: {
       __typename?: 'Container';
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         email: string;
         twoFactorEnabled: boolean;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
   } | null;
@@ -1493,32 +1496,32 @@ export type HeightRegistrationResponseFragment = {
     __typename?: 'HeightRegistration';
     uuid: string;
     height: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     plant?: {
       __typename?: 'Plant';
       uuid: string;
       type: PlantType;
       variety: string;
-      seedsPlantedAt: any;
-      seedsSproutedAt: any;
-      createdAt: any;
-      updatedAt: any;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
       container?: {
         __typename?: 'Container';
         uuid: string;
         type: ContainerType;
         dirtDepth: number;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
         user?: {
           __typename?: 'User';
           uuid: string;
           username: string;
           email: string;
           twoFactorEnabled: boolean;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
         } | null;
       } | null;
     } | null;
@@ -1532,32 +1535,32 @@ export type HeightRegistrationsResponseFragment = {
     __typename?: 'HeightRegistration';
     uuid: string;
     height: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     plant?: {
       __typename?: 'Plant';
       uuid: string;
       type: PlantType;
       variety: string;
-      seedsPlantedAt: any;
-      seedsSproutedAt: any;
-      createdAt: any;
-      updatedAt: any;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
       container?: {
         __typename?: 'Container';
         uuid: string;
         type: ContainerType;
         dirtDepth: number;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
         user?: {
           __typename?: 'User';
           uuid: string;
           username: string;
           email: string;
           twoFactorEnabled: boolean;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
         } | null;
       } | null;
     } | null;
@@ -1577,32 +1580,32 @@ export type CreateHeightRegistrationMutation = {
       __typename?: 'HeightRegistration';
       uuid: string;
       height: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       plant?: {
         __typename?: 'Plant';
         uuid: string;
         type: PlantType;
         variety: string;
-        seedsPlantedAt: any;
-        seedsSproutedAt: any;
-        createdAt: any;
-        updatedAt: any;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
         container?: {
           __typename?: 'Container';
           uuid: string;
           type: ContainerType;
           dirtDepth: number;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
           user?: {
             __typename?: 'User';
             uuid: string;
             username: string;
             email: string;
             twoFactorEnabled: boolean;
-            createdAt: any;
-            updatedAt: any;
+            createdAt: Date;
+            updatedAt: Date;
           } | null;
         } | null;
       } | null;
@@ -1623,32 +1626,32 @@ export type FindHeightRegistrationsQuery = {
       __typename?: 'HeightRegistration';
       uuid: string;
       height: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       plant?: {
         __typename?: 'Plant';
         uuid: string;
         type: PlantType;
         variety: string;
-        seedsPlantedAt: any;
-        seedsSproutedAt: any;
-        createdAt: any;
-        updatedAt: any;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
         container?: {
           __typename?: 'Container';
           uuid: string;
           type: ContainerType;
           dirtDepth: number;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
           user?: {
             __typename?: 'User';
             uuid: string;
             username: string;
             email: string;
             twoFactorEnabled: boolean;
-            createdAt: any;
-            updatedAt: any;
+            createdAt: Date;
+            updatedAt: Date;
           } | null;
         } | null;
       } | null;
@@ -1669,32 +1672,32 @@ export type FindPlantHeightRegistrationsQuery = {
       __typename?: 'HeightRegistration';
       uuid: string;
       height: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       plant?: {
         __typename?: 'Plant';
         uuid: string;
         type: PlantType;
         variety: string;
-        seedsPlantedAt: any;
-        seedsSproutedAt: any;
-        createdAt: any;
-        updatedAt: any;
+        seedsPlantedAt: Date;
+        seedsSproutedAt: Date;
+        createdAt: Date;
+        updatedAt: Date;
         container?: {
           __typename?: 'Container';
           uuid: string;
           type: ContainerType;
           dirtDepth: number;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
           user?: {
             __typename?: 'User';
             uuid: string;
             username: string;
             email: string;
             twoFactorEnabled: boolean;
-            createdAt: any;
-            updatedAt: any;
+            createdAt: Date;
+            updatedAt: Date;
           } | null;
         } | null;
       } | null;
@@ -1710,25 +1713,25 @@ export type PlantFragment = {
   uuid: string;
   type: PlantType;
   variety: string;
-  seedsPlantedAt: any;
-  seedsSproutedAt: any;
-  createdAt: any;
-  updatedAt: any;
+  seedsPlantedAt: Date;
+  seedsSproutedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
   container?: {
     __typename?: 'Container';
     uuid: string;
     type: ContainerType;
     dirtDepth: number;
-    createdAt: any;
-    updatedAt: any;
+    createdAt: Date;
+    updatedAt: Date;
     user?: {
       __typename?: 'User';
       uuid: string;
       username: string;
       email: string;
       twoFactorEnabled: boolean;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
     } | null;
   } | null;
 };
@@ -1740,25 +1743,25 @@ export type PlantResponseFragment = {
     uuid: string;
     type: PlantType;
     variety: string;
-    seedsPlantedAt: any;
-    seedsSproutedAt: any;
-    createdAt: any;
-    updatedAt: any;
+    seedsPlantedAt: Date;
+    seedsSproutedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
     container?: {
       __typename?: 'Container';
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         email: string;
         twoFactorEnabled: boolean;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
   } | null;
@@ -1775,25 +1778,25 @@ export type PlantsResponseFragment = {
     uuid: string;
     type: PlantType;
     variety: string;
-    seedsPlantedAt: any;
-    seedsSproutedAt: any;
-    createdAt: any;
-    updatedAt: any;
+    seedsPlantedAt: Date;
+    seedsSproutedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
     container?: {
       __typename?: 'Container';
       uuid: string;
       type: ContainerType;
       dirtDepth: number;
-      createdAt: any;
-      updatedAt: any;
+      createdAt: Date;
+      updatedAt: Date;
       user?: {
         __typename?: 'User';
         uuid: string;
         username: string;
         email: string;
         twoFactorEnabled: boolean;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
       } | null;
     } | null;
   }> | null;
@@ -1820,25 +1823,25 @@ export type CreatePlantMutation = {
       uuid: string;
       type: PlantType;
       variety: string;
-      seedsPlantedAt: any;
-      seedsSproutedAt: any;
-      createdAt: any;
-      updatedAt: any;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
       container?: {
         __typename?: 'Container';
         uuid: string;
         type: ContainerType;
         dirtDepth: number;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
         user?: {
           __typename?: 'User';
           uuid: string;
           username: string;
           email: string;
           twoFactorEnabled: boolean;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
         } | null;
       } | null;
     } | null;
@@ -1872,25 +1875,25 @@ export type UpdatePlantMutation = {
       uuid: string;
       type: PlantType;
       variety: string;
-      seedsPlantedAt: any;
-      seedsSproutedAt: any;
-      createdAt: any;
-      updatedAt: any;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
       container?: {
         __typename?: 'Container';
         uuid: string;
         type: ContainerType;
         dirtDepth: number;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
         user?: {
           __typename?: 'User';
           uuid: string;
           username: string;
           email: string;
           twoFactorEnabled: boolean;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
         } | null;
       } | null;
     } | null;
@@ -1911,25 +1914,25 @@ export type FindPlantQuery = {
       uuid: string;
       type: PlantType;
       variety: string;
-      seedsPlantedAt: any;
-      seedsSproutedAt: any;
-      createdAt: any;
-      updatedAt: any;
+      seedsPlantedAt: Date;
+      seedsSproutedAt: Date;
+      createdAt: Date;
+      updatedAt: Date;
       container?: {
         __typename?: 'Container';
         uuid: string;
         type: ContainerType;
         dirtDepth: number;
-        createdAt: any;
-        updatedAt: any;
+        createdAt: Date;
+        updatedAt: Date;
         user?: {
           __typename?: 'User';
           uuid: string;
           username: string;
           email: string;
           twoFactorEnabled: boolean;
-          createdAt: any;
-          updatedAt: any;
+          createdAt: Date;
+          updatedAt: Date;
         } | null;
       } | null;
     } | null;
@@ -1939,16 +1942,15 @@ export type FindPlantQuery = {
 
 export type UserResponseFragment = {
   __typename?: 'UserResponse';
-  user?: {
+  user: {
     __typename?: 'User';
     uuid: string;
     username: string;
     email: string;
     twoFactorEnabled: boolean;
-    createdAt: any;
-    updatedAt: any;
-  } | null;
-  errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+    createdAt: Date;
+    updatedAt: Date;
+  };
 };
 
 export type UserFragment = {
@@ -1957,8 +1959,8 @@ export type UserFragment = {
   username: string;
   email: string;
   twoFactorEnabled: boolean;
-  createdAt: any;
-  updatedAt: any;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type UpdateUserMutationVariables = Exact<{
@@ -1969,16 +1971,15 @@ export type UpdateUserMutation = {
   __typename?: 'Mutation';
   updateUser: {
     __typename?: 'UserResponse';
-    user?: {
+    user: {
       __typename?: 'User';
       uuid: string;
       username: string;
       email: string;
       twoFactorEnabled: boolean;
-      createdAt: any;
-      updatedAt: any;
-    } | null;
-    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+      createdAt: Date;
+      updatedAt: Date;
+    };
   };
 };
 
@@ -1990,16 +1991,15 @@ export type FindUserQuery = {
   __typename?: 'Query';
   findUser: {
     __typename?: 'UserResponse';
-    user?: {
+    user: {
       __typename?: 'User';
       uuid: string;
       username: string;
       email: string;
       twoFactorEnabled: boolean;
-      createdAt: any;
-      updatedAt: any;
-    } | null;
-    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+      createdAt: Date;
+      updatedAt: Date;
+    };
   };
 };
 
@@ -2008,17 +2008,13 @@ export type MeQueryVariables = Exact<{ [key: string]: never }>;
 export type MeQuery = {
   __typename?: 'Query';
   me: {
-    __typename?: 'UserResponse';
-    user?: {
-      __typename?: 'User';
-      uuid: string;
-      username: string;
-      email: string;
-      twoFactorEnabled: boolean;
-      createdAt: any;
-      updatedAt: any;
-    } | null;
-    errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
+    __typename?: 'User';
+    uuid: string;
+    username: string;
+    email: string;
+    twoFactorEnabled: boolean;
+    createdAt: Date;
+    updatedAt: Date;
   };
 };
 
@@ -2081,13 +2077,15 @@ export const UserFragmentDoc = gql`
     updatedAt
   }
 `;
-export const AuthFragmentDoc = gql`
-  fragment Auth on Auth {
+export const AuthResponseFragmentDoc = gql`
+  fragment AuthResponse on AuthResponse {
     user {
       ...User
     }
-    accessToken
-    refreshToken
+    authTokens {
+      accessToken
+      refreshToken
+    }
   }
   ${UserFragmentDoc}
 `;
@@ -2333,12 +2331,8 @@ export const UserResponseFragmentDoc = gql`
     user {
       ...User
     }
-    errors {
-      ...Error
-    }
   }
   ${UserFragmentDoc}
-  ${ErrorFragmentDoc}
 `;
 export const WeatherFragmentDoc = gql`
   fragment Weather on Weather {
@@ -2363,19 +2357,19 @@ export const WeatherForecastResponseFragmentDoc = gql`
 export const LoginDocument = gql`
   mutation login($input: LoginInput!) {
     login(input: $input) {
-      ...Auth
+      ...AuthResponse
     }
   }
-  ${AuthFragmentDoc}
+  ${AuthResponseFragmentDoc}
 `;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
  * __useLoginMutation__
  *
- * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useLoginMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -2394,6 +2388,36 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const LogOutDocument = gql`
+  mutation logOut {
+    logOut
+  }
+`;
+export type LogOutMutationFn = Apollo.MutationFunction<LogOutMutation, LogOutMutationVariables>;
+
+/**
+ * __useLogOutMutation__
+ *
+ * To run a mutation, you first call `useLogOutMutation` within a React component and pass it Date options that fit your needs.
+ * When your component renders, `useLogOutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at Date time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logOutMutation, { data, loading, error }] = useLogOutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogOutMutation(baseOptions?: Apollo.MutationHookOptions<LogOutMutation, LogOutMutationVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LogOutMutation, LogOutMutationVariables>(LogOutDocument, options);
+}
+export type LogOutMutationHookResult = ReturnType<typeof useLogOutMutation>;
+export type LogOutMutationResult = Apollo.MutationResult<LogOutMutation>;
+export type LogOutMutationOptions = Apollo.BaseMutationOptions<LogOutMutation, LogOutMutationVariables>;
 export const RequestResetPasswordDocument = gql`
   mutation requestResetPassword($input: RequestResetPasswordInput!) {
     requestResetPassword(input: $input) {
@@ -2410,9 +2434,9 @@ export type RequestResetPasswordMutationFn = Apollo.MutationFunction<
 /**
  * __useRequestResetPasswordMutation__
  *
- * To run a mutation, you first call `useRequestResetPasswordMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useRequestResetPasswordMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useRequestResetPasswordMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -2452,9 +2476,9 @@ export type ResetPasswordMutationFn = Apollo.MutationFunction<ResetPasswordMutat
 /**
  * __useResetPasswordMutation__
  *
- * To run a mutation, you first call `useResetPasswordMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useResetPasswordMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useResetPasswordMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -2494,9 +2518,9 @@ export type SetupTwoFactorCodeMutationFn = Apollo.MutationFunction<
 /**
  * __useSetupTwoFactorCodeMutation__
  *
- * To run a mutation, you first call `useSetupTwoFactorCodeMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useSetupTwoFactorCodeMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useSetupTwoFactorCodeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -2523,40 +2547,74 @@ export type SetupTwoFactorCodeMutationOptions = Apollo.BaseMutationOptions<
   SetupTwoFactorCodeMutation,
   SetupTwoFactorCodeMutationVariables
 >;
-export const SignupDocument = gql`
-  mutation signup($input: SignUpInput!) {
-    signup(input: $input) {
-      ...Auth
+export const SignUpDocument = gql`
+  mutation signUp($input: SignUpInput!) {
+    signUp(input: $input) {
+      ...AuthResponse
     }
   }
-  ${AuthFragmentDoc}
+  ${AuthResponseFragmentDoc}
 `;
-export type SignupMutationFn = Apollo.MutationFunction<SignupMutation, SignupMutationVariables>;
+export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
 
 /**
- * __useSignupMutation__
+ * __useSignUpMutation__
  *
- * To run a mutation, you first call `useSignupMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSignupMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * To run a mutation, you first call `useSignUpMutation` within a React component and pass it Date options that fit your needs.
+ * When your component renders, `useSignUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [signupMutation, { data, loading, error }] = useSignupMutation({
+ * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useSignupMutation(baseOptions?: Apollo.MutationHookOptions<SignupMutation, SignupMutationVariables>) {
+export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<SignupMutation, SignupMutationVariables>(SignupDocument, options);
+  return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
 }
-export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
-export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
-export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
+export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
+export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const AuthCheckDocument = gql`
+  query authCheck {
+    authCheck
+  }
+`;
+
+/**
+ * __useAuthCheckQuery__
+ *
+ * To run a query within a React component, call `useAuthCheckQuery` and pass it Date options that fit your needs.
+ * When your component renders, `useAuthCheckQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAuthCheckQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAuthCheckQuery(baseOptions?: Apollo.QueryHookOptions<AuthCheckQuery, AuthCheckQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AuthCheckQuery, AuthCheckQueryVariables>(AuthCheckDocument, options);
+}
+export function useAuthCheckLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<AuthCheckQuery, AuthCheckQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<AuthCheckQuery, AuthCheckQueryVariables>(AuthCheckDocument, options);
+}
+export type AuthCheckQueryHookResult = ReturnType<typeof useAuthCheckQuery>;
+export type AuthCheckLazyQueryHookResult = ReturnType<typeof useAuthCheckLazyQuery>;
+export type AuthCheckQueryResult = Apollo.QueryResult<AuthCheckQuery, AuthCheckQueryVariables>;
 export const CreateContainerDocument = gql`
   mutation createContainer($input: CreateContainerInput!) {
     createContainer(input: $input) {
@@ -2573,9 +2631,9 @@ export type CreateContainerMutationFn = Apollo.MutationFunction<
 /**
  * __useCreateContainerMutation__
  *
- * To run a mutation, you first call `useCreateContainerMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useCreateContainerMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useCreateContainerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -2618,9 +2676,9 @@ export type DeleteContainerMutationFn = Apollo.MutationFunction<
 /**
  * __useDeleteContainerMutation__
  *
- * To run a mutation, you first call `useDeleteContainerMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useDeleteContainerMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useDeleteContainerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -2663,9 +2721,9 @@ export type UpdateContainerMutationFn = Apollo.MutationFunction<
 /**
  * __useUpdateContainerMutation__
  *
- * To run a mutation, you first call `useUpdateContainerMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useUpdateContainerMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useUpdateContainerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -2704,7 +2762,7 @@ export const CalculateContainerStatsDocument = gql`
 /**
  * __useCalculateContainerStatsQuery__
  *
- * To run a query within a React component, call `useCalculateContainerStatsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useCalculateContainerStatsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useCalculateContainerStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -2753,7 +2811,7 @@ export const FindBestPerformingContainersDocument = gql`
 /**
  * __useFindBestPerformingContainersQuery__
  *
- * To run a query within a React component, call `useFindBestPerformingContainersQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindBestPerformingContainersQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindBestPerformingContainersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -2807,7 +2865,7 @@ export const FindContainerHarvestsDocument = gql`
 /**
  * __useFindContainerHarvestsQuery__
  *
- * To run a query within a React component, call `useFindContainerHarvestsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindContainerHarvestsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindContainerHarvestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -2856,7 +2914,7 @@ export const FindContainerPlantsTypesDocument = gql`
 /**
  * __useFindContainerPlantsTypesQuery__
  *
- * To run a query within a React component, call `useFindContainerPlantsTypesQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindContainerPlantsTypesQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindContainerPlantsTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -2905,7 +2963,7 @@ export const FindContainerPlantsDocument = gql`
 /**
  * __useFindContainerPlantsQuery__
  *
- * To run a query within a React component, call `useFindContainerPlantsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindContainerPlantsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindContainerPlantsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -2954,7 +3012,7 @@ export const FindContainerDocument = gql`
 /**
  * __useFindContainerQuery__
  *
- * To run a query within a React component, call `useFindContainerQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindContainerQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindContainerQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -2994,7 +3052,7 @@ export const FindUserContainersDocument = gql`
 /**
  * __useFindUserContainersQuery__
  *
- * To run a query within a React component, call `useFindUserContainersQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindUserContainersQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindUserContainersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -3044,9 +3102,9 @@ export type CreateHarvestMutationFn = Apollo.MutationFunction<CreateHarvestMutat
 /**
  * __useCreateHarvestMutation__
  *
- * To run a mutation, you first call `useCreateHarvestMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useCreateHarvestMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useCreateHarvestMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -3082,7 +3140,7 @@ export const FindHarvestsDocument = gql`
 /**
  * __useFindHarvestsQuery__
  *
- * To run a query within a React component, call `useFindHarvestsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindHarvestsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindHarvestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -3122,7 +3180,7 @@ export const FindLatestsHarvestsDocument = gql`
 /**
  * __useFindLatestsHarvestsQuery__
  *
- * To run a query within a React component, call `useFindLatestsHarvestsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindLatestsHarvestsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindLatestsHarvestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -3171,7 +3229,7 @@ export const FindPlantHarvestsDocument = gql`
 /**
  * __useFindPlantHarvestsQuery__
  *
- * To run a query within a React component, call `useFindPlantHarvestsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindPlantHarvestsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindPlantHarvestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -3214,7 +3272,7 @@ export const FindWeekHarvestsDocument = gql`
 /**
  * __useFindWeekHarvestsQuery__
  *
- * To run a query within a React component, call `useFindWeekHarvestsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindWeekHarvestsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindWeekHarvestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -3258,9 +3316,9 @@ export type CreateHeightRegistrationMutationFn = Apollo.MutationFunction<
 /**
  * __useCreateHeightRegistrationMutation__
  *
- * To run a mutation, you first call `useCreateHeightRegistrationMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useCreateHeightRegistrationMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useCreateHeightRegistrationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -3299,7 +3357,7 @@ export const FindHeightRegistrationsDocument = gql`
 /**
  * __useFindHeightRegistrationsQuery__
  *
- * To run a query within a React component, call `useFindHeightRegistrationsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindHeightRegistrationsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindHeightRegistrationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -3348,7 +3406,7 @@ export const FindPlantHeightRegistrationsDocument = gql`
 /**
  * __useFindPlantHeightRegistrationsQuery__
  *
- * To run a query within a React component, call `useFindPlantHeightRegistrationsQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindPlantHeightRegistrationsQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindPlantHeightRegistrationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -3403,9 +3461,9 @@ export type CreatePlantMutationFn = Apollo.MutationFunction<CreatePlantMutation,
 /**
  * __useCreatePlantMutation__
  *
- * To run a mutation, you first call `useCreatePlantMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useCreatePlantMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useCreatePlantMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -3439,9 +3497,9 @@ export type DeletePlantMutationFn = Apollo.MutationFunction<DeletePlantMutation,
 /**
  * __useDeletePlantMutation__
  *
- * To run a mutation, you first call `useDeletePlantMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useDeletePlantMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useDeletePlantMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -3475,9 +3533,9 @@ export type UpdatePlantMutationFn = Apollo.MutationFunction<UpdatePlantMutation,
 /**
  * __useUpdatePlantMutation__
  *
- * To run a mutation, you first call `useUpdatePlantMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useUpdatePlantMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useUpdatePlantMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -3510,7 +3568,7 @@ export const FindPlantDocument = gql`
 /**
  * __useFindPlantQuery__
  *
- * To run a query within a React component, call `useFindPlantQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindPlantQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindPlantQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -3549,9 +3607,9 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
 /**
  * __useUpdateUserMutation__
  *
- * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it Date options that fit your needs.
  * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
+ * - A mutate function that you can call at Date time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
@@ -3584,7 +3642,7 @@ export const FindUserDocument = gql`
 /**
  * __useFindUserQuery__
  *
- * To run a query within a React component, call `useFindUserQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useFindUserQuery` and pass it Date options that fit your needs.
  * When your component renders, `useFindUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -3611,16 +3669,16 @@ export type FindUserQueryResult = Apollo.QueryResult<FindUserQuery, FindUserQuer
 export const MeDocument = gql`
   query me {
     me {
-      ...UserResponse
+      ...User
     }
   }
-  ${UserResponseFragmentDoc}
+  ${UserFragmentDoc}
 `;
 
 /**
  * __useMeQuery__
  *
- * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useMeQuery` and pass it Date options that fit your needs.
  * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
@@ -3655,7 +3713,7 @@ export const GetWeatherForecastDocument = gql`
 /**
  * __useGetWeatherForecastQuery__
  *
- * To run a query within a React component, call `useGetWeatherForecastQuery` and pass it any options that fit your needs.
+ * To run a query within a React component, call `useGetWeatherForecastQuery` and pass it Date options that fit your needs.
  * When your component renders, `useGetWeatherForecastQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *

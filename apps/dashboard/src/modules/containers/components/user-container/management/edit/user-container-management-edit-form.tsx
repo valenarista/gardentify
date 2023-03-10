@@ -26,9 +26,9 @@ type UserContainersManagementEditFormProps = {
 };
 
 const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFormProps> = (props) => {
-  const { onSubmitted } = props;
   const router = useRouter();
-  const { state } = useAuthContext();
+  const { onSubmitted } = props;
+  const { user } = useAuthContext();
   const { toast } = useToast();
   const { container } = useUserContainerContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
@@ -42,7 +42,7 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
   const [updateContainer] = useUpdateContainerMutation();
 
   const onSubmit = async (data: FormData) => {
-    if (!state.user) return;
+    if (!user) return;
     try {
       await updateContainer({
         variables: {

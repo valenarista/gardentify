@@ -1,7 +1,13 @@
 import { Weather } from '@modules/graphql/@generated/graphql';
 
+import WeatherRecomendation from '../components/recomendation/weather-recomendation';
+
 export const WEATHER_TEMP_ALERT_THRESHOLDS: number[] = [0, 33];
 export const WEATHER_WIND_ALERT_THRESHOLD = 20;
+
+export type WeatherRecomendationWithCondition = React.ComponentPropsWithoutRef<typeof WeatherRecomendation> & {
+  renderCondition: boolean;
+};
 
 export const getWeatherSkyConditionsFromCode = (weatherCode: Weather['weatherCode']) => {
   switch (weatherCode) {

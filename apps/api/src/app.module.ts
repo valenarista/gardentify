@@ -1,7 +1,6 @@
 import { AuthModule } from '@modules/auth/auth.module';
 import { GlobalConfigModule } from '@modules/config/config.module';
 import { ContainersModule } from '@modules/container/containers.module';
-import { GqlConfigService } from '@modules/graphql/graphql.config.service';
 import { HarvestsModule } from '@modules/harvests/harvests.module';
 import { HeightRegistrationsModule } from '@modules/height-registration/height-registration.module';
 import { MailerModule } from '@modules/mailer/mailer.module';
@@ -11,9 +10,8 @@ import { NestServeStaticModule } from '@modules/static/serve-static.module';
 import { TwoFactorModule } from '@modules/twofactor/twofactor.module';
 import { UsersModule } from '@modules/users/users.module';
 import { WeatherModule } from '@modules/weather/weather.module';
-import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
+import GraphQLModule from '@modules/graphql/graphql.module';
 
 @Module({
   imports: [
@@ -21,11 +19,7 @@ import { GraphQLModule } from '@nestjs/graphql';
     GlobalConfigModule,
 
     // Graphql module setup.
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      useClass: GqlConfigService,
-    }),
-
+    GraphQLModule,
     AuthModule,
     UsersModule,
     ContainersModule,

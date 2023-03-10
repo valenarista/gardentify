@@ -7,13 +7,17 @@ input AddPlantToContainerInput {
   plantUuid: String!
 }
 
-type Auth {
+type AuthResponse {
+  authTokens: AuthTokens
+  user: User!
+}
+
+type AuthTokens {
   """JWT access token"""
   accessToken: String!
 
   """JWT refresh token"""
   refreshToken: String!
-  user: User!
 }
 
 type BestPerformingContainer {
@@ -251,13 +255,14 @@ type Mutation {
   deleteHarvest(input: FindHarvestInput!): DeleteObjectResponse!
   deleteHeightRegistration(find: FindHeightRegistrationInput!): DeleteObjectResponse!
   deletePlant(input: FindPlantInput!): DeleteObjectResponse!
-  login(input: LoginInput!): Auth!
-  refreshToken(input: RefreshTokenInput!): Token!
+  logOut: Boolean!
+  login(input: LoginInput!): AuthResponse!
+  refreshToken(input: RefreshTokenInput!): AuthTokens!
   removePlantFromContainer(input: RemovePlantFromContainerInput!): DeleteObjectResponse!
   requestResetPassword(input: RequestResetPasswordInput!): RequestResetPasswordResponse!
   resetPassword(input: ResetPasswordInput!): ResetPasswordResponse!
   setupTwoFactorCode(input: SetupTwoFactorCodeInput!): SetupTwoFactorCodeResponse!
-  signup(input: SignUpInput!): Auth!
+  signUp(input: SignUpInput!): AuthResponse!
   updateContainer(input: UpdateContainerInput!): ContainerResponse!
   updateHarvest(input: UpdateHarvestInput!): HarvestResponse!
   updatePlant(input: UpdatePlantInput!): PlantResponse!
@@ -315,6 +320,7 @@ type PlantsResponse {
 }
 
 type Query {
+  authCheck: Boolean!
   calculateContainerStats(input: FindContainerInput!): ContainerStatsResponse!
   findBestPerformingContainers(input: FindBestPerformingContainersInput!): BestPerformingContainersResponse!
   findContainer(input: FindContainerInput!): ContainerResponse!
@@ -334,7 +340,7 @@ type Query {
   findUserContainers(input: FindUserContainersInput!): ContainersResponse!
   findWeekHarvests(input: FindWeekHarvestsInput!): HarvestsResponse!
   getWeatherForecast(input: WeatherForecastInput!): WeatherForecastResponse!
-  me: UserResponse!
+  me: User!
 }
 
 input RefreshTokenInput {
@@ -378,14 +384,6 @@ input SignUpInput {
   username: String!
 }
 
-type Token {
-  """JWT access token"""
-  accessToken: String!
-
-  """JWT refresh token"""
-  refreshToken: String!
-}
-
 input UpdateContainerInput {
   """Dirth depth of the container"""
   dirtDepth: Float
@@ -424,8 +422,7 @@ type User {
 }
 
 type UserResponse {
-  errors: [Error!]
-  user: User
+  user: User!
 }
 
 type Weather {

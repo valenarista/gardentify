@@ -1,6 +1,11 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, createHttpLink, InMemoryCache, makeVar } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { __PROD__ } from '@modules/common/lib/constants';
 import { PlantsResponse } from '@modules/graphql/@generated/graphql';
+
+// Authentication state
+export const isUserLoggedInVar = makeVar(false);
+export const isUserLoadingVar = makeVar(true);
 
 export const createApolloClient = () => {
   // Declare variable to store authToken
@@ -31,6 +36,7 @@ export const createApolloClient = () => {
   const client = new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: authLink.concat(httpLink),
+    connectToDevTools: !__PROD__,
     cache: new InMemoryCache({
       typePolicies: {
         Query: {

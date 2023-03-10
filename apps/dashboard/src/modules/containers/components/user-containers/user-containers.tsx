@@ -8,17 +8,17 @@ import UserContainersFiltering from './filtering/user-containers-filtering';
 import UserContainersHeader from './user-containers-header';
 
 const UserContainers: React.FC = () => {
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
 
   const [containers, setContainers] = useState<Container[]>([]);
 
   const response = useFindUserContainersQuery({
     variables: {
       input: {
-        userUuid: state.user?.uuid!,
+        userUuid: user?.uuid!,
       },
     },
-    skip: state.user === null,
+    skip: user === null,
   });
 
   const { data, error, loading } = response;
@@ -48,12 +48,14 @@ const UserContainers: React.FC = () => {
     updateFilter({ property: 'dirtDepth', value: Number(value), enabled: value !== '' });
   };
 
+  if (!user) return null;
+
   return (
     <section className="container mx-auto flex max-w-6xl flex-col space-y-4 md:px-4 lg:px-6">
       <div className="flex rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 ">
         {/* Details */}
         <div className="flex w-full flex-col space-y-4">
-          <UserContainersHeader username={state.loading ? 'Loading' : state.user?.username!} />
+          <UserContainersHeader username={user.username} />
           <UserContainersFiltering
             onFilterTypeChanged={handleFilterTypeChanged}
             onFilterDirtDepthChanged={handleFilterDirtDepthChanged}

@@ -4,15 +4,15 @@ import { useFindBestPerformingContainersQuery } from '@modules/graphql/@generate
 import React from 'react';
 
 const DashboardBestPerformingContainers: React.FC = () => {
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
   const response = useFindBestPerformingContainersQuery({
     variables: {
       input: {
-        userUuid: state.user?.uuid!,
+        userUuid: user?.uuid!,
         take: 3,
       },
     },
-    skip: state.user === null,
+    skip: user === null,
   });
 
   const { data, error, loading } = response;

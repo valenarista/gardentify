@@ -25,10 +25,10 @@ type UserContainersManagementCreateFormProps = {
 };
 
 const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreateFormProps> = (props) => {
-  const { onSubmitted } = props;
   const router = useRouter();
+  const { onSubmitted } = props;
   const { toast } = useToast();
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'onBlur',
@@ -37,14 +37,14 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
   const [createContainer] = useCreateContainerMutation();
 
   const onSubmit = async (data: FormData) => {
-    if (!state.user) return;
+    if (!user) return;
 
     try {
       const response = await createContainer({
         variables: {
           input: {
             ...data,
-            userUuid: state.user.uuid,
+            userUuid: user.uuid,
           },
         },
       });

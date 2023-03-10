@@ -5,14 +5,14 @@ import React from 'react';
 import DashboardWeekHarvestsChart from './dashboard-week-harvests-chart';
 
 const DashboardWeekHarvests: React.FC = () => {
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
   const { data, error, loading } = useFindWeekHarvestsQuery({
     variables: {
       input: {
-        userUuid: state.user?.uuid!,
+        userUuid: user?.uuid!,
       },
     },
-    skip: state.user === null,
+    skip: user === null,
   });
 
   return (

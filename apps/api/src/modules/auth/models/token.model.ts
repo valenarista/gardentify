@@ -1,8 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { GraphQLJWT } from 'graphql-scalars';
 
 @ObjectType()
-export class Token {
+export class AuthTokens {
   @Field(() => String, { description: 'JWT access token' })
   accessToken: string;
 

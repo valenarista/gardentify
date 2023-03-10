@@ -1,19 +1,7 @@
 import AuthLogin from '@modules/auth/components/login/auth-login';
-import { useAuthContext } from '@modules/auth/context/auth-context';
-import { AuthActionType } from '@modules/auth/context/reducer/types';
 import Layout from '@modules/layout/components/layout';
-import { useEffect } from 'react';
 
 const LoginPage: React.FC = () => {
-  const { dispatch } = useAuthContext();
-
-  useEffect(() => {
-    dispatch({
-      type: AuthActionType.LOGOUT,
-      payload: {},
-    });
-  }, []);
-
   return (
     <Layout
       headProps={{

@@ -21,7 +21,7 @@ type FormData = yup.InferType<typeof schema>;
 
 const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
   const router = useRouter();
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
   const { toast } = useToast();
   const [createHeightRegistration] = useCreateHeightRegistrationMutation();
 
@@ -36,7 +36,7 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
   });
 
   const onSubmit = async (data: FormData) => {
-    if (!state.user) return;
+    if (!user) return;
 
     try {
       const plantUuid = router.query.uuid as string;

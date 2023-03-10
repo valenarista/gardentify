@@ -6,12 +6,16 @@ import { useEffect } from 'react';
 
 const DashbordPage: React.FC = () => {
   const router = useRouter();
-  const { state } = useAuthContext();
+  const { userLoggedIn, userLoading, user } = useAuthContext();
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    if (!state.loading && state.user && state.user?.username === undefined) router.push('/');
-  }, [state]);
+    if (!userLoading && !user) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.push('/');
+    }
+  }, [userLoggedIn, user]);
+
+  if (!user) return null;
 
   return (
     <Layout
@@ -21,7 +25,7 @@ const DashbordPage: React.FC = () => {
           'Gardentify is a web application that lets you manage and keep tracks of the plants in your garden.',
       }}
     >
-      {state.user ? <UserDashboard user={state.user} /> : null}
+      <UserDashboard user={user} />
     </Layout>
   );
 };

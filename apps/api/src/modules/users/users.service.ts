@@ -16,31 +16,6 @@ import { UserResponse } from './responses/user.response';
 export class UsersService {
   constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
-  async me(context: GardentifyContext): Promise<UserResponse> {
-    if (!context.req) {
-      return {
-        errors: [
-          {
-            field: 'user',
-            message: 'An error ocurred',
-          },
-        ],
-      };
-    }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (!context.req.session.passport)
-      throw new BadRequestException('No user is currently logged in!');
-
-    const user = await this.prismaService.user.findUnique({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      where: { uuid: context.req.session.passport.user.uuid },
-    });
-
-    return { user };
-  }
-
   async findUser(input: FindUserInput): Promise<UserResponse> {
     try {
       const user = await this.prismaService.user.findUnique({

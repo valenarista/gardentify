@@ -10,15 +10,13 @@ type UserContainerPlantsDetailedHeaderProps = {
 
 const UserContainerPlantsDetailedHeader: React.FC<UserContainerPlantsDetailedHeaderProps> = (props) => {
   const { container } = props;
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
 
   return (
     <div className="flex flex-col space-y-2 md:flex-row md:justify-between md:space-y-0">
       <h2 className="text-2xl font-bold">Container Plants</h2>
       {/* Management */}
-      {container.user && state.user && state.user.uuid === container.user.uuid ? (
-        <UserContainerPlantsManagementCreate />
-      ) : null}
+      {container.user && user && user.uuid === container.user.uuid ? <UserContainerPlantsManagementCreate /> : null}
     </div>
   );
 };

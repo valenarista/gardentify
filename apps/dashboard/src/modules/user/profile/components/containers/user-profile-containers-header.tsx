@@ -6,7 +6,7 @@ import React from 'react';
 
 const UserProfileContainersHeader: React.FC = () => {
   const router = useRouter();
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
 
   const userUuid = router.query.uuid as string;
 
@@ -14,7 +14,7 @@ const UserProfileContainersHeader: React.FC = () => {
     <div className="flex flex-col space-y-2 md:flex-row md:justify-between md:space-y-0">
       <h2 className="text-2xl font-bold">Containers</h2>
       {/* Management */}
-      {state.user && userUuid === state.user.uuid ? (
+      {user && userUuid === user.uuid ? (
         <Link href="/containers" className="w-full md:w-auto">
           <Button className="w-full md:w-auto">Manage Containers</Button>
         </Link>

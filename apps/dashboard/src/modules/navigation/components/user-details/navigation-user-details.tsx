@@ -7,10 +7,10 @@ import NavigationUserDetailsLogout from './navigation-user-details-logout';
 import NavigationUserDetailsProfile from './navigation-user-details-profile';
 
 const NavigationUserDetails: React.FC = () => {
-  const { state } = useAuthContext();
   const { isCompact } = useNavigationContext();
+  const { userLoggedIn } = useAuthContext();
 
-  if (!state.user) return null;
+  if (!userLoggedIn) return null;
 
   return (
     <div className={clsx(isCompact ? 'flex space-x-4' : 'flex flex-col space-y-2')}>

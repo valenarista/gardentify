@@ -13,7 +13,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { SignUpInput } from './dto/signup.input';
-import { Token } from './models/token.model';
+import { AuthTokens } from './models/token.model';
 import { PasswordService } from './password.service';
 import { PrismaService } from '@modules/prisma/prisma.service';
 import { MailerService } from '@modules/mailer/mailer.service';
@@ -27,6 +27,7 @@ import { TwoFactorService } from '@modules/twofactor/twofactor.service';
 import { SetupTwoFactorCodeInput } from './dto/setup-two-factor-code.input';
 import { SetupTwoFactorCodeResponse } from './responses/setup-two-factor-code.response';
 import { resolve } from 'path';
+import { AuthResponse } from './responses/auth.response';
 
 @Injectable()
 export class AuthService {
@@ -40,12 +41,12 @@ export class AuthService {
     private readonly configService: ConfigService<IConfig>,
   ) {}
 
-  async createUser(input: SignUpInput): Promise<Token> {
-    const hashedPassword = await this.passwordService.hashPassword(
-      input.password,
-    );
-
+  async signUp(input: SignUpInput): Promise<AuthResponse> {
     try {
+      const hashedPassword = await this.passwordService.hashPassword(
+        input.password,
+      );
+
       const user = await this.prismaService.user.create({
         data: {
           ...input,
@@ -53,9 +54,11 @@ export class AuthService {
         },
       });
 
-      return this.generateTokens({
-        userUuid: user.uuid,
+      const authTokens = await this.generateTokens({
+        sub: user.uuid,
       });
+
+      return { authTokens, user };
     } catch (e) {
       // Username already taken error.
       if (
@@ -69,7 +72,7 @@ export class AuthService {
     }
   }
 
-  async login(input: LoginInput): Promise<Token> {
+  async login(input: LoginInput): Promise<AuthResponse> {
     const user = await this.prismaService.user.findUnique({
       where: { email: input.email },
       include: { passwordReset: true },
@@ -83,7 +86,7 @@ export class AuthService {
       throw new ConflictException('You have not setup up 2FA yet!');
     }
 
-    const twoFactorValid = this.twoFactorService.validateTwoFactorCode({
+    const twoFactorValid = await this.twoFactorService.validateTwoFactorCode({
       twoFactorCode: input.twoFactorCode,
       userSecret: user.twoFactorSecret,
     });
@@ -100,9 +103,11 @@ export class AuthService {
       throw new BadRequestException('Invalid password');
     }
 
-    return this.generateTokens({
-      userUuid: user.uuid,
+    const authTokens = await this.generateTokens({
+      sub: user.uuid,
     });
+
+    return { authTokens, user };
   }
 
   async setupTwoFactorCode(
@@ -217,7 +222,7 @@ export class AuthService {
     if (passwordReset === null || passwordReset.validUntil < new Date())
       throw new NotFoundException('No password reset request found!');
 
-    const twoFactorValid = this.twoFactorService.validateTwoFactorCode({
+    const twoFactorValid = await this.twoFactorService.validateTwoFactorCode({
       twoFactorCode: input.twoFactorCode,
       userSecret: passwordReset.user.twoFactorSecret,
     });
@@ -246,40 +251,43 @@ export class AuthService {
   }
 
   async validateUser(userUuid: string): Promise<User> {
-    return this.prismaService.user.findUnique({ where: { uuid: userUuid } });
+    return await this.prismaService.user.findUnique({
+      where: { uuid: userUuid },
+    });
   }
 
-  getUserFromToken(token: string): Promise<User> {
-    const uuid = this.jwtService.decode(token)['userUuid'];
-    return this.prismaService.user.findUnique({ where: { uuid } });
-  }
-
-  generateTokens(payload: { userUuid: string }): Token {
+  async generateTokens(payload: { sub: string }): Promise<AuthTokens> {
+    const accessToken = await this.generateAccessToken(payload);
+    const refreshToken = await this.generateRefreshToken(payload);
     return {
-      accessToken: this.generateAccessToken(payload),
-      refreshToken: this.generateRefreshToken(payload),
+      accessToken,
+      refreshToken,
     };
   }
 
-  private generateAccessToken(payload: { userUuid: string }): string {
-    return this.jwtService.sign(payload);
+  private async generateAccessToken(payload: { sub: string }): Promise<string> {
+    return await this.jwtService.signAsync(payload, {
+      expiresIn: this.configService.get('jwt', { infer: true }).accessExpiry,
+    });
   }
 
-  private generateRefreshToken(payload: { userUuid: string }): string {
-    return this.jwtService.sign(payload, {
+  private async generateRefreshToken(payload: {
+    sub: string;
+  }): Promise<string> {
+    return await this.jwtService.signAsync(payload, {
       secret: this.configService.get('jwt', { infer: true }).secret,
       expiresIn: this.configService.get('jwt', { infer: true }).refreshExpiry,
     });
   }
 
-  refreshToken(token: string) {
+  async refreshToken(token: string) {
     try {
       const { userUuid } = this.jwtService.verify(token, {
         secret: this.configService.get('jwt', { infer: true }).secret,
       });
 
-      return this.generateTokens({
-        userUuid,
+      return await this.generateTokens({
+        sub: userUuid,
       });
     } catch (e) {
       throw new UnauthorizedException();

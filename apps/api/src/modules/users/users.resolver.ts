@@ -1,6 +1,6 @@
 import { GqlAuthGuard } from '@modules/auth/guards/gql-auth.guard';
-import { UserEntity } from '@modules/common/decorators/user.decorator';
-import { UseGuards } from '@nestjs/common';
+import { CurrentUser } from '@modules/common/decorators/user.decorator';
+import { ForbiddenException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { FindUserInput } from './dto/find-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -12,10 +12,11 @@ import { UsersService } from './users.service';
 export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
-  @Query(() => UserResponse)
-  @UseGuards(GqlAuthGuard)
-  async me(@UserEntity() user: User): Promise<UserResponse> {
-    return { user };
+  @Query(() => User)
+  async me(@CurrentUser() user: User): Promise<User> {
+    if (!user) throw new ForbiddenException('No user logged in!');
+    const foundUser = await this.usersService.findUser({ uuid: user.uuid });
+    return foundUser.user;
   }
 
   @Query(() => UserResponse)

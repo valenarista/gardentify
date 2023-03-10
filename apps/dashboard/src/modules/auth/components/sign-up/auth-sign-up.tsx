@@ -1,7 +1,6 @@
 import { useToast } from '@gardentify/ui';
 import { useAuthContext } from '@modules/auth/context/auth-context';
-import { AuthActionType } from '@modules/auth/context/reducer/types';
-import { useSignupMutation } from '@modules/graphql/@generated/graphql';
+import { MeDocument, MeQuery, useSignUpMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,9 +9,9 @@ import AuthSignupForm, { AuthSignupFormData } from './auth-signup-form';
 
 const AuthSignUp: React.FC = () => {
   const router = useRouter();
-  const { dispatch } = useAuthContext();
+  const { setUserLoggedIn } = useAuthContext();
   const { toast } = useToast();
-  const [signup] = useSignupMutation();
+  const [signup] = useSignUpMutation();
 
   const handleSignUp = async (data: AuthSignupFormData) => {
     try {
@@ -22,20 +21,22 @@ const AuthSignUp: React.FC = () => {
             ...data,
           },
         },
+        update(cache, { data: cacheData }) {
+          if (!cacheData?.signUp.user) return;
+
+          cache.writeQuery<MeQuery>({
+            data: { me: cacheData.signUp.user },
+            query: MeDocument,
+          });
+        },
+        onCompleted() {
+          setUserLoggedIn(true);
+        },
       });
 
       const signupData = response.data;
-
-      if (signupData && signupData.signup.user && signupData.signup.user.uuid) {
-        const user = signupData.signup.user;
-        dispatch({
-          type: AuthActionType.SIGNUP,
-          payload: {
-            user: user,
-            accessToken: signupData.signup.accessToken,
-          },
-        });
-        await router.push(`/users/${user.uuid}`);
+      if (signupData && signupData.signUp.user && signupData.signUp.user.uuid) {
+        await router.push(`/users/${signupData.signUp.user.uuid}`);
       }
     } catch (err) {
       if (err instanceof Error) {

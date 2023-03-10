@@ -38,6 +38,6 @@ import { TwoFactorService } from '@modules/twofactor/twofactor.service';
     TwoFactorService,
     PasswordService,
   ],
-  exports: [GqlAuthGuard],
+  exports: [GqlAuthGuard, AuthService, JwtModule],
 })
 export class AuthModule {}

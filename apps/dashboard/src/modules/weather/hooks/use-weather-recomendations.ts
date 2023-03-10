@@ -10,7 +10,10 @@ const useWeatherRecomendations = (initialWeatherForecast: Weather[]) => {
 
   useEffect(() => {
     const staticRecomendations = getWeatherRecomendations(weatherForecast);
-    setRecomendations(staticRecomendations);
+    const suitableRecomendations = staticRecomendations.filter((recomendation) => {
+      return recomendation.renderCondition;
+    });
+    setRecomendations(suitableRecomendations);
   }, [weatherForecast]);
 
   const updateWeatherForecast = (forecast: Weather[]) => {

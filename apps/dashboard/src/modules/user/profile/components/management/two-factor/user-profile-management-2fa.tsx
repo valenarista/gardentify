@@ -4,11 +4,11 @@ import Link from 'next/link';
 import React from 'react';
 
 const UserProfileManagement2FA: React.FC = () => {
-  const { state } = useAuthContext();
+  const { user } = useAuthContext();
 
   return (
     <>
-      {state.user && !state.user.twoFactorEnabled ? (
+      {user && !user.twoFactorEnabled ? (
         <Link href="/auth/two-factor">
           <Button className="w-full" colorScheme="secondary" variant="ghost">
             Setup 2FA

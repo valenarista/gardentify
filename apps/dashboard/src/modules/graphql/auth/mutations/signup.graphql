@@ -1,5 +1,5 @@
-mutation signup($input: SignUpInput!) {
-  signup(input: $input) {
-    ...Auth
+mutation signUp($input: SignUpInput!) {
+  signUp(input: $input) {
+    ...AuthResponse
   }
 }
