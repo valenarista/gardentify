@@ -2157,10 +2157,10 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@nestjs/apollo@11.0.0":
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/apollo/-/apollo-11.0.0.tgz#580010b7e38423eb30d6db83333d6ac5b980cfff"
-  integrity sha512-5Sbat5Y+5mB14Spg1Cp+Uwi+D1sp49OGEew+vJWgqxAU14jJb0f8XNWNRCC7i/w4EKnK08ReK0F1nM+i9glMdg==
+"@nestjs/apollo@11.0.2":
+  version "11.0.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/apollo/-/apollo-11.0.2.tgz#708634ff15ac06dc9715d631a36828c655a71e5a"
+  integrity sha512-g//f8b8hOFtLCPNQzsVI4aO68AohHJt+pj4KvJK3Pu86sPZPBha+4qHpk5Fr1j3pZJvrvpEVz6x6ZKbiQs1Xzw==
   dependencies:
     "@apollo/server-plugin-landing-page-graphql-playground" "4.0.0"
     iterall "1.3.0"
