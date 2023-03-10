@@ -11,7 +11,7 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "build": "nest build",
+    "build": "yarn workspace @gardentify/utils build && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
