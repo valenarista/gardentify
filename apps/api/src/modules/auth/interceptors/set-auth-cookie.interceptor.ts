@@ -1,3 +1,5 @@
+import { GardentifyContext } from '@modules/graphql/graphql';
+import { Request, Response } from 'express';
 import {
   CallHandler,
   ExecutionContext,
@@ -8,6 +10,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 
 import { map, Observable } from 'rxjs';
 import { AuthResponse } from '../responses/auth.response';
+import { ServerResponse } from 'http';
 
 @Injectable()
 export class SetAuthCookieInterceptor implements NestInterceptor {
@@ -17,10 +20,10 @@ export class SetAuthCookieInterceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       map(({ authTokens, ...userData }: AuthResponse) => {
-        const ctx = GqlExecutionContext.create(context).getContext();
+        const ctx = GqlExecutionContext.create(context).getContext<any>();
         ctx.req.res.cookie('auth', authTokens, {
           httpOnly: true,
-          sameSite: true,
+          sameSite: 'none',
           secure: true,
         });
         return userData;
