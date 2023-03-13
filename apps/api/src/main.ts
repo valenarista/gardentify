@@ -8,6 +8,7 @@ import { AppModule } from './app.module';
 import { __PROD__ } from '@modules/common/lib/constants';
 import { PrismaService } from '@modules/prisma/prisma.service';
 import cookieParser from 'cookie-parser';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const bootstrap = async () => {
   /*==================Initialization================*/
@@ -30,14 +31,22 @@ const bootstrap = async () => {
     type: VersioningType.URI,
   });
 
+  /*========= MIDDLEWARES =========*/
   app.use(cookieParser());
-
   app.useBodyParser('json', { limit: '50mb' });
-
   app.enableCors({
     origin: __PROD__ ? process.env.CLIENT_URL_DEPLOY : process.env.CLIENT_URL,
     credentials: true,
   });
+
+  /*========== SWAGGER ===========*/
+  const config = new DocumentBuilder()
+    .setTitle('Gardentify')
+    .setDescription('Gardentify API built with Nestjs, GraphQL and PrismaIO')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   /*========= START =========*/
   await app.listen(process.env.PORT || 4000);

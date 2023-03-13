@@ -17,6 +17,7 @@ model User {
 
   password      String
   passwordReset PasswordReset?
+  refreshTokens RefreshToken[]
 
   twoFactorEnabled Boolean @default(false)
   twoFactorSecret  String?
@@ -34,6 +35,22 @@ model PasswordReset {
   user   User   @relation(fields: [userId], references: [uuid], onDelete: Cascade)
 
   validUntil DateTime @default(dbgenerated("(timezone('utc'::text, now()) + '1 days'::interval)")) @db.Timestamp(6)
+}
+
+model RefreshToken {
+  uuid String @id @default(cuid())
+
+  revoked Boolean @default(false)
+
+  user     User   @relation(fields: [userUuid], references: [uuid])
+  userUuid String
+
+  expiresAt DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userUuid])
 }
 
 enum ContainerType {

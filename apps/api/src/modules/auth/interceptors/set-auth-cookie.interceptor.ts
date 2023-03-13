@@ -10,7 +10,6 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 
 import { map, Observable } from 'rxjs';
 import { AuthResponse } from '../responses/auth.response';
-import { ServerResponse } from 'http';
 
 @Injectable()
 export class SetAuthCookieInterceptor implements NestInterceptor {

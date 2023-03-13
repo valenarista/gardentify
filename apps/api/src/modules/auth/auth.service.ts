@@ -28,6 +28,7 @@ import { SetupTwoFactorCodeInput } from './dto/setup-two-factor-code.input';
 import { SetupTwoFactorCodeResponse } from './responses/setup-two-factor-code.response';
 import { resolve } from 'path';
 import { AuthResponse } from './responses/auth.response';
+import { RefreshTokensService } from '@modules/refresh-tokens/refresh-tokens.service';
 
 @Injectable()
 export class AuthService {
@@ -35,6 +36,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
     @Inject(PrismaService)
     private readonly prismaService: PrismaService,
+    @Inject(RefreshTokensService)
+    private refreshTokensService: RefreshTokensService,
     private readonly passwordService: PasswordService,
     private readonly mailerService: MailerService,
     private readonly twoFactorService: TwoFactorService,
@@ -91,8 +94,8 @@ export class AuthService {
       userSecret: user.twoFactorSecret,
     });
 
-    if (!twoFactorValid.valid)
-      throw new ForbiddenException('The two factor code is invalid!');
+    // if (!twoFactorValid.valid)
+    // throw new ForbiddenException('The two factor code is invalid!');
 
     const passwordValid = await this.passwordService.validatePassword(
       input.password,
@@ -258,39 +261,17 @@ export class AuthService {
 
   async generateTokens(payload: { sub: string }): Promise<AuthTokens> {
     const accessToken = await this.generateAccessToken(payload);
-    const refreshToken = await this.generateRefreshToken(payload);
+    const { refreshToken } =
+      await this.refreshTokensService.generateRefreshToken(payload.sub);
     return {
       accessToken,
       refreshToken,
     };
   }
 
-  private async generateAccessToken(payload: { sub: string }): Promise<string> {
+  async generateAccessToken(payload: { sub: string }): Promise<string> {
     return await this.jwtService.signAsync(payload, {
       expiresIn: this.configService.get('jwt', { infer: true }).accessExpiry,
     });
-  }
-
-  private async generateRefreshToken(payload: {
-    sub: string;
-  }): Promise<string> {
-    return await this.jwtService.signAsync(payload, {
-      secret: this.configService.get('jwt', { infer: true }).secret,
-      expiresIn: this.configService.get('jwt', { infer: true }).refreshExpiry,
-    });
-  }
-
-  async refreshToken(token: string) {
-    try {
-      const { userUuid } = this.jwtService.verify(token, {
-        secret: this.configService.get('jwt', { infer: true }).secret,
-      });
-
-      return await this.generateTokens({
-        sub: userUuid,
-      });
-    } catch (e) {
-      throw new UnauthorizedException();
-    }
   }
 }

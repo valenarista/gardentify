@@ -11,14 +11,11 @@ import { TwoFactorModule } from '@modules/twofactor/twofactor.module';
 import { UsersModule } from '@modules/users/users.module';
 import { WeatherModule } from '@modules/weather/weather.module';
 import { Module } from '@nestjs/common';
-import GraphQLModule from '@modules/graphql/graphql.module';
+import { GraphQLModule } from '@modules/graphql/graphql.module';
 
 @Module({
   imports: [
-    // Confige module setup.
     GlobalConfigModule,
-
-    // Graphql module setup.
     GraphQLModule,
     AuthModule,
     UsersModule,

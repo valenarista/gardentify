@@ -11,10 +11,12 @@ import { GqlAuthGuard } from './guards/gql-auth.guard';
 import { PasswordService } from './password.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { TwoFactorService } from '@modules/twofactor/twofactor.service';
+import { RefreshTokensModule } from '@modules/refresh-tokens/refresh-tokens.module';
 
 @Module({
   imports: [
     ConfigModule,
+    RefreshTokensModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService<IConfig>) => {

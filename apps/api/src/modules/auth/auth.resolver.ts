@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import { Auth } from './models/auth.model';
 import { LoginInput } from './dto/login.input';
 import { SignUpInput } from './dto/signup.input';
-import { RefreshTokenInput } from './dto/refresh-token.input';
 import { RequestResetPasswordInput } from './dto/request-reset-password.input';
 import { ResetPasswordInput } from './dto/reset-password.input';
 import { RequestResetPasswordResponse } from './responses/request-reset-password.response';
@@ -13,7 +12,6 @@ import { SetupTwoFactorCodeResponse } from './responses/setup-two-factor-code.re
 import { UseInterceptors } from '@nestjs/common';
 import { SetAuthCookieInterceptor } from './interceptors/set-auth-cookie.interceptor';
 import { AuthResponse } from './responses/auth.response';
-import { AuthTokens } from './models/token.model';
 import { RemoveAuthCookieInterceptor } from './interceptors/remove-auth-cookie.interceptor';
 
 @Resolver(() => Auth)
@@ -30,11 +28,6 @@ export class AuthResolver {
   @UseInterceptors(SetAuthCookieInterceptor)
   async login(@Args('input') input: LoginInput): Promise<AuthResponse> {
     return await this.authService.login(input);
-  }
-
-  @Mutation(() => AuthTokens)
-  async refreshToken(@Args('input') input: RefreshTokenInput) {
-    return this.authService.refreshToken(input.token);
   }
 
   @Mutation(() => Boolean)

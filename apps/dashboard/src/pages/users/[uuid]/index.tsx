@@ -1,4 +1,4 @@
-import { createApolloClient } from '@modules/apollo/apollo-client';
+import client from '@modules/apollo/apollo-client';
 import { FindUserDocument, FindUserQuery, FindUserQueryVariables, User } from '@modules/graphql/@generated/graphql';
 import Layout from '@modules/layout/components/layout';
 import UserProfile from '@modules/user/profile/components/user-profile';
@@ -29,7 +29,6 @@ const UserPage: React.FC<UserPageProps> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
   const uuid = query.uuid as string;
-  const client = createApolloClient();
 
   const { data } = await client.query<FindUserQuery, FindUserQueryVariables>({
     query: FindUserDocument,

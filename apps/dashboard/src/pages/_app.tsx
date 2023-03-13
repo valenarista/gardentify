@@ -2,7 +2,7 @@ import '@styles/global.css';
 
 import { ApolloProvider } from '@apollo/client';
 import { ToastProvider, ToastsContainer } from '@gardentify/ui';
-import { createApolloClient } from '@modules/apollo/apollo-client';
+import client from '@modules/apollo/apollo-client';
 import AuthProvider from '@modules/auth/context/auth-context';
 import ThemeProvider from '@modules/theme/context/theme-context';
 import type { AppProps } from 'next/app';
@@ -16,9 +16,8 @@ export const InterFont = Inter({
 });
 
 const GardentifyApp: React.FC<AppProps> = ({ Component, ...rest }) => {
-  const apolloClient = createApolloClient();
   return (
-    <ApolloProvider client={apolloClient}>
+    <ApolloProvider client={client}>
       <ToastProvider>
         <ThemeProvider>
           <AuthProvider>

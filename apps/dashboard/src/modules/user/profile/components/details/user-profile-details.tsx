@@ -11,6 +11,8 @@ const UserProfileDetails: React.FC = () => {
   const { user } = useAuthContext();
   const { user: userProfile } = useUserProfileContext();
 
+  const isSameUser = user && user.uuid === userProfile.uuid;
+
   return (
     <div className="flex w-full flex-col space-y-2 rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 md:flex-row md:space-x-4 md:space-y-0">
       <UserProfileAvatar />
@@ -21,9 +23,7 @@ const UserProfileDetails: React.FC = () => {
           <h1 className="mb-1 text-3xl font-bold">{userProfile.username}</h1>
         </Skeleton>
         {/* 2FA */}
-        {user && user.uuid === userProfile.uuid ? (
-          <UserProfileDetailsTwoFactor twoFactorEnabled={userProfile.twoFactorEnabled} />
-        ) : null}
+        {isSameUser ? <UserProfileDetailsTwoFactor twoFactorEnabled={userProfile.twoFactorEnabled} /> : null}
         {/* Joined at */}
         <Skeleton loading={false}>
           <p className="mt-1.5 text-sm font-medium opacity-90">
@@ -31,7 +31,7 @@ const UserProfileDetails: React.FC = () => {
           </p>
         </Skeleton>
       </div>
-      {user && user.uuid && userProfile.uuid === user.uuid ? <UserProfileManagement /> : null}
+      {isSameUser ? <UserProfileManagement /> : null}
     </div>
   );
 };

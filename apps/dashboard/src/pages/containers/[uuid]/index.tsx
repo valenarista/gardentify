@@ -1,4 +1,4 @@
-import { createApolloClient } from '@modules/apollo/apollo-client';
+import client from '@modules/apollo/apollo-client';
 import UserContainer from '@modules/containers/components/user-container/user-container';
 import UserContainerProvider from '@modules/containers/context/user-container-context';
 import {
@@ -34,8 +34,6 @@ const ContainerPage: React.FC<ContainerPageProps> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
   const uuid = query.uuid as string;
-
-  const client = createApolloClient();
 
   const { data } = await client.query<FindContainerQuery, FindContainerQueryVariables>({
     query: FindContainerDocument,

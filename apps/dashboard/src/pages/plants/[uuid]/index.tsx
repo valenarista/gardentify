@@ -1,5 +1,5 @@
 import { capitalize } from '@gardentify/utils';
-import { createApolloClient } from '@modules/apollo/apollo-client';
+import client from '@modules/apollo/apollo-client';
 import {
   FindPlantDocument,
   FindPlantQuery,
@@ -36,8 +36,6 @@ const PlantPage: React.FC<PlantPageProps> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
   const uuid = query.uuid as string;
-
-  const client = createApolloClient();
 
   const { data } = await client.query<FindPlantQuery, FindPlantQueryVariables>({
     query: FindPlantDocument,

@@ -280,7 +280,7 @@ export class HarvestsService {
           },
         },
 
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: 'asc' },
       });
 
       if (harvests.length === 0) {

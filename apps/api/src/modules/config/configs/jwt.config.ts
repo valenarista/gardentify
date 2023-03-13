@@ -5,5 +5,5 @@ export const jwt = registerAs('jwt', () => ({
   accessExpiry: /^\d+$/.test(process.env.JWT_ACCESS_EXPIRY)
     ? +process.env.JWT_ACCESS_EXPIRY
     : process.env.JWT_ACCESS_EXPIRY,
-  refreshExpiry: +process.env.JWT_REFRESH_EXPIRY,
+  refreshExpiry: 60 * 60 * 24 * 7,
 }));

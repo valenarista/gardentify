@@ -12,7 +12,7 @@ const UserContainerHarvestsWeight: React.FC<UserContainerHarvestsWeightProps> = 
   const { data, error, loading } = response;
 
   return (
-    <div className="flex flex-col rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
+    <div className="flex h-fit flex-col rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800">
       <h3 className="text-2xl font-bold">Container Harvests</h3>
 
       {error ? <span className="text-neutral-800 dark:text-neutral-100">{error.message}</span> : null}

@@ -29,12 +29,16 @@ export const getTokensFromRequest = (
   return { accessToken, refreshToken };
 };
 
-export const getUserUUIDFromToken = (
-  token: JwtPayload | null,
-): string | null => {
+export const getSub = (token: JwtPayload | null): string | null => {
   if (!token?.sub) return null;
 
   return token.sub;
+};
+
+export const getJti = (token: JwtPayload | null): string | null => {
+  if (!token?.jti) return null;
+
+  return token.jti;
 };
 
 const decodeJWTToken = (token: string) => {
