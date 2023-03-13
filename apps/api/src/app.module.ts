@@ -12,6 +12,7 @@ import { UsersModule } from '@modules/users/users.module';
 import { WeatherModule } from '@modules/weather/weather.module';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@modules/graphql/graphql.module';
+import { ImageUploadModule } from '@modules/image-upload/image-upload.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { GraphQLModule } from '@modules/graphql/graphql.module';
     TwoFactorModule,
     HarvestsModule,
     WeatherModule,
+    ImageUploadModule,
     NestServeStaticModule,
   ],
   providers: [PrismaService],

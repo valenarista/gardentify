@@ -27,10 +27,14 @@ import { FindContainerPlantsInput } from './dto/find-container-plants.input';
 import { FindBestPerformingContainersInput } from './dto/find-best-performing-containers.input';
 import { BestPerformingContainersResponse } from './responses/best-performing-containers.response';
 import { PriorityQueue } from '@modules/common/lib/priority-queue';
+import { ImageUploadService } from '@modules/image-upload/image-upload.service';
 
 @Injectable()
 export class ContainersService {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private prismaService: PrismaService,
+    private imageUploadService: ImageUploadService,
+  ) {}
 
   async findContainer(
     @Args('input') input: FindContainerInput,

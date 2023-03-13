@@ -149,3 +149,13 @@ model Harvest {
 
   @@index([plantUuid])
 }
+
+model ImageUpload {
+  uuid String @id @default(cuid())
+
+  fileName String
+  fileType String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
