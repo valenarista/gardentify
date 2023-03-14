@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { DeleteObjectResponse } from '@modules/common/responses/delete-object.response';
 
@@ -12,8 +12,6 @@ import { HarvestResponse } from './responses/harvest.response';
 import { HarvestsResponse } from './responses/harvests.response';
 import { HarvestsService } from './harvests.service';
 import { FindHarvestsInput } from './dto/find-harvests.input';
-import { GardentifyContext } from '@modules/graphql/graphql';
-import { User } from '@modules/users/models/user.model';
 import { FindPlantHarvestsInput } from './dto/find-plant-harvests.input';
 import { FindWeekHarvestsInput } from './dto/find-week-harvests.input';
 import { FindLatestsHarvestsInput } from './dto/find-latests-harvests.input';

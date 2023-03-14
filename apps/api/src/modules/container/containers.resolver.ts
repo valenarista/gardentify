@@ -37,7 +37,7 @@ export class ContainersResolver {
     return await this.containersService.findContainers(input);
   }
 
-  @UseGuards(GqlAuthGuard)
+  // @UseGuards(GqlAuthGuard)
   @Mutation(() => ContainerResponse)
   async createContainer(
     @Args('input') input: CreateContainerInput,

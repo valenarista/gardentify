@@ -1,6 +1,7 @@
-import { ApolloClient, createHttpLink, from, InMemoryCache, makeVar } from '@apollo/client';
+import { ApolloClient, from, InMemoryCache, makeVar } from '@apollo/client';
 import { __PROD__ } from '@modules/common/lib/constants';
 import { PlantsResponse } from '@modules/graphql/@generated/graphql';
+import { createUploadLink } from 'apollo-upload-client';
 
 import refreshTokenLink from './apollo-refresh-token.link';
 
@@ -9,7 +10,7 @@ export const isUserLoggedInVar = makeVar(false);
 export const isUserLoadingVar = makeVar(true);
 export const isRefreshingTokenVar = makeVar(false);
 
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
   uri:
     process.env.NODE_ENV === 'production'
       ? 'https://gardentify-api.onrender.com/graphql'

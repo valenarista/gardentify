@@ -10,7 +10,6 @@ import { ImageUploadService } from './image-upload.service';
     }),
   ],
   providers: [PrismaService, ImageUploadService],
-  controllers: [],
   exports: [ImageUploadService],
 })
 export class ImageUploadModule {}

@@ -5,6 +5,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { AppModule } from './app.module';
 
+import { graphqlUploadExpress } from 'graphql-upload-minimal';
+
 import { __PROD__ } from '@modules/common/lib/constants';
 import { PrismaService } from '@modules/prisma/prisma.service';
 import cookieParser from 'cookie-parser';
@@ -16,6 +18,7 @@ const bootstrap = async () => {
 
   /*================== VALIDATION ==================*/
   app.useGlobalPipes(new ValidationPipe());
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
 
   /*================== PRISMA ==================*/
   const prismaService: PrismaService = app.get(PrismaService);

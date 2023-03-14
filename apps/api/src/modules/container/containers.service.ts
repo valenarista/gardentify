@@ -1,4 +1,3 @@
-import { Args } from '@nestjs/graphql';
 import { CreateContainerInput } from './dto/create-container.input';
 import { FindContainerInput } from './dto/find-container.input';
 import { Container } from './models/container.model';
@@ -28,6 +27,8 @@ import { FindBestPerformingContainersInput } from './dto/find-best-performing-co
 import { BestPerformingContainersResponse } from './responses/best-performing-containers.response';
 import { PriorityQueue } from '@modules/common/lib/priority-queue';
 import { ImageUploadService } from '@modules/image-upload/image-upload.service';
+import { saveImageFile } from '@modules/image-upload/lib/image-upload.utils';
+import { FileUpload } from 'graphql-upload-minimal';
 
 @Injectable()
 export class ContainersService {
@@ -36,9 +37,7 @@ export class ContainersService {
     private imageUploadService: ImageUploadService,
   ) {}
 
-  async findContainer(
-    @Args('input') input: FindContainerInput,
-  ): Promise<ContainerResponse> {
+  async findContainer(input: FindContainerInput): Promise<ContainerResponse> {
     try {
       const container = await this.prismaService.container.findUnique({
         where: {
@@ -66,9 +65,7 @@ export class ContainersService {
     }
   }
 
-  async findContainers(
-    @Args('input') input: FindContainerInput,
-  ): Promise<ContainersResponse> {
+  async findContainers(input: FindContainerInput): Promise<ContainersResponse> {
     try {
       const containers = await this.prismaService.container.findMany({
         where: { uuid: input.uuid },
@@ -96,7 +93,7 @@ export class ContainersService {
   }
 
   async createContainer(
-    @Args('input') input: CreateContainerInput,
+    input: CreateContainerInput,
   ): Promise<ContainerResponse> {
     try {
       const container = await this.prismaService.container.create({
@@ -109,6 +106,14 @@ export class ContainersService {
 
       if (!container) {
         throw new NotFoundException('Could not create container!');
+      }
+
+      if (input.thumbnail) {
+        const fileName = await saveImageFile(input.thumbnail);
+        await this.imageUploadService.createImageUpload({
+          fileType: 'Container-Thumbnail',
+          fileName,
+        });
       }
 
       const parsedContainer: Container = {
@@ -125,7 +130,7 @@ export class ContainersService {
   }
 
   async deleteContainer(
-    @Args('input') input: FindContainerInput,
+    input: FindContainerInput,
   ): Promise<DeleteObjectResponse> {
     try {
       await this.prismaService.container.delete({
@@ -140,7 +145,7 @@ export class ContainersService {
   }
 
   async addPlantToContainer(
-    @Args('input') input: AddPlantToContainerInput,
+    input: AddPlantToContainerInput,
   ): Promise<ContainerResponse> {
     try {
       const updatedContainer = await this.prismaService.container.update({
@@ -170,7 +175,7 @@ export class ContainersService {
   }
 
   async removePlantFromContainer(
-    @Args('input') input: RemovePlantFromContainerInput,
+    input: RemovePlantFromContainerInput,
   ): Promise<DeleteObjectResponse> {
     try {
       // await this.prismaService.container.update({

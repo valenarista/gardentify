@@ -1,4 +1,5 @@
 import { BaseModel } from '@modules/common/models/base.model';
+import { ImageUpload } from '@modules/image-upload/models/image-upload.model';
 import { User } from '@modules/users/models/user.model';
 import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
 
@@ -27,4 +28,7 @@ export class Container extends BaseModel {
 
   @Field(() => User, { nullable: true })
   user?: User;
+
+  @Field(() => ImageUpload, { nullable: true })
+  thumbnail?: ImageUpload;
 }

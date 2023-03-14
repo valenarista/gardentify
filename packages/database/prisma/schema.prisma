@@ -1,7 +1,6 @@
 datasource db {
-  provider     = "postgresql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -49,8 +48,6 @@ model RefreshToken {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([userUuid])
 }
 
 enum ContainerType {
@@ -69,10 +66,11 @@ model Container {
 
   plants Plant[]
 
+  thumbnail     ImageUpload? @relation(fields: [thumbnailUuid], references: [uuid])
+  thumbnailUuid String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([userUuid])
 }
 
 enum PlantType {
@@ -118,8 +116,6 @@ model Plant {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([containerUuid])
 }
 
 model HeightRegistration {
@@ -131,8 +127,6 @@ model HeightRegistration {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([plantUuid])
 }
 
 model Harvest {
@@ -146,8 +140,6 @@ model Harvest {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([plantUuid])
 }
 
 model ImageUpload {
@@ -155,6 +147,8 @@ model ImageUpload {
 
   fileName String
   fileType String
+
+  containers Container[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

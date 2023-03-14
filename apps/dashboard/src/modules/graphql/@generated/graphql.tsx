@@ -14,6 +14,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   DateTime: any;
+  Upload: any;
 };
 
 export type AddPlantToContainerInput = {
@@ -40,6 +41,7 @@ export type BestPerformingContainer = {
   createdAt: Scalars['DateTime'];
   /** Dirth depth of the container */
   dirtDepth: Scalars['Float'];
+  thumbnail?: Maybe<ImageUpload>;
   totalHarvestsWeight: Scalars['Float'];
   /** Type of the container */
   type: ContainerType;
@@ -58,6 +60,7 @@ export type Container = {
   createdAt: Scalars['DateTime'];
   /** Dirth depth of the container */
   dirtDepth: Scalars['Float'];
+  thumbnail?: Maybe<ImageUpload>;
   /** Type of the container */
   type: ContainerType;
   updatedAt: Scalars['DateTime'];
@@ -105,6 +108,7 @@ export type ContainersResponse = {
 export type CreateContainerInput = {
   /** Dirth depth of the container */
   dirtDepth: Scalars['Float'];
+  thumbnail?: InputMaybe<Scalars['Upload']>;
   /** Type of the container */
   type: ContainerType;
   /** Owner of the container */
@@ -257,6 +261,16 @@ export type HeightRegistrationsResponse = {
   __typename?: 'HeightRegistrationsResponse';
   errors?: Maybe<Array<Error>>;
   heightRegistrations?: Maybe<Array<HeightRegistration>>;
+};
+
+export type ImageUpload = {
+  __typename?: 'ImageUpload';
+  containers?: Maybe<Array<Container>>;
+  createdAt: Scalars['DateTime'];
+  fileName: Scalars['String'];
+  fileType: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  uuid: Scalars['String'];
 };
 
 export type LoginInput = {

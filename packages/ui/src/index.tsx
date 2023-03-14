@@ -1,4 +1,5 @@
 export { Button, type ButtonProps } from './components/button/button';
+export { FileInput } from './components/forms/file-input';
 export { InputWrapper, type InputWrapperProps } from './components/forms/input-wrapper';
 export { SelectInput } from './components/forms/select-input';
 export { TextInput } from './components/forms/text-input';

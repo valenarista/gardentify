@@ -2,15 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input AddPlantToContainerInput {
-  containerUuid: String!
-  plantUuid: String!
+type User {
+  uuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  username: String!
+  email: String!
+  twoFactorEnabled: Boolean!
 }
 
-type AuthResponse {
-  authTokens: AuthTokens
-  user: User!
-}
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type AuthTokens {
   """JWT access token"""
@@ -20,35 +24,126 @@ type AuthTokens {
   refreshToken: String!
 }
 
-type BestPerformingContainer {
-  createdAt: DateTime!
-
-  """Dirth depth of the container"""
-  dirtDepth: Float!
-  totalHarvestsWeight: Float!
-
-  """Type of the container"""
-  type: ContainerType!
-  updatedAt: DateTime!
-  user: User
-  uuid: String!
+type RequestResetPasswordResponse {
+  emailSent: Boolean!
 }
 
-type BestPerformingContainersResponse {
-  containers: [BestPerformingContainer!]
+type ResetPasswordResponse {
+  success: Boolean!
+}
+
+type SetupTwoFactorCodeResponse {
+  emailSent: Boolean!
+}
+
+type AuthResponse {
+  user: User!
+  authTokens: AuthTokens
+}
+
+type UserResponse {
+  user: User!
+}
+
+type ImageUpload {
+  uuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  fileName: String!
+  fileType: String!
+  containers: [Container!]
 }
 
 type Container {
+  uuid: String!
   createdAt: DateTime!
-
-  """Dirth depth of the container"""
-  dirtDepth: Float!
+  updatedAt: DateTime!
 
   """Type of the container"""
   type: ContainerType!
-  updatedAt: DateTime!
+
+  """Dirth depth of the container"""
+  dirtDepth: Float!
   user: User
+  thumbnail: ImageUpload
+}
+
+"""The type of a conatiner"""
+enum ContainerType {
+  Plot
+  Bag
+  Patch
+}
+
+type Error {
+  field: String!
+  message: String!
+}
+
+type ContainerResponse {
+  container: Container
+  errors: [Error!]
+}
+
+type ContainersResponse {
+  containers: [Container!]
+  errors: [Error!]
+}
+
+type DeleteObjectResponse {
+  deleted: Boolean
+  errors: [Error!]
+}
+
+type Plant {
   uuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  type: PlantType!
+  variety: String!
+  seedsPlantedAt: DateTime!
+  seedsSproutedAt: DateTime!
+  container: Container
+}
+
+"""Used for declaring the type of plant."""
+enum PlantType {
+  NONE
+  TOMATO
+  POTATO
+  CARROT
+  ONION
+  CUCUMBER
+  PEPPER
+  PEA
+  BROCCOLI
+  CABBAGE
+  CORN
+  BEAN
+  BEET
+  CELERY
+  EGGPLANT
+  GARLIC
+  GINGER
+  GREEN_BEAN
+  KALE
+  LETTUCE
+  MUSTARD
+  SQUASH
+  WATERMELON
+}
+
+type PlantsResponse {
+  plants: [Plant!]
+  count: Int!
+  cursor: String!
+  hasMore: Boolean!
+}
+
+type ContainerStatsResponse {
+  plantsCount: Int
+  harvestsCount: Int
+  grossProduce: Float
 }
 
 type ContainerHarvest {
@@ -60,77 +155,110 @@ type ContainerHarvestsResponse {
   harvests: [ContainerHarvest!]!
 }
 
-type ContainerResponse {
-  container: Container
-  errors: [Error!]
-}
-
-type ContainerStatsResponse {
-  grossProduce: Float
-  harvestsCount: Int
-  plantsCount: Int
-}
-
-"""The type of a conatiner"""
-enum ContainerType {
-  Bag
-  Patch
-  Plot
-}
-
-type ContainersResponse {
-  containers: [Container!]
-  errors: [Error!]
-}
-
-input CreateContainerInput {
-  """Dirth depth of the container"""
-  dirtDepth: Float!
+type BestPerformingContainer {
+  uuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 
   """Type of the container"""
   type: ContainerType!
 
-  """Owner of the container"""
-  userUuid: String!
+  """Dirth depth of the container"""
+  dirtDepth: Float!
+  user: User
+  thumbnail: ImageUpload
+  totalHarvestsWeight: Float!
 }
 
-input CreateHarvestInput {
-  plant: FindPlantInput!
+type BestPerformingContainersResponse {
+  containers: [BestPerformingContainer!]
+}
+
+type Harvest {
+  uuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   quantity: Int!
   weight: Float!
+  plant: Plant
 }
 
-input CreateHeightRegistrationInput {
-  height: Float!
-  plantUuid: String!
-}
-
-input CreatePlantInput {
-  container: FindContainerInput!
-  seedsPlantedAt: DateTime
-  seedsSproutedAt: DateTime
-  type: PlantType!
-  variety: String!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type DeleteObjectResponse {
-  deleted: Boolean
+type HarvestResponse {
+  harvest: Harvest
   errors: [Error!]
 }
 
-type Error {
-  field: String!
-  message: String!
+type HarvestsResponse {
+  harvests: [Harvest!]
+  count: Int!
+  cursor: String!
+  hasMore: Boolean!
 }
 
-input FindBestPerformingContainersInput {
-  take: Int!
-  userUuid: String!
+type HeightRegistration {
+  uuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  height: Float!
+  plant: Plant
+}
+
+type HeightRegistrationResponse {
+  heightRegistration: HeightRegistration
+  errors: [Error!]
+}
+
+type HeightRegistrationsResponse {
+  heightRegistrations: [HeightRegistration!]
+  errors: [Error!]
+}
+
+type PlantResponse {
+  plant: Plant
+  errors: [Error!]
+}
+
+type Weather {
+  time: String!
+  weatherCode: Int!
+  temperatureMax: Float!
+  temperatureMin: Float!
+  uvIndexMax: Float!
+  precipitationSum: Float!
+  windSpeedMax: Float!
+  windDirectionDominant: Float!
+}
+
+type WeatherForecastResponse {
+  forecast: [Weather!]!
+}
+
+type Query {
+  me: User!
+  findUser(input: FindUserInput!): UserResponse!
+  authCheck: Boolean!
+  findContainer(input: FindContainerInput!): ContainerResponse!
+  findContainers(input: FindContainerInput!): ContainersResponse!
+  findContainerPlants(input: FindContainerPlantsInput!): PlantsResponse!
+  findUserContainers(input: FindUserContainersInput!): ContainersResponse!
+  calculateContainerStats(input: FindContainerInput!): ContainerStatsResponse!
+  findContainerHarvests(input: FindContainerInput!): ContainerHarvestsResponse!
+  findBestPerformingContainers(input: FindBestPerformingContainersInput!): BestPerformingContainersResponse!
+  findPlant(input: FindPlantInput!): PlantResponse!
+  findPlants(input: FindPlantsInput!): PlantsResponse!
+  findHeightRegistration(input: FindHeightRegistrationInput!): HeightRegistrationResponse!
+  findHeightRegistrations(input: FindHeightRegistrationsInput!): HeightRegistrationsResponse!
+  findPlantHeightRegistrations(input: FindPlantInput!): HeightRegistrationsResponse!
+  findHarvest(input: FindHarvestInput!): HarvestResponse!
+  findHarvests(input: FindHarvestsInput!): HarvestsResponse!
+  findPlantHarvests(input: FindPlantHarvestsInput!): HarvestsResponse!
+  findLatestsHarvests(input: FindLatestsHarvestsInput!): HarvestsResponse!
+  findWeekHarvests(input: FindWeekHarvestsInput!): HarvestsResponse!
+  getWeatherForecast(input: WeatherForecastInput!): WeatherForecastResponse!
+}
+
+input FindUserInput {
+  uuid: String!
 }
 
 input FindContainerInput {
@@ -138,9 +266,40 @@ input FindContainerInput {
 }
 
 input FindContainerPlantsInput {
-  cursor: String
-  take: Int
   where: FindContainerInput!
+  take: Int
+  cursor: String
+}
+
+input FindUserContainersInput {
+  userUuid: String!
+}
+
+input FindBestPerformingContainersInput {
+  userUuid: String!
+  take: Int!
+}
+
+input FindPlantInput {
+  uuid: String
+  variety: String
+  type: PlantType
+}
+
+input FindPlantsInput {
+  where: FindPlantInput
+  take: Int
+  cursor: String
+}
+
+input FindHeightRegistrationInput {
+  uuid: String
+  height: Float
+}
+
+input FindHeightRegistrationsInput {
+  take: Int!
+  includePlant: Boolean!
 }
 
 input FindHarvestInput {
@@ -148,95 +307,66 @@ input FindHarvestInput {
 }
 
 input FindHarvestsInput {
+  where: FindHarvestInput
+  take: Int
   cursor: String
   includePlant: Boolean!
-  take: Int
-  where: FindHarvestInput
-}
-
-input FindHeightRegistrationInput {
-  height: Float
-  uuid: String
-}
-
-input FindHeightRegistrationsInput {
-  includePlant: Boolean!
-  take: Int!
-}
-
-input FindLatestsHarvestsInput {
-  includePlant: Boolean!
-  take: Int
-  userUuid: String!
 }
 
 input FindPlantHarvestsInput {
-  cursor: String
-  take: Int
   where: FindPlantInput
-}
-
-input FindPlantInput {
-  type: PlantType
-  uuid: String
-  variety: String
-}
-
-input FindPlantsInput {
-  cursor: String
   take: Int
-  where: FindPlantInput
+  cursor: String
 }
 
-input FindUserContainersInput {
+input FindLatestsHarvestsInput {
   userUuid: String!
-}
-
-input FindUserInput {
-  uuid: String!
+  take: Int
+  includePlant: Boolean!
 }
 
 input FindWeekHarvestsInput {
   userUuid: String!
 }
 
-type Harvest {
-  createdAt: DateTime!
-  plant: Plant
-  quantity: Int!
-  updatedAt: DateTime!
+input WeatherForecastInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+type Mutation {
+  refreshToken: Boolean!
+  updateUser(input: UpdateUserInput!): UserResponse!
+  signUp(input: SignUpInput!): AuthResponse!
+  login(input: LoginInput!): AuthResponse!
+  logOut: Boolean!
+  setupTwoFactorCode(input: SetupTwoFactorCodeInput!): SetupTwoFactorCodeResponse!
+  requestResetPassword(input: RequestResetPasswordInput!): RequestResetPasswordResponse!
+  resetPassword(input: ResetPasswordInput!): ResetPasswordResponse!
+  createContainer(input: CreateContainerInput!): ContainerResponse!
+  deleteContainer(input: FindContainerInput!): DeleteObjectResponse!
+  addPlantToContainer(input: AddPlantToContainerInput!): ContainerResponse!
+  removePlantFromContainer(input: RemovePlantFromContainerInput!): DeleteObjectResponse!
+  updateContainer(input: UpdateContainerInput!): ContainerResponse!
+  createPlant(input: CreatePlantInput!): PlantResponse!
+  deletePlant(input: FindPlantInput!): DeleteObjectResponse!
+  updatePlant(input: UpdatePlantInput!): PlantResponse!
+  createHeightRegistration(input: CreateHeightRegistrationInput!): HeightRegistrationResponse!
+  deleteHeightRegistration(find: FindHeightRegistrationInput!): DeleteObjectResponse!
+  createHarvest(input: CreateHarvestInput!): HarvestResponse!
+  deleteHarvest(input: FindHarvestInput!): DeleteObjectResponse!
+  updateHarvest(input: UpdateHarvestInput!): HarvestResponse!
+}
+
+input UpdateUserInput {
   uuid: String!
-  weight: Float!
+  username: String
 }
 
-type HarvestResponse {
-  errors: [Error!]
-  harvest: Harvest
-}
-
-type HarvestsResponse {
-  count: Int!
-  cursor: String!
-  harvests: [Harvest!]
-  hasMore: Boolean!
-}
-
-type HeightRegistration {
-  createdAt: DateTime!
-  height: Float!
-  plant: Plant
-  updatedAt: DateTime!
-  uuid: String!
-}
-
-type HeightRegistrationResponse {
-  errors: [Error!]
-  heightRegistration: HeightRegistration
-}
-
-type HeightRegistrationsResponse {
-  errors: [Error!]
-  heightRegistrations: [HeightRegistration!]
+input SignUpInput {
+  username: String!
+  email: String!
+  password: String!
 }
 
 input LoginInput {
@@ -245,115 +375,12 @@ input LoginInput {
   twoFactorCode: String!
 }
 
-type Mutation {
-  addPlantToContainer(input: AddPlantToContainerInput!): ContainerResponse!
-  createContainer(input: CreateContainerInput!): ContainerResponse!
-  createHarvest(input: CreateHarvestInput!): HarvestResponse!
-  createHeightRegistration(input: CreateHeightRegistrationInput!): HeightRegistrationResponse!
-  createPlant(input: CreatePlantInput!): PlantResponse!
-  deleteContainer(input: FindContainerInput!): DeleteObjectResponse!
-  deleteHarvest(input: FindHarvestInput!): DeleteObjectResponse!
-  deleteHeightRegistration(find: FindHeightRegistrationInput!): DeleteObjectResponse!
-  deletePlant(input: FindPlantInput!): DeleteObjectResponse!
-  logOut: Boolean!
-  login(input: LoginInput!): AuthResponse!
-  refreshToken: Boolean!
-  removePlantFromContainer(input: RemovePlantFromContainerInput!): DeleteObjectResponse!
-  requestResetPassword(input: RequestResetPasswordInput!): RequestResetPasswordResponse!
-  resetPassword(input: ResetPasswordInput!): ResetPasswordResponse!
-  setupTwoFactorCode(input: SetupTwoFactorCodeInput!): SetupTwoFactorCodeResponse!
-  signUp(input: SignUpInput!): AuthResponse!
-  updateContainer(input: UpdateContainerInput!): ContainerResponse!
-  updateHarvest(input: UpdateHarvestInput!): HarvestResponse!
-  updatePlant(input: UpdatePlantInput!): PlantResponse!
-  updateUser(input: UpdateUserInput!): UserResponse!
-}
-
-type Plant {
-  container: Container
-  createdAt: DateTime!
-  seedsPlantedAt: DateTime!
-  seedsSproutedAt: DateTime!
-  type: PlantType!
-  updatedAt: DateTime!
-  uuid: String!
-  variety: String!
-}
-
-type PlantResponse {
-  errors: [Error!]
-  plant: Plant
-}
-
-"""Used for declaring the type of plant."""
-enum PlantType {
-  BEAN
-  BEET
-  BROCCOLI
-  CABBAGE
-  CARROT
-  CELERY
-  CORN
-  CUCUMBER
-  EGGPLANT
-  GARLIC
-  GINGER
-  GREEN_BEAN
-  KALE
-  LETTUCE
-  MUSTARD
-  NONE
-  ONION
-  PEA
-  PEPPER
-  POTATO
-  SQUASH
-  TOMATO
-  WATERMELON
-}
-
-type PlantsResponse {
-  count: Int!
-  cursor: String!
-  hasMore: Boolean!
-  plants: [Plant!]
-}
-
-type Query {
-  authCheck: Boolean!
-  calculateContainerStats(input: FindContainerInput!): ContainerStatsResponse!
-  findBestPerformingContainers(input: FindBestPerformingContainersInput!): BestPerformingContainersResponse!
-  findContainer(input: FindContainerInput!): ContainerResponse!
-  findContainerHarvests(input: FindContainerInput!): ContainerHarvestsResponse!
-  findContainerPlants(input: FindContainerPlantsInput!): PlantsResponse!
-  findContainers(input: FindContainerInput!): ContainersResponse!
-  findHarvest(input: FindHarvestInput!): HarvestResponse!
-  findHarvests(input: FindHarvestsInput!): HarvestsResponse!
-  findHeightRegistration(input: FindHeightRegistrationInput!): HeightRegistrationResponse!
-  findHeightRegistrations(input: FindHeightRegistrationsInput!): HeightRegistrationsResponse!
-  findLatestsHarvests(input: FindLatestsHarvestsInput!): HarvestsResponse!
-  findPlant(input: FindPlantInput!): PlantResponse!
-  findPlantHarvests(input: FindPlantHarvestsInput!): HarvestsResponse!
-  findPlantHeightRegistrations(input: FindPlantInput!): HeightRegistrationsResponse!
-  findPlants(input: FindPlantsInput!): PlantsResponse!
-  findUser(input: FindUserInput!): UserResponse!
-  findUserContainers(input: FindUserContainersInput!): ContainersResponse!
-  findWeekHarvests(input: FindWeekHarvestsInput!): HarvestsResponse!
-  getWeatherForecast(input: WeatherForecastInput!): WeatherForecastResponse!
-  me: User!
-}
-
-input RemovePlantFromContainerInput {
-  containerUuid: String!
-  plantUuid: String!
+input SetupTwoFactorCodeInput {
+  email: String!
 }
 
 input RequestResetPasswordInput {
   email: String!
-}
-
-type RequestResetPasswordResponse {
-  emailSent: Boolean!
 }
 
 input ResetPasswordInput {
@@ -362,81 +389,70 @@ input ResetPasswordInput {
   twoFactorCode: String!
 }
 
-type ResetPasswordResponse {
-  success: Boolean!
+input CreateContainerInput {
+  """Owner of the container"""
+  userUuid: String!
+
+  """Type of the container"""
+  type: ContainerType!
+
+  """Dirth depth of the container"""
+  dirtDepth: Float!
+  thumbnail: Upload
 }
 
-input SetupTwoFactorCodeInput {
-  email: String!
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input AddPlantToContainerInput {
+  containerUuid: String!
+  plantUuid: String!
 }
 
-type SetupTwoFactorCodeResponse {
-  emailSent: Boolean!
-}
-
-input SignUpInput {
-  email: String!
-  password: String!
-  username: String!
+input RemovePlantFromContainerInput {
+  containerUuid: String!
+  plantUuid: String!
 }
 
 input UpdateContainerInput {
-  """Dirth depth of the container"""
-  dirtDepth: Float
+  uuid: String!
 
   """Type of the container"""
   type: ContainerType
-  uuid: String!
+
+  """Dirth depth of the container"""
+  dirtDepth: Float
 }
 
-input UpdateHarvestInput {
-  quantity: Int
-  uuid: String!
-  weight: Float
+input CreatePlantInput {
+  container: FindContainerInput!
+  variety: String!
+  type: PlantType!
+  seedsPlantedAt: DateTime
+  seedsSproutedAt: DateTime
 }
 
 input UpdatePlantInput {
-  seedsPlantedAt: DateTime
-  seedsSproutedAt: DateTime
-  type: PlantType
   uuid: String!
   variety: String
+  type: PlantType
+  seedsPlantedAt: DateTime
+  seedsSproutedAt: DateTime
 }
 
-input UpdateUserInput {
-  username: String
+input CreateHeightRegistrationInput {
+  plantUuid: String!
+  height: Float!
+}
+
+input CreateHarvestInput {
+  plant: FindPlantInput!
+  quantity: Int!
+  weight: Float!
+}
+
+input UpdateHarvestInput {
   uuid: String!
-}
-
-type User {
-  createdAt: DateTime!
-  email: String!
-  twoFactorEnabled: Boolean!
-  updatedAt: DateTime!
-  username: String!
-  uuid: String!
-}
-
-type UserResponse {
-  user: User!
-}
-
-type Weather {
-  precipitationSum: Float!
-  temperatureMax: Float!
-  temperatureMin: Float!
-  time: String!
-  uvIndexMax: Float!
-  weatherCode: Int!
-  windDirectionDominant: Float!
-  windSpeedMax: Float!
-}
-
-input WeatherForecastInput {
-  latitude: Float!
-  longitude: Float!
-}
-
-type WeatherForecastResponse {
-  forecast: [Weather!]!
+  quantity: Int
+  weight: Float
 }

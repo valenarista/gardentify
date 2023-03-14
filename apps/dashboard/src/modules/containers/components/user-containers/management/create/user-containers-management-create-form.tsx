@@ -1,9 +1,9 @@
-import { Button, SelectInput, TextInput, useToast } from '@gardentify/ui';
+import { Button, FileInput, SelectInput, TextInput, useToast } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { ContainerType, useCreateContainerMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -34,17 +34,24 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
     mode: 'onBlur',
   });
 
+  const [file, setFile] = useState<File[]>([]);
+
   const [createContainer] = useCreateContainerMutation();
 
   const onSubmit = async (data: FormData) => {
-    if (!user) return;
+    if (!user || !file) return;
 
     try {
+      const thumbnail = file[0];
+      if (thumbnail === null) return;
+      console.log({ thumbnail });
+
       const response = await createContainer({
         variables: {
           input: {
             ...data,
             userUuid: user.uuid,
+            thumbnail,
           },
         },
       });
@@ -118,6 +125,19 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
           />
         )}
       />
+
+      <FileInput
+        id="container-thumbnail"
+        name="Container Thumbnail"
+        label="Container Thumbnail"
+        error={false}
+        reseteable={false}
+        onValueChanged={(files) => {
+          console.log({ files });
+          setFile(files);
+        }}
+      />
+
       <div className="flex w-full space-x-4 px-6">
         <Button className="w-full" type="submit">
           Create
