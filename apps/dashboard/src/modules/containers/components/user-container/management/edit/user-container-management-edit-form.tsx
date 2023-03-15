@@ -1,4 +1,4 @@
-import { Button, SelectInput, TextInput, useToast } from '@gardentify/ui';
+import { Button, FileInput, SelectInput, TextInput, useToast } from '@gardentify/ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { useUserContainerContext } from '@modules/containers/context/user-container-context';
@@ -16,6 +16,7 @@ const schema = yup
       .required('Container dirt depth is required!')
       .min(1, 'The minimum dirt depth is 1')
       .typeError('Dirt depth must be a number!'),
+    thumbnail: yup.mixed().optional(),
   })
   .required();
 
@@ -36,6 +37,7 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
     mode: 'onBlur',
     defaultValues: {
       ...container,
+      thumbnail: undefined,
     },
   });
 
@@ -43,26 +45,25 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
 
   const onSubmit = async (data: FormData) => {
     if (!user) return;
-    try {
-      await updateContainer({
-        variables: {
-          input: {
-            uuid: container.uuid,
-            dirtDepth: data.dirtDepth,
-            type: data.type,
-          },
-        },
-      });
 
-      toast({ variant: 'success', content: 'Container updated successfully!' });
-      await router.push(`/containers/${container.uuid}`);
-      onSubmitted();
-    } catch (err) {
-      if (err instanceof Error) {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
-      }
-    }
+    await updateContainer({
+      variables: {
+        input: {
+          uuid: container.uuid,
+          dirtDepth: data.dirtDepth,
+          type: data.type,
+          thumbnail: data.thumbnail ?? undefined,
+        },
+      },
+      async onCompleted() {
+        onSubmitted();
+        toast({ variant: 'success', content: 'Container updateed successfully!' });
+        await router.push(`/containers/${container.uuid}`);
+      },
+      onError(error) {
+        toast({ variant: 'error', content: error.message });
+      },
+    });
   };
 
   const handleFormReset = () => {
@@ -85,7 +86,6 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
             errorMessage={fieldState.error?.message}
             help
             helpMessage="Type of the container"
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           >
@@ -114,12 +114,35 @@ const UserContainersManagementEditForm: React.FC<UserContainersManagementEditFor
             errorMessage={fieldState.error?.message}
             help
             helpMessage="Depth in centimeters of the dirt"
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />
         )}
       />
+
+      <Controller
+        name="thumbnail"
+        control={control}
+        render={({ field: { name, onBlur, onChange, ref }, fieldState }) => (
+          <FileInput
+            ref={ref}
+            id={name}
+            name={name}
+            label="Thumbnail"
+            error={fieldState.invalid}
+            errorMessage={fieldState.error?.message}
+            help
+            helpMessage="Optional thumbnail of the container"
+            onValueChanged={(files) => {
+              if (files.length === 0) return;
+              const uniqueFile = files[0];
+              onChange(uniqueFile);
+            }}
+            onBlur={onBlur}
+          />
+        )}
+      />
+
       <div className="flex w-full space-x-4 px-6">
         <Button className="w-full" type="submit">
           Update

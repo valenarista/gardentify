@@ -16,29 +16,24 @@ const AuthResetPasswordUpdate: React.FC<AuthResetPasswordUpdateProps> = (props) 
   const [resetPassword] = useResetPasswordMutation();
 
   const handleResetPassword = async (data: AuthResetPasswordUpdateFormData) => {
-    try {
-      const response = await resetPassword({
-        variables: {
-          input: {
-            password: data.password,
-            twoFactorCode: data.twoFactorCode,
-            token,
-          },
+    await resetPassword({
+      variables: {
+        input: {
+          password: data.password,
+          twoFactorCode: data.twoFactorCode,
+          token,
         },
-      });
-
-      const resetPasswordData = response.data;
-
-      if (resetPasswordData && resetPasswordData.resetPassword.success) {
-        toast({ variant: 'success', content: 'Password updated successfully!' });
-        await router.push('/auth/login');
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
-      }
-    }
+      },
+      async onCompleted(resetPasswordResponse) {
+        if (resetPasswordResponse.resetPassword.success) {
+          toast({ variant: 'success', content: 'Password resetted successfully!' });
+          await router.push('/auth');
+        }
+      },
+      onError(error) {
+        toast({ variant: 'error', content: error.message });
+      },
+    });
   };
 
   return <AuthResetPasswordUpdateForm onSubmitted={handleResetPassword} />;

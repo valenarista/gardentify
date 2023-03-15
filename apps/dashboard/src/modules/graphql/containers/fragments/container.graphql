@@ -5,6 +5,9 @@ fragment Container on Container {
   user {
     ...User
   }
+  thumbnail {
+    ...ImageUpload
+  }
   createdAt
   updatedAt
 }

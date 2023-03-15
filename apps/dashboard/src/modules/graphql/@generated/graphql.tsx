@@ -577,6 +577,7 @@ export type SignUpInput = {
 export type UpdateContainerInput = {
   /** Dirth depth of the container */
   dirtDepth?: InputMaybe<Scalars['Float']>;
+  thumbnail?: InputMaybe<Scalars['Upload']>;
   /** Type of the container */
   type?: InputMaybe<ContainerType>;
   uuid: Scalars['String'];
@@ -784,6 +785,14 @@ export type ContainerFragment = {
     createdAt: any;
     updatedAt: any;
   } | null;
+  thumbnail?: {
+    __typename?: 'ImageUpload';
+    uuid: string;
+    fileName: string;
+    fileType: string;
+    createdAt: any;
+    updatedAt: any;
+  } | null;
 };
 
 export type BestPerformingContainersResponseFragment = {
@@ -831,6 +840,14 @@ export type ContainerResponseFragment = {
       createdAt: any;
       updatedAt: any;
     } | null;
+    thumbnail?: {
+      __typename?: 'ImageUpload';
+      uuid: string;
+      fileName: string;
+      fileType: string;
+      createdAt: any;
+      updatedAt: any;
+    } | null;
   } | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
 };
@@ -860,6 +877,14 @@ export type ContainersResponseFragment = {
       createdAt: any;
       updatedAt: any;
     } | null;
+    thumbnail?: {
+      __typename?: 'ImageUpload';
+      uuid: string;
+      fileName: string;
+      fileType: string;
+      createdAt: any;
+      updatedAt: any;
+    } | null;
   }> | null;
   errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
 };
@@ -885,6 +910,14 @@ export type CreateContainerMutation = {
         username: string;
         email: string;
         twoFactorEnabled: boolean;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+      thumbnail?: {
+        __typename?: 'ImageUpload';
+        uuid: string;
+        fileName: string;
+        fileType: string;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -927,6 +960,14 @@ export type UpdateContainerMutation = {
         username: string;
         email: string;
         twoFactorEnabled: boolean;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+      thumbnail?: {
+        __typename?: 'ImageUpload';
+        uuid: string;
+        fileName: string;
+        fileType: string;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -1041,6 +1082,14 @@ export type FindContainerPlantsQuery = {
           createdAt: any;
           updatedAt: any;
         } | null;
+        thumbnail?: {
+          __typename?: 'ImageUpload';
+          uuid: string;
+          fileName: string;
+          fileType: string;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
       } | null;
     }> | null;
   };
@@ -1070,6 +1119,14 @@ export type FindContainerQuery = {
         createdAt: any;
         updatedAt: any;
       } | null;
+      thumbnail?: {
+        __typename?: 'ImageUpload';
+        uuid: string;
+        fileName: string;
+        fileType: string;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
   };
@@ -1096,6 +1153,14 @@ export type FindUserContainersQuery = {
         username: string;
         email: string;
         twoFactorEnabled: boolean;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+      thumbnail?: {
+        __typename?: 'ImageUpload';
+        uuid: string;
+        fileName: string;
+        fileType: string;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -1136,6 +1201,14 @@ export type HarvestFragment = {
         createdAt: any;
         updatedAt: any;
       } | null;
+      thumbnail?: {
+        __typename?: 'ImageUpload';
+        uuid: string;
+        fileName: string;
+        fileType: string;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
     } | null;
   } | null;
 };
@@ -1171,6 +1244,14 @@ export type HarvestResponseFragment = {
           username: string;
           email: string;
           twoFactorEnabled: boolean;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
+        thumbnail?: {
+          __typename?: 'ImageUpload';
+          uuid: string;
+          fileName: string;
+          fileType: string;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -1217,6 +1298,14 @@ export type HarvestsResponseFragment = {
           createdAt: any;
           updatedAt: any;
         } | null;
+        thumbnail?: {
+          __typename?: 'ImageUpload';
+          uuid: string;
+          fileName: string;
+          fileType: string;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
       } | null;
     } | null;
   }> | null;
@@ -1259,6 +1348,14 @@ export type CreateHarvestMutation = {
             username: string;
             email: string;
             twoFactorEnabled: boolean;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
+          thumbnail?: {
+            __typename?: 'ImageUpload';
+            uuid: string;
+            fileName: string;
+            fileType: string;
             createdAt: any;
             updatedAt: any;
           } | null;
@@ -1312,6 +1409,14 @@ export type FindHarvestsQuery = {
             createdAt: any;
             updatedAt: any;
           } | null;
+          thumbnail?: {
+            __typename?: 'ImageUpload';
+            uuid: string;
+            fileName: string;
+            fileType: string;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
         } | null;
       } | null;
     }> | null;
@@ -1358,6 +1463,14 @@ export type FindLatestsHarvestsQuery = {
             username: string;
             email: string;
             twoFactorEnabled: boolean;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
+          thumbnail?: {
+            __typename?: 'ImageUpload';
+            uuid: string;
+            fileName: string;
+            fileType: string;
             createdAt: any;
             updatedAt: any;
           } | null;
@@ -1410,6 +1523,14 @@ export type FindPlantHarvestsQuery = {
             createdAt: any;
             updatedAt: any;
           } | null;
+          thumbnail?: {
+            __typename?: 'ImageUpload';
+            uuid: string;
+            fileName: string;
+            fileType: string;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
         } | null;
       } | null;
     }> | null;
@@ -1459,6 +1580,14 @@ export type FindWeekHarvestsQuery = {
             createdAt: any;
             updatedAt: any;
           } | null;
+          thumbnail?: {
+            __typename?: 'ImageUpload';
+            uuid: string;
+            fileName: string;
+            fileType: string;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
         } | null;
       } | null;
     }> | null;
@@ -1493,6 +1622,14 @@ export type HeightRegistrationFragment = {
         username: string;
         email: string;
         twoFactorEnabled: boolean;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+      thumbnail?: {
+        __typename?: 'ImageUpload';
+        uuid: string;
+        fileName: string;
+        fileType: string;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -1533,6 +1670,14 @@ export type HeightRegistrationResponseFragment = {
           createdAt: any;
           updatedAt: any;
         } | null;
+        thumbnail?: {
+          __typename?: 'ImageUpload';
+          uuid: string;
+          fileName: string;
+          fileType: string;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
       } | null;
     } | null;
   } | null;
@@ -1569,6 +1714,14 @@ export type HeightRegistrationsResponseFragment = {
           username: string;
           email: string;
           twoFactorEnabled: boolean;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
+        thumbnail?: {
+          __typename?: 'ImageUpload';
+          uuid: string;
+          fileName: string;
+          fileType: string;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -1614,6 +1767,14 @@ export type CreateHeightRegistrationMutation = {
             username: string;
             email: string;
             twoFactorEnabled: boolean;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
+          thumbnail?: {
+            __typename?: 'ImageUpload';
+            uuid: string;
+            fileName: string;
+            fileType: string;
             createdAt: any;
             updatedAt: any;
           } | null;
@@ -1663,6 +1824,14 @@ export type FindHeightRegistrationsQuery = {
             createdAt: any;
             updatedAt: any;
           } | null;
+          thumbnail?: {
+            __typename?: 'ImageUpload';
+            uuid: string;
+            fileName: string;
+            fileType: string;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
         } | null;
       } | null;
     }> | null;
@@ -1709,11 +1878,28 @@ export type FindPlantHeightRegistrationsQuery = {
             createdAt: any;
             updatedAt: any;
           } | null;
+          thumbnail?: {
+            __typename?: 'ImageUpload';
+            uuid: string;
+            fileName: string;
+            fileType: string;
+            createdAt: any;
+            updatedAt: any;
+          } | null;
         } | null;
       } | null;
     }> | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
   };
+};
+
+export type ImageUploadFragment = {
+  __typename?: 'ImageUpload';
+  uuid: string;
+  fileName: string;
+  fileType: string;
+  createdAt: any;
+  updatedAt: any;
 };
 
 export type PlantTypeFragment = { __typename?: 'Plant'; uuid: string; type: PlantType };
@@ -1740,6 +1926,14 @@ export type PlantFragment = {
       username: string;
       email: string;
       twoFactorEnabled: boolean;
+      createdAt: any;
+      updatedAt: any;
+    } | null;
+    thumbnail?: {
+      __typename?: 'ImageUpload';
+      uuid: string;
+      fileName: string;
+      fileType: string;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -1770,6 +1964,14 @@ export type PlantResponseFragment = {
         username: string;
         email: string;
         twoFactorEnabled: boolean;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+      thumbnail?: {
+        __typename?: 'ImageUpload';
+        uuid: string;
+        fileName: string;
+        fileType: string;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -1805,6 +2007,14 @@ export type PlantsResponseFragment = {
         username: string;
         email: string;
         twoFactorEnabled: boolean;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
+      thumbnail?: {
+        __typename?: 'ImageUpload';
+        uuid: string;
+        fileName: string;
+        fileType: string;
         createdAt: any;
         updatedAt: any;
       } | null;
@@ -1850,6 +2060,14 @@ export type CreatePlantMutation = {
           username: string;
           email: string;
           twoFactorEnabled: boolean;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
+        thumbnail?: {
+          __typename?: 'ImageUpload';
+          uuid: string;
+          fileName: string;
+          fileType: string;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -1905,6 +2123,14 @@ export type UpdatePlantMutation = {
           createdAt: any;
           updatedAt: any;
         } | null;
+        thumbnail?: {
+          __typename?: 'ImageUpload';
+          uuid: string;
+          fileName: string;
+          fileType: string;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
       } | null;
     } | null;
     errors?: Array<{ __typename?: 'Error'; field: string; message: string }> | null;
@@ -1941,6 +2167,14 @@ export type FindPlantQuery = {
           username: string;
           email: string;
           twoFactorEnabled: boolean;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
+        thumbnail?: {
+          __typename?: 'ImageUpload';
+          uuid: string;
+          fileName: string;
+          fileType: string;
           createdAt: any;
           updatedAt: any;
         } | null;
@@ -2165,6 +2399,15 @@ export const ContainerHarvestsResponseFragmentDoc = gql`
   }
   ${ContainerHarvestFragmentDoc}
 `;
+export const ImageUploadFragmentDoc = gql`
+  fragment ImageUpload on ImageUpload {
+    uuid
+    fileName
+    fileType
+    createdAt
+    updatedAt
+  }
+`;
 export const ContainerFragmentDoc = gql`
   fragment Container on Container {
     uuid
@@ -2173,10 +2416,14 @@ export const ContainerFragmentDoc = gql`
     user {
       ...User
     }
+    thumbnail {
+      ...ImageUpload
+    }
     createdAt
     updatedAt
   }
   ${UserFragmentDoc}
+  ${ImageUploadFragmentDoc}
 `;
 export const ContainerResponseFragmentDoc = gql`
   fragment ContainerResponse on ContainerResponse {

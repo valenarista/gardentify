@@ -45,24 +45,25 @@ const PlantHarvestsManagementCreateForm: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     if (!user) return;
 
-    try {
-      const plantUuid = router.query.uuid as string;
+    const plantUuid = router.query.uuid as string;
 
-      await createHarvest({
-        variables: {
-          input: {
-            ...data,
-            plant: { uuid: plantUuid },
-          },
+    await createHarvest({
+      variables: {
+        input: {
+          ...data,
+          plant: { uuid: plantUuid },
         },
-      });
-      await router.push(`/plants/${plantUuid}`);
-    } catch (err) {
-      if (err instanceof Error) {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
-      }
-    }
+      },
+      async onCompleted(createHarvestResponse) {
+        if (createHarvestResponse.createHarvest.harvest) {
+          toast({ variant: 'success', content: 'Harvest created successfully!' });
+          await router.push(`/plants/${plantUuid}`);
+        }
+      },
+      onError(error) {
+        toast({ variant: 'error', content: error.message });
+      },
+    });
   };
 
   const handleFormReset = () => {

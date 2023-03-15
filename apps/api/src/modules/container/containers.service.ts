@@ -28,7 +28,6 @@ import { BestPerformingContainersResponse } from './responses/best-performing-co
 import { PriorityQueue } from '@modules/common/lib/priority-queue';
 import { ImageUploadService } from '@modules/image-upload/image-upload.service';
 import { saveImageFile } from '@modules/image-upload/lib/image-upload.utils';
-import { FileUpload } from 'graphql-upload-minimal';
 
 @Injectable()
 export class ContainersService {
@@ -43,7 +42,7 @@ export class ContainersService {
         where: {
           uuid: input.uuid,
         },
-        include: { user: true },
+        include: { user: true, thumbnail: true },
       });
 
       if (!container) {
@@ -96,24 +95,32 @@ export class ContainersService {
     input: CreateContainerInput,
   ): Promise<ContainerResponse> {
     try {
+      // Create image upload for the container thumbnail if provided
+      let thumbnailUuid: string | null = null;
+      if (input.thumbnail) {
+        const fileName = await saveImageFile(input.thumbnail);
+        const containerThumbnailImage =
+          await this.imageUploadService.createImageUpload({
+            fileType: 'Container-Thumbnail',
+            fileName,
+          });
+        thumbnailUuid = containerThumbnailImage.imageUpload.uuid;
+      }
+
       const container = await this.prismaService.container.create({
         data: {
           type: parseContainerType(input.type),
           dirtDepth: input.dirtDepth,
+          thumbnail:
+            thumbnailUuid != null
+              ? { connect: { uuid: thumbnailUuid } }
+              : undefined,
           user: { connect: { uuid: input.userUuid } },
         },
       });
 
       if (!container) {
         throw new NotFoundException('Could not create container!');
-      }
-
-      if (input.thumbnail) {
-        const fileName = await saveImageFile(input.thumbnail);
-        await this.imageUploadService.createImageUpload({
-          fileType: 'Container-Thumbnail',
-          fileName,
-        });
       }
 
       const parsedContainer: Container = {
@@ -205,14 +212,39 @@ export class ContainersService {
       const container = await this.prismaService.container.update({
         where: { uuid: input.uuid },
         data: {
-          ...input,
+          dirtDepth: input.dirtDepth ? input.dirtDepth : undefined,
+          type: input.type ? input.type : undefined,
         },
-        include: { user: true },
+        include: { user: true, thumbnail: true },
       });
 
       if (!container) {
         throw new NotFoundException('No container found with the given input!');
       }
+
+      // Check if new thumbnail is provided
+      if (input.thumbnail) {
+        const fileName = await saveImageFile(input.thumbnail);
+
+        // Check if container already had thumbnail, so we delete it.
+        if (container.thumbnail) {
+          console.log('already had thumbnail');
+
+          await this.imageUploadService.deleteImageUpload({
+            uuid: container.thumbnail.uuid,
+          });
+        }
+        const containerThumbnailImage =
+          await this.imageUploadService.createImageUpload({
+            fileType: 'Container-Thumbnail',
+            fileName,
+          });
+        await this.prismaService.container.update({
+          where: { uuid: input.uuid },
+          data: { thumbnailUuid: containerThumbnailImage.imageUpload.uuid },
+        });
+      }
+
       const parsedContainer: Container = {
         ...container,
         type: parseContainerType(container.type),

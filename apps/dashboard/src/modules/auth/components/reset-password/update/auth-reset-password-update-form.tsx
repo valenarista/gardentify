@@ -46,7 +46,6 @@ const AuthResetPasswordUpdateForm: React.FC<AuthResetPasswordUpdateFormProps> = 
             placeholder="Secure Password"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />
@@ -64,7 +63,6 @@ const AuthResetPasswordUpdateForm: React.FC<AuthResetPasswordUpdateFormProps> = 
               valueLength={6}
               error={fieldState.invalid}
               errorMessage={fieldState.error?.message}
-              reseteable={false}
               onChange={onChange}
               value={value}
             />

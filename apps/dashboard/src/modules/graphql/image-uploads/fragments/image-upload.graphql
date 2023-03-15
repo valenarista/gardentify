@@ -1,0 +1,7 @@
+fragment ImageUpload on ImageUpload {
+  uuid
+  fileName
+  fileType
+  createdAt
+  updatedAt
+}

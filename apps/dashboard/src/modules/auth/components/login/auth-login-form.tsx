@@ -52,7 +52,6 @@ const AuthSigninForm: React.FC<AuthSigninFormProps> = (props) => {
             placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />
@@ -72,7 +71,6 @@ const AuthSigninForm: React.FC<AuthSigninFormProps> = (props) => {
             placeholder="Secure Password"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />
@@ -90,7 +88,6 @@ const AuthSigninForm: React.FC<AuthSigninFormProps> = (props) => {
               valueLength={6}
               error={fieldState.invalid}
               errorMessage={fieldState.error?.message}
-              reseteable={false}
               onChange={onChange}
               value={value}
             />

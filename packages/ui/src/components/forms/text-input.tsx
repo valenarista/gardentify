@@ -37,7 +37,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>((pro
     name,
     onBlur,
     onValueChanged,
-    reseteable,
+    reseteable = false,
     step = '1',
     type = 'text',
     inputMode = 'text',

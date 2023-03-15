@@ -38,25 +38,25 @@ const PlantHeightRegistrationsManagementCreateForm: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     if (!user) return;
 
-    try {
-      const plantUuid = router.query.uuid as string;
+    const plantUuid = router.query.uuid as string;
 
-      await createHeightRegistration({
-        variables: {
-          input: {
-            ...data,
-            plantUuid,
-          },
+    await createHeightRegistration({
+      variables: {
+        input: {
+          ...data,
+          plantUuid,
         },
-      });
-
-      await router.push(`/plants/${plantUuid}`);
-    } catch (err) {
-      if (err instanceof Error) {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
-      }
-    }
+      },
+      async onCompleted(createHeightRegistrationResponse) {
+        if (createHeightRegistrationResponse.createHeightRegistration.heightRegistration) {
+          toast({ variant: 'success', content: 'Height registration created successfully!' });
+          await router.push(`/plants/${plantUuid}`);
+        }
+      },
+      onError(error) {
+        toast({ variant: 'error', content: error.message });
+      },
+    });
   };
 
   const handleFormReset = () => {

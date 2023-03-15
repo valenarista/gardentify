@@ -33,7 +33,7 @@ export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>
     children,
     onBlur,
     onValueChanged,
-    reseteable,
+    reseteable = false,
     value,
   } = props;
 

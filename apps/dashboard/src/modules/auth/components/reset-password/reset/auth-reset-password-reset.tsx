@@ -11,27 +11,22 @@ const AuthResetPasswordReset: React.FC = () => {
   const [requestResetPassword] = useRequestResetPasswordMutation();
 
   const handleResetPassword = async (data: AuthResetPasswordResetFormData) => {
-    try {
-      const response = await requestResetPassword({
-        variables: {
-          input: {
-            email: data.email,
-          },
+    await requestResetPassword({
+      variables: {
+        input: {
+          email: data.email,
         },
-      });
-
-      const requestResetPasswordData = response.data;
-
-      if (requestResetPasswordData && requestResetPasswordData.requestResetPassword.emailSent) {
-        toast({ variant: 'success', content: 'Reset password email sent!' });
-        await router.push('/auth');
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
-      }
-    }
+      },
+      async onCompleted(requestResetPasswordResponse) {
+        if (requestResetPasswordResponse.requestResetPassword.emailSent) {
+          toast({ variant: 'success', content: 'Reset password email sent!' });
+          await router.push('/auth');
+        }
+      },
+      onError(error) {
+        toast({ variant: 'error', content: error.message });
+      },
+    });
   };
 
   return <AuthResetPasswordForm onSubmitted={handleResetPassword} />;

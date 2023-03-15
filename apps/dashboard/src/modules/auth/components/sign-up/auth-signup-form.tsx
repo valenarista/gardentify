@@ -48,7 +48,6 @@ const AuthSignupForm: React.FC<AuthSignupFormProps> = (props) => {
             placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />
@@ -67,7 +66,6 @@ const AuthSignupForm: React.FC<AuthSignupFormProps> = (props) => {
             placeholder="Cool Username"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />
@@ -87,7 +85,6 @@ const AuthSignupForm: React.FC<AuthSignupFormProps> = (props) => {
             placeholder="Secure Password"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />

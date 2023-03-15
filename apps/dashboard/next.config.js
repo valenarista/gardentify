@@ -6,5 +6,5 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withBundleAnalyzer( {
   reactStrictMode: true,
   compress: true,
-  images: { domains: ['cdn.discordapp.com'] },
+  images: { domains: ['cdn.discordapp.com','localhost', 'https://gardentify-api.onrender.com'] },
 });

@@ -8,6 +8,7 @@ import React from 'react';
 import ContainerDirtDepthAttribute from '../../cards/attributes/container-dirt-depth-attribute';
 import ContainerTypeAttribute from '../../cards/attributes/container-type-attribute';
 import UserContainerManagement from '../management/user-container-management';
+import UserContainerThumbnail from './thumbnail/user-container-thumbnail';
 
 const UserContainerDetails: React.FC = (props) => {
   const {} = props;
@@ -17,11 +18,12 @@ const UserContainerDetails: React.FC = (props) => {
 
   return (
     <div className="flex w-full flex-col space-y-2 rounded-lg bg-neutral-200 p-4 shadow-lg dark:bg-neutral-800 md:flex-row md:space-x-4 md:space-y-0">
+      <UserContainerThumbnail />
       {/* Details */}
       <div className="flex-1 flex-col">
         {/* Name */}
         <div className="flex items-center justify-between space-x-2 md:justify-start">
-          <h1 className="mb-1 text-3xl font-bold">Container</h1>
+          <h2 className="mb-1 text-3xl font-bold">Container</h2>
           <ObjectQrCode urlToEncode={`${__URL__}${router.asPath}`} />
         </div>
         <div className="mb-1 flex space-x-4">

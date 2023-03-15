@@ -38,7 +38,6 @@ const AuthResetPasswordResetForm: React.FC<AuthResetPasswordResetFormProps> = (p
             placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />

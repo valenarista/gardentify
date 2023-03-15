@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from '@modules/auth/context/auth-context';
 import { ContainerType, useCreateContainerMutation } from '@modules/graphql/@generated/graphql';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -15,6 +15,7 @@ const schema = yup
       .required('Container dirt depth is required!')
       .min(1, 'The minimum dirt depth is 1')
       .typeError('Dirt depth must be a number!'),
+    thumbnail: yup.mixed().optional(),
   })
   .required();
 
@@ -34,38 +35,30 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
     mode: 'onBlur',
   });
 
-  const [file, setFile] = useState<File[]>([]);
-
   const [createContainer] = useCreateContainerMutation();
 
   const onSubmit = async (data: FormData) => {
-    if (!user || !file) return;
+    if (!user) return;
 
-    try {
-      const thumbnail = file[0];
-      if (thumbnail === null) return;
-      console.log({ thumbnail });
-
-      const response = await createContainer({
-        variables: {
-          input: {
-            ...data,
-            userUuid: user.uuid,
-            thumbnail,
-          },
+    await createContainer({
+      variables: {
+        input: {
+          ...data,
+          userUuid: user.uuid,
+          thumbnail: data.thumbnail ?? undefined,
         },
-      });
-      const createContainerData = response.data;
-      if (createContainerData && createContainerData.createContainer && createContainerData.createContainer.container) {
-        await router.push(`/containers/${createContainerData.createContainer.container.uuid}`);
-        onSubmitted();
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
-      }
-    }
+      },
+      async onCompleted(responseData) {
+        if (responseData.createContainer.container) {
+          onSubmitted();
+          toast({ variant: 'success', content: 'Container created successfully!' });
+          await router.push(`/containers/${responseData.createContainer.container.uuid}`);
+        }
+      },
+      onError(error) {
+        toast({ variant: 'error', content: error.message });
+      },
+    });
   };
 
   const handleFormReset = () => {
@@ -88,7 +81,6 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
             errorMessage={fieldState.error?.message}
             help
             helpMessage="Type of the container"
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           >
@@ -119,23 +111,33 @@ const UserContainersManagementCreateForm: React.FC<UserContainersManagementCreat
             errorMessage={fieldState.error?.message}
             help
             helpMessage="Depth in centimeters of the dirt"
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />
         )}
       />
 
-      <FileInput
-        id="container-thumbnail"
-        name="Container Thumbnail"
-        label="Container Thumbnail"
-        error={false}
-        reseteable={false}
-        onValueChanged={(files) => {
-          console.log({ files });
-          setFile(files);
-        }}
+      <Controller
+        name="thumbnail"
+        control={control}
+        render={({ field: { name, onBlur, onChange, ref }, fieldState }) => (
+          <FileInput
+            ref={ref}
+            id={name}
+            name={name}
+            label="Thumbnail"
+            error={fieldState.invalid}
+            errorMessage={fieldState.error?.message}
+            help
+            helpMessage="Optional thumbnail of the container"
+            onValueChanged={(files) => {
+              if (files.length === 0) return;
+              const uniqueFile = files[0];
+              onChange(uniqueFile);
+            }}
+            onBlur={onBlur}
+          />
+        )}
       />
 
       <div className="flex w-full space-x-4 px-6">

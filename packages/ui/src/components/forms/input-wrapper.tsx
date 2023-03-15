@@ -7,16 +7,18 @@ export type InputWrapperProps = {
   id: string;
   /** Label to display on top of the input */
   label: string;
-  /** Wether the input is invalid or not */
-  error: boolean;
+  /** Optional: Wether the input is invalid or not */
+  error?: boolean;
   /** Optional: Error message to display when invalid */
   errorMessage?: string;
   /** Optional: Wether to show or not a help message */
   help?: boolean;
   /** Optional: Help message to display */
   helpMessage?: string;
-  reseteable: boolean;
-  onInputReseted: () => void;
+  /** Optional: Wetheer the input can be resetted or not */
+  reseteable?: boolean;
+  /** Optional: Reset callback function */
+  onInputReseted?: () => void;
   /** Children */
   children?: React.ReactNode;
 };
@@ -29,7 +31,7 @@ export const InputWrapper = React.forwardRef<HTMLDivElement, InputWrapperProps>(
     errorMessage,
     help = false,
     helpMessage,
-    reseteable,
+    reseteable = false,
     onInputReseted,
     children,
   } = props;

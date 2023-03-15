@@ -46,25 +46,23 @@ const PlantManagementEditForm: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     if (!user) return;
 
-    try {
-      const response = await updatePlant({
-        variables: {
-          input: {
-            ...data,
-            uuid: plant.uuid,
-          },
+    await updatePlant({
+      variables: {
+        input: {
+          ...data,
+          uuid: plant.uuid,
         },
-      });
-      const updatedPlant = response.data;
-      if (updatedPlant && updatedPlant.updatePlant.plant && updatedPlant.updatePlant.plant.uuid) {
-        await router.push(`/plants/${plant.uuid}`);
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
-      }
-    }
+      },
+      async onCompleted(updatePlantResponse) {
+        if (updatePlantResponse.updatePlant.plant) {
+          toast({ variant: 'success', content: 'Plant updated successfully!' });
+          await router.push(`/plants/${plant.uuid}`);
+        }
+      },
+      onError(error) {
+        toast({ variant: 'error', content: error.message });
+      },
+    });
   };
 
   const handleFormReset = () => {
@@ -86,7 +84,6 @@ const PlantManagementEditForm: React.FC = () => {
             placeholder="Plant Variety"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           >
@@ -113,7 +110,6 @@ const PlantManagementEditForm: React.FC = () => {
             placeholder="Plant Variety"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />
@@ -133,7 +129,6 @@ const PlantManagementEditForm: React.FC = () => {
             type="date"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />
@@ -153,7 +148,6 @@ const PlantManagementEditForm: React.FC = () => {
             placeholder="Date"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />

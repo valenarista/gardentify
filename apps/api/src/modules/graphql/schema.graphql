@@ -422,6 +422,7 @@ input UpdateContainerInput {
 
   """Dirth depth of the container"""
   dirtDepth: Float
+  thumbnail: Upload
 }
 
 input CreatePlantInput {

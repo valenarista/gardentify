@@ -38,7 +38,6 @@ const AuthTwoFactorForm: React.FC<AuthTwoFactorFormProps> = (props) => {
             placeholder="youremail@mail.com"
             error={fieldState.invalid}
             errorMessage={fieldState.error?.message}
-            reseteable={false}
             onValueChanged={onChange}
             onBlur={onBlur}
           />

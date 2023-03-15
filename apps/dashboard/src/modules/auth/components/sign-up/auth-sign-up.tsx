@@ -14,36 +14,31 @@ const AuthSignUp: React.FC = () => {
   const [signup] = useSignUpMutation();
 
   const handleSignUp = async (data: AuthSignupFormData) => {
-    try {
-      const response = await signup({
-        variables: {
-          input: {
-            ...data,
-          },
+    await signup({
+      variables: {
+        input: {
+          ...data,
         },
-        update(cache, { data: cacheData }) {
-          if (!cacheData?.signUp.user) return;
+      },
+      update(cache, { data: cacheData }) {
+        if (!cacheData?.signUp.user) return;
 
-          cache.writeQuery<MeQuery>({
-            data: { me: cacheData.signUp.user },
-            query: MeDocument,
-          });
-        },
-        onCompleted() {
+        cache.writeQuery<MeQuery>({
+          data: { me: cacheData.signUp.user },
+          query: MeDocument,
+        });
+      },
+      async onCompleted(signupResponse) {
+        if (signupResponse.signUp.user) {
           setUserLoggedIn(true);
-        },
-      });
-
-      const signupData = response.data;
-      if (signupData && signupData.signUp.user && signupData.signUp.user.uuid) {
-        await router.push(`/users/${signupData.signUp.user.uuid}`);
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
-      }
-    }
+          toast({ variant: 'success', content: 'Password resetted successfully!' });
+          await router.push(`/users/${signupResponse.signUp.user.uuid}`);
+        }
+      },
+      onError(error) {
+        toast({ variant: 'error', content: error.message });
+      },
+    });
   };
 
   return (

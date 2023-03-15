@@ -14,35 +14,30 @@ const AuthLogin: React.FC = () => {
   const [login] = useLoginMutation();
 
   const handleLogin = async (data: AuthSigninFormData) => {
-    try {
-      const response = await login({
-        variables: {
-          input: {
-            ...data,
-          },
+    await login({
+      variables: {
+        input: {
+          ...data,
         },
-        update: (cache, { data: cacheData }) => {
-          if (!cacheData) return;
-          cache.writeQuery<MeQuery, MeQueryVariables>({
-            data: { me: cacheData.login.user },
-            query: MeDocument,
-          });
-        },
-        onCompleted() {
+      },
+      update: (cache, { data: cacheData }) => {
+        if (!cacheData) return;
+        cache.writeQuery<MeQuery, MeQueryVariables>({
+          data: { me: cacheData.login.user },
+          query: MeDocument,
+        });
+      },
+      async onCompleted(loginResponse) {
+        if (loginResponse.login.user) {
           setUserLoggedIn(true);
-        },
-      });
-
-      const loginData = response.data;
-      if (loginData && loginData.login.user && loginData.login.user.uuid) {
-        await router.push(`/users/${loginData.login.user.uuid}`);
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        const errorMessage = err.message;
-        toast({ variant: 'error', content: errorMessage });
-      }
-    }
+          toast({ variant: 'success', content: 'Logged in successfully!' });
+          await router.push(`/users/${loginResponse.login.user.uuid}`);
+        }
+      },
+      onError(error) {
+        toast({ variant: 'error', content: error.message });
+      },
+    });
   };
 
   return (
